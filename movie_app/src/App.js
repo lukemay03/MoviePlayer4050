@@ -10,7 +10,7 @@ function App() {
     
     <div class="container">
             <div class="search-bar">
-            <input type="text" placeholder="Search for movies by title...">
+            <input type="text" placeholder="Search for movies by title..."></input>
             <button>Search</button>
         </div>
     
