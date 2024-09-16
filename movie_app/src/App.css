@@ -25,6 +25,50 @@ header h1 {
     padding: 0 20px;
 }
 
+.links {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+    align-items: center;
+}
+
+.links button {
+    padding: 12px 20px;
+    font-size: 1rem;
+    color: white;
+    background-color: #333;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    align-items: center;
+}
+
+.Login_Container {
+    margin: auto;
+    width: 50%;
+    border: 30px solid green;
+    padding: 50px;
+    align-items: center;
+}
+.Login_Container button {
+    padding: 12px 20px;
+    font-size: 1rem;
+    color: white;
+    background-color: #333;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    align-items: center;
+}
+
+.User_Input_Fields {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
 .search-bar {
     text-align: center;
     margin-bottom: 30px;
