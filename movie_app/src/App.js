@@ -7,6 +7,14 @@ function App() {
     <header>
         <h1>Cinema E-Booking System</h1>
     </header>
+    <div class ="links">
+      <a href="LogIn.html">
+        <button>Log in</button>
+      </a>
+      <a href="Register.html">
+        <button>Register</button>
+      </a>
+    </div>
     
     <div class="container">
             <div class="search-bar">
