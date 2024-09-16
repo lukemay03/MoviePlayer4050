@@ -3,22 +3,46 @@ import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+   <body>
+    <header>
+        <h1>Cinema E-Booking System</h1>
+    </header>
+    
+    <div class="container">
+            <div class="search-bar">
+            <input type="text" placeholder="Search for movies by title...">
+            <button>Search</button>
+        </div>
+    
+            <div class="movie-category">
+            <h2>Currently Running</h2>
+            <div class="movie">
+                <iframe src="https://www.youtube.com/embed/sampleTrailer1" title="Movie Trailer"></iframe>
+                <h3>Movie Title 1</h3>
+                <p>Release Date: June 2024</p>
+            </div>
+            <div class="movie">
+                <iframe src="https://www.youtube.com/embed/sampleTrailer2" title="Movie Trailer"></iframe>
+                <h3>Movie Title 2</h3>
+                <p>Release Date: May 2024</p>
+            </div>
+        </div>
+    
+        <div class="movie-category">
+            <h2>Coming Soon</h2>
+            <div class="movie">
+                <iframe src="https://www.youtube.com/embed/sampleTrailer3" title="Movie Trailer"></iframe>
+                <h3>Movie Title 3</h3>
+                <p>Release Date: December 2024</p>
+            </div>
+            <div class="movie">
+                <iframe src="https://www.youtube.com/embed/sampleTrailer4" title="Movie Trailer"></iframe>
+                <h3>Movie Title 4</h3>
+                <p>Release Date: November 2024</p>
+            </div>
+        </div>
     </div>
+</body>
   );
 }
 
