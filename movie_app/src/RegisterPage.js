@@ -1,5 +1,7 @@
 import React from 'react';
 import Header from './Header';
+import {Link} from 'react-router-dom';
+
 
 
 function RegisterPage() {
@@ -33,7 +35,9 @@ function RegisterPage() {
           <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" />
         </div>
 
-        <button type="submit" className="register-button">Register</button>
+        <Link to="/reg-confirm">
+          <button type="submit" className="register-button">Register</button>
+        </Link>
 
         <p>
           Already have an account? <a href="/login">Login here</a>
