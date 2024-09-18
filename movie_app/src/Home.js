@@ -1,8 +1,27 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
 import Header from './Header';
 
 function Home() {
+    const [data, setData] = useState([]);
+    useEffect(() => {
+        const fetchTrailers = async () => {
+            try {
+                const response = await fetch('http://localhost:3001/movie/trailers');
+                const data = await response.json();
+                setData(data);
+                console.log(typeof(data)); // Check data type
+            } catch (error) {
+                console.error('Error fetching trailers:', error);
+            }
+        };
+    
+        fetchTrailers();
+    }, []);
+    const firstMovie = data[0];
+    const firstMovieTitle = firstMovie ? firstMovie.movie_title : 'Loading...';
+    const firstMovieTrailer = firstMovie ? firstMovie.trailer_link : '';
     return (
         <body>
         <Header></Header>
@@ -27,8 +46,8 @@ function Home() {
                  <div className="movie-category">
                  <h2>Now Playing</h2>
                  <div className="movie">
-                 <iframe width="560" height="315" src="https://www.youtube.com/embed/sampleTrailer1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                     <h3>Movie Title 1</h3>
+                 <iframe width="560" height="315" src={firstMovieTrailer}title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                     <h3>{String(firstMovieTitle)}</h3>
                      <p>Release Date: June 2024</p>
                  </div>
                  <div className="movie">
