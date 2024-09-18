@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 
 
 
-function RegisterPage() {
+function RegistrationConfirm() {
   return (
     <div className="register-container">
       <Header></Header>
@@ -47,6 +47,4 @@ function RegisterPage() {
   );
 }
 
-export default RegisterPage;
-
-
+export default RegistrationConfirm;
