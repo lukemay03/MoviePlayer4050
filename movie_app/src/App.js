@@ -9,6 +9,7 @@ import LoginPage from './LoginPage';
 import EditProfile from './EditProfile';
 import RegistrationConfirm from './RegistrationConfirm';
 import AdminMain from './AdminMain';
+import TicketSelect from './TicketSelect';
 
 
 function App() {
@@ -24,6 +25,8 @@ function App() {
           <Route path="/edit-profile" element={<EditProfile/>} />
           <Route path="/reg-confirm" element={<RegistrationConfirm/>} />
           <Route path="/admin-main" element={<AdminMain/>} />
+          <Route path="/ticket-select" element={<TicketSelect/>} />
+
         </Routes>
       </div>
     </Router>
