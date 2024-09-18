@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
 import Header from './components/Header';
-
+import MovieCard from './components/MovieCard';
 function Home() {
     const [data, setData] = useState([]);
     useEffect(() => {
@@ -46,21 +46,6 @@ function Home() {
                  <input type="text" placeholder="Search for movies by title..."></input>
                  <button>Search</button>
              </div>
-<<<<<<< Updated upstream
-         
-                 <div className="movie-category">
-                 <h2>Now Playing</h2>
-                 <div className="movie">
-                 <iframe width="560" height="315" src={firstMovieTrailer}title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                     <h3>{String(firstMovieTitle)}</h3>
-                     <p>Release Date: June 2024</p>
-                 </div>
-                 <div className="movie">
-                     <iframe src="https://www.youtube.com/embed/sampleTrailer2" title="Movie Trailer"></iframe>
-                     <h3>Movie Title 2</h3>
-                     <p>Release Date: May 2024</p>
-                 </div>
-=======
              <h2>Now Playing</h2>
                  <div className="movie-row">
                  {data.map((movie, index) => (
@@ -72,7 +57,6 @@ function Home() {
                   detailsLink="/details/movie1"
         />
                  ))}
->>>>>>> Stashed changes
              </div>
          
              <div className="movie-category">

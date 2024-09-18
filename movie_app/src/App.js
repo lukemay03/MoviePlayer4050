@@ -9,7 +9,11 @@ import LoginPage from './LoginPage';
 import EditProfile from './EditProfile';
 import RegistrationConfirm from './RegistrationConfirm';
 import AdminMain from './AdminMain';
-
+import ManageMovies from './ManageMovies';
+import ManageUsers from './ManageUsers'
+import ManagePromotions from './ManagePromotions'
+import TicketSelect from './TicketSelect'
+import SeatSelector from './components/SeatSelector'
 
 function App() {
   return (
