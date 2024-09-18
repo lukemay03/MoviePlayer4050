@@ -14,7 +14,7 @@ function Home() {
              <button>Login</button>
         </Link>
 
-        <Link to="/edit_profile">
+        <Link to="/edit-profile">
              <button>Edit Profile</button>
         </Link>
          
@@ -27,7 +27,7 @@ function Home() {
                  <div className="movie-category">
                  <h2>Now Playing</h2>
                  <div className="movie">
-                     <iframe src="https://www.youtube.com/embed/sampleTrailer1" title="Movie Trailer"></iframe>
+                 <iframe width="560" height="315" src="https://www.youtube.com/embed/sampleTrailer1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                      <h3>Movie Title 1</h3>
                      <p>Release Date: June 2024</p>
                  </div>
