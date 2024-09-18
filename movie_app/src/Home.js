@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import Header from './Header';
+import Header from './components/Header';
+import MovieCard from './components/MovieCard'
 
 function Home() {
     return (
@@ -27,9 +28,13 @@ function Home() {
                  <div className="movie-category">
                  <h2>Now Playing</h2>
                  <div className="movie">
-                 <iframe width="560" height="315" src="https://www.youtube.com/embed/sampleTrailer1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                     <h3>Movie Title 1</h3>
-                     <p>Release Date: June 2024</p>
+        <MovieCard 
+                  poster="https://i.etsystatic.com/18242346/r/il/16aa5f/4580913355/il_1588xN.4580913355_oerg.jpg"
+                  title="Pearl"
+                  trailerLink="/trailer/movie1"
+                  bookingLink="/BuyTickets"
+                  detailsLink="/details/movie1"
+        />
                  </div>
                  <div className="movie">
                      <iframe src="https://www.youtube.com/embed/sampleTrailer2" title="Movie Trailer"></iframe>
