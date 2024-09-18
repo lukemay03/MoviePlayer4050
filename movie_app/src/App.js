@@ -15,6 +15,7 @@ import ManageUsers from './ManageUsers';
 import ManagePromotions from './ManagePromotions';
 =======
 import TicketSelect from './TicketSelect';
+import SeatSelector from './components/SeatSelector';
 
 >>>>>>> 299c562364eeef1d35dfd7057169f1c604e9684b
 
@@ -37,6 +38,8 @@ function App() {
           <Route path="/manage-promotions" element={<ManagePromotions/>} />
 =======
           <Route path="/ticket-select" element={<TicketSelect/>} />
+          <Route path="/seat-selector" element={<SeatSelector/>} />
+
 
 >>>>>>> 299c562364eeef1d35dfd7057169f1c604e9684b
         </Routes>
