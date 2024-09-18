@@ -46,6 +46,7 @@ function Home() {
                  <input type="text" placeholder="Search for movies by title..."></input>
                  <button>Search</button>
              </div>
+<<<<<<< Updated upstream
          
                  <div className="movie-category">
                  <h2>Now Playing</h2>
@@ -59,6 +60,19 @@ function Home() {
                      <h3>Movie Title 2</h3>
                      <p>Release Date: May 2024</p>
                  </div>
+=======
+             <h2>Now Playing</h2>
+                 <div className="movie-row">
+                 {data.map((movie, index) => (
+        <MovieCard 
+                  poster= {movie.trailer_picture}
+                  title={movie.movie_title}
+                  trailerLink={movie.trailer_link}
+                  bookingLink="/BuyTickets"
+                  detailsLink="/details/movie1"
+        />
+                 ))}
+>>>>>>> Stashed changes
              </div>
          
              <div className="movie-category">

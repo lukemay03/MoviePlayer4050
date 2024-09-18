@@ -16,12 +16,11 @@ app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
 app.get('/movie/trailers', (req, res) => {
-  db.all('SELECT movie_title,trailer_link FROM Movies', (err, rows) => {
+  db.all('SELECT movie_title,trailer_link, trailer_picture FROM Movies', (err, rows) => {
       if (err) {
           res.status(500).json({ error: err.message });
       } else {
           res.json(rows);
-          console.log("Got trailers")
       }
   });
 });
