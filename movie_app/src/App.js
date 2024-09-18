@@ -7,7 +7,6 @@ import RegisterPage from './RegisterPage';
 import Home from './Home'; 
 import LoginPage from './LoginPage';
 import EditProfile from './EditProfile';
-import BuyTickets from './BuyTickets';
 
 
 
@@ -22,7 +21,6 @@ function App() {
           <Route path="/register" element={<RegisterPage/>} />
           <Route path="/login" element={<LoginPage/>} />
           <Route path="/edit-profile" element={<EditProfile/>} />
-          <Route path="/buy-tickets" element={<BuyTickets/>} />
         </Routes>
       </div>
     </Router>

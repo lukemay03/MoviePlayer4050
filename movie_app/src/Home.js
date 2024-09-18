@@ -1,9 +1,28 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
 import Header from './components/Header';
 import MovieCard from './components/MovieCard'
 
 function Home() {
+    const [data, setData] = useState([]);
+    useEffect(() => {
+        const fetchTrailers = async () => {
+            try {
+                const response = await fetch('http://localhost:3001/movie/trailers');
+                const data = await response.json();
+                setData(data);
+                console.log(typeof(data)); // Check data type
+            } catch (error) {
+                console.error('Error fetching trailers:', error);
+            }
+        };
+    
+        fetchTrailers();
+    }, []);
+    const firstMovie = data[0];
+    const firstMovieTitle = firstMovie ? firstMovie.movie_title : 'Loading...';
+    const firstMovieTrailer = firstMovie ? firstMovie.trailer_link : '';
     return (
         <body>
         <Header></Header>
