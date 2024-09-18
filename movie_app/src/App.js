@@ -7,7 +7,7 @@ import RegisterPage from './RegisterPage';
 import Home from './Home'; 
 import LoginPage from './LoginPage';
 import EditProfile from './EditProfile';
-
+import RegistrationConfirm from './RegistrationConfirm';
 import AdminMain from './AdminMain';
 
 
