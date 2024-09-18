@@ -7,7 +7,7 @@ import RegisterPage from './RegisterPage';
 import Home from './Home'; 
 import LoginPage from './LoginPage';
 import EditProfile from './EditProfile';
-import regConfirm from './regConfirm'
+import RegistrationConfirm from './RegistrationConfirm';
 
 
 function App() {
@@ -21,7 +21,8 @@ function App() {
           <Route path="/register" element={<RegisterPage/>} />
           <Route path="/login" element={<LoginPage/>} />
           <Route path="/edit-profile" element={<EditProfile/>} />
-          <Route path="/reg-confirm" element={<regConfirm/>} />
+          <Route path="/reg-confirm" element={<RegistrationConfirm/>} />
+
         </Routes>
       </div>
     </Router>

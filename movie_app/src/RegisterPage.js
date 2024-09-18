@@ -35,7 +35,7 @@ function RegisterPage() {
           <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" />
         </div>
 
-        <Link to="/regConfirm">
+        <Link to="/reg-confirm">
           <button type="submit" className="register-button">Register</button>
         </Link>
 
