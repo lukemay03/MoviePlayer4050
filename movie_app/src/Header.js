@@ -8,7 +8,7 @@ function Header() {
       <nav className='nav-links'>
         <Link to="/">Home</Link>
         <Link to="/">Checkout</Link>
-        <Link to="/">Profile</Link>
+        <Link to="/edit-profile">Profile</Link>
       </nav>
     </header>
   );
