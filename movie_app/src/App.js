@@ -7,7 +7,7 @@ import RegisterPage from './RegisterPage';
 import Home from './Home'; 
 import LoginPage from './LoginPage';
 import EditProfile from './EditProfile';
-import RegConfirm from './RegistrationConfirm';
+import RegistrationConfirm from './RegistrationConfirm';
 
 
 function App() {
