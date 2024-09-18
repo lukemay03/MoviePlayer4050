@@ -1,56 +1,30 @@
 import logo from './logo.svg';
 import './App.css';
 
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import RegisterPage from './RegisterPage'; 
+import Home from './Home'; 
+import LoginPage from './LoginPage';
+import EditProfile from './EditProfile';
+
+
+
 function App() {
   return (
-   <body>
-    <header>
-        <h1>Cinema E-Booking System</h1>
-    </header>
-    <div class ="links">
-      <a href="LogIn.html">
-        <button>Log in</button>
-      </a>
-      <a href="Register.html">
-        <button>Register</button>
-      </a>
-    </div>
+
+
+    <Router>
+      <div>
+        <Routes>
+          <Route exact path="/" element={<Home/>} />
+          <Route path="/register" element={<RegisterPage/>} />
+          <Route path="/login" element={<LoginPage/>} />
+          <Route path="/edit_profile" element={<EditProfile/>} />
+        </Routes>
+      </div>
+    </Router>
     
-    <div class="container">
-            <div class="search-bar">
-            <input type="text" placeholder="Search for movies by title..."></input>
-            <button>Search</button>
-        </div>
-    
-            <div class="movie-category">
-            <h2>Currently Running</h2>
-            <div class="movie">
-                <iframe src="https://www.youtube.com/embed/sampleTrailer1" title="Movie Trailer"></iframe>
-                <h3>Movie Title 1</h3>
-                <p>Release Date: June 2024</p>
-            </div>
-            <div class="movie">
-                <iframe src="https://www.youtube.com/embed/sampleTrailer2" title="Movie Trailer"></iframe>
-                <h3>Movie Title 2</h3>
-                <p>Release Date: May 2024</p>
-            </div>
-        </div>
-    
-        <div class="movie-category">
-            <h2>Coming Soon</h2>
-            <div class="movie">
-                <iframe src="https://www.youtube.com/embed/sampleTrailer3" title="Movie Trailer"></iframe>
-                <h3>Movie Title 3</h3>
-                <p>Release Date: December 2024</p>
-            </div>
-            <div class="movie">
-                <iframe src="https://www.youtube.com/embed/sampleTrailer4" title="Movie Trailer"></iframe>
-                <h3>Movie Title 4</h3>
-                <p>Release Date: November 2024</p>
-            </div>
-        </div>
-    </div>
-</body>
   );
 }
 
