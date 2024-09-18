@@ -4,18 +4,17 @@ import AdminHeader from './AdminHeader';
 
 function ManageMovies() {
     return (
-
         <body>
         <AdminHeader></AdminHeader>
-        <Link to="Manage Movies">
+        <Link to="/manage-movies">
+            <button>Manage Movies</button>
+        </Link>
+
+        <Link to="/manage-promotions">
             <button>Manage Promotions</button>
         </Link>
 
-        <Link to="Manage Promotions">
-            <button>Manage Promotions</button>
-        </Link>
-
-        <Link to="Manage Users">
+        <Link to="/manage-users">
             <button>Manage Users</button>
         </Link>
 

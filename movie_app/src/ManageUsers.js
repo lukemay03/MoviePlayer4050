@@ -2,9 +2,8 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import AdminHeader from './AdminHeader';
 
-function AdminMain() {
+function ManageUsers() {
     return (
-
         <body>
         <AdminHeader></AdminHeader>
         <Link to="/manage-movies">
@@ -17,10 +16,6 @@ function AdminMain() {
 
         <Link to="/manage-users">
             <button>Manage Users</button>
-        </Link>
-
-        <Link to="/">
-            <button>User Home</button>
         </Link>
 
         <div className="container">
@@ -38,11 +33,17 @@ function AdminMain() {
                             referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
                     <h3>Movie Title 1</h3>
                     <p>Release Date: June 2024</p>
+                    <Link to="Edit Movie">
+                        <button>Edit Movie</button>
+                    </Link>
                 </div>
                 <div className="movie">
                     <iframe src="https://www.youtube.com/embed/sampleTrailer2" title="Movie Trailer"></iframe>
                     <h3>Movie Title 2</h3>
                     <p>Release Date: May 2024</p>
+                    <Link to="Edit Movie">
+                        <button>Edit Movie</button>
+                    </Link>
                 </div>
             </div>
 
@@ -52,11 +53,17 @@ function AdminMain() {
                     <iframe src="https://www.youtube.com/embed/sampleTrailer3" title="Movie Trailer"></iframe>
                     <h3>Movie Title 3</h3>
                     <p>Release Date: December 2024</p>
+                    <Link to="Edit Movie">
+                        <button>Edit Movie</button>
+                    </Link>
                 </div>
                 <div className="movie">
                     <iframe src="https://www.youtube.com/embed/sampleTrailer4" title="Movie Trailer"></iframe>
                     <h3>Movie Title 4</h3>
                     <p>Release Date: November 2024</p>
+                    <Link to="Edit Movie">
+                        <button>Edit Movie</button>
+                    </Link>
                 </div>
             </div>
         </div>
@@ -64,4 +71,4 @@ function AdminMain() {
     );
 }
 
-export default AdminMain;
+export default ManageUsers;
