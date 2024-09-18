@@ -37,7 +37,11 @@ function Home() {
         <Link to="/edit-profile">
              <button>Edit Profile</button>
         </Link>
-         
+
+        <Link to="/admin-main">
+            <button>Admin</button>
+        </Link>
+
          <div class="container">
                  <div className="search-bar">
                  <input type="text" placeholder="Search for movies by title..."></input>
