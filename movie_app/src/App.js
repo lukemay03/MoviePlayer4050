@@ -10,6 +10,7 @@ import EditProfile from './EditProfile';
 import RegistrationConfirm from './RegistrationConfirm';
 import AdminMain from './AdminMain';
 import TicketSelect from './TicketSelect';
+import SeatSelector from './components/SeatSelector';
 
 
 function App() {
@@ -26,6 +27,8 @@ function App() {
           <Route path="/reg-confirm" element={<RegistrationConfirm/>} />
           <Route path="/admin-main" element={<AdminMain/>} />
           <Route path="/ticket-select" element={<TicketSelect/>} />
+          <Route path="/seat-selector" element={<SeatSelector/>} />
+
 
         </Routes>
       </div>

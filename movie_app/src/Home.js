@@ -1,8 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
-import Header from './components/Header';
-import MovieCard from './components/MovieCard'
+import Header from './Header';
 
 function Home() {
     const [data, setData] = useState([]);
@@ -51,13 +50,9 @@ function Home() {
                  <div className="movie-category">
                  <h2>Now Playing</h2>
                  <div className="movie">
-        <MovieCard 
-                  poster="https://i.etsystatic.com/18242346/r/il/16aa5f/4580913355/il_1588xN.4580913355_oerg.jpg"
-                  title="Pearl"
-                  trailerLink="/trailer/movie1"
-                  bookingLink="/BuyTickets"
-                  detailsLink="/details/movie1"
-        />
+                 <iframe width="560" height="315" src={firstMovieTrailer}title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                     <h3>{String(firstMovieTitle)}</h3>
+                     <p>Release Date: June 2024</p>
                  </div>
                  <div className="movie">
                      <iframe src="https://www.youtube.com/embed/sampleTrailer2" title="Movie Trailer"></iframe>
