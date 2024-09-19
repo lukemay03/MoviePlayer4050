@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
 import Header from './components/Header';
 import MovieCard from './components/MovieCard';
+
 function Home() {
     const [data, setData] = useState([]);
     useEffect(() => {
@@ -25,21 +26,10 @@ function Home() {
     return (
         <body>
         <Header></Header>
-        <Link to="/register">
-             <button>Register</button>
-        </Link>
-
-        <Link to="/login">
-             <button>Login</button>
-        </Link>
-
-        <Link to="/edit-profile">
-             <button>Edit Profile</button>
-        </Link>
-
-        <Link to="/admin-main">
-            <button>Admin</button>
-        </Link>
+        <Link to="/register"><button>Register</button></Link>
+        <Link to="/login"><button>Login</button></Link>
+        <Link to="/edit-profile"><button>Edit Profile</button></Link>
+        <Link to="/admin-main"><button>Admin</button></Link>
 
          <div class="container">
                  <div className="search-bar">
@@ -53,25 +43,27 @@ function Home() {
                   poster= {movie.trailer_picture}
                   title={movie.movie_title}
                   trailerLink={movie.trailer_link}
-                  bookingLink="/BuyTickets"
+                  bookingLink="/ticket-select"
                   detailsLink="/details/movie1"
         />
                  ))}
              </div>
-         
-             <div className="movie-category">
-                 <h2>Coming Soon</h2>
-                 <div className="movie">
-                     <iframe src="https://www.youtube.com/embed/sampleTrailer3" title="Movie Trailer"></iframe>
-                     <h3>Movie Title 3</h3>
-                     <p>Release Date: December 2024</p>
-                 </div>
-                 <div className="movie">
-                     <iframe src="https://www.youtube.com/embed/sampleTrailer4" title="Movie Trailer"></iframe>
-                     <h3>Movie Title 4</h3>
-                     <p>Release Date: November 2024</p>
-                 </div>
+             
+                    
+             <h2>Coming Soon</h2>
+                 <div className="movie-row">
+                 {data.map((movie, index) => (
+        <MovieCard 
+                  poster= {movie.trailer_picture}
+                  title={movie.movie_title}
+                  trailerLink={movie.trailer_link}
+                  bookingLink="/ticket-select"
+                  detailsLink="/details/movie1"
+        />
+                 ))}
              </div>
+             
+    
          </div>
      </body>
        );

@@ -14,6 +14,7 @@ import ManageUsers from './ManageUsers'
 import ManagePromotions from './ManagePromotions'
 import TicketSelect from './TicketSelect'
 import SeatSelector from './components/SeatSelector'
+import Checkout from './Checkout'
 
 function App() {
   return (
@@ -33,6 +34,8 @@ function App() {
           <Route path="/manage-promotions" element={<ManagePromotions/>} />
           <Route path="/ticket-select" element={<TicketSelect/>} />
           <Route path="/seat-selector" element={<SeatSelector/>} />
+          <Route path="/checkout" element={<Checkout/>} />
+
 
 
         </Routes>
