@@ -20,8 +20,8 @@ function Home() {
         fetchTrailers();
     }, []);
     const firstMovie = data[0];
-    const firstMovieTitle = firstMovie ? firstMovie.movie_title : 'Loading...';
-    const firstMovieTrailer = firstMovie ? firstMovie.trailer_link : '';
+    //const firstMovieTitle = firstMovie ? firstMovie.movie_title : 'Loading...';
+    //const firstMovieTrailer = firstMovie ? firstMovie.trailer_link : '';
     return (
         <body>
         <Header></Header>
