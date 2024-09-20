@@ -29,7 +29,7 @@ function Home() {
     }, []);
 
     const handleSearch = () => {
-    const filtered = data.filter(movie => 
+    const filtered = current_movies.filter(movie => 
       movie.movie_title.toLowerCase().includes(searchQuery.toLowerCase()) 
     );
     setFilteredData(filtered); 
