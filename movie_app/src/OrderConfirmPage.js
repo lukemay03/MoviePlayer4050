@@ -1,0 +1,18 @@
+import React from 'react';
+import Header from './components/Header';
+
+
+
+function RegistrationConfirm() {
+  return (
+    <div className="register-container">
+      <Header></Header>
+      <div class="regConfirm">
+        <h1> Thank you for Confirming! </h1>
+        <h2> Check your e-mail for a confirmation.</h2>
+      </div>
+    </div>
+  );
+}
+
+export default RegistrationConfirm;
