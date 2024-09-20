@@ -13,8 +13,8 @@ function TicketSelect() {
   const showtimes = ['12:00 PM', '5:00 PM', '8:00 PM'];
   //const info = location.state;
   const location = useLocation();
-  const {state} = location;
-  const {image,name} = state;
+  const {state} = location || {};
+  const {image,name} = state || {};
   const rows = ['A', 'B', 'C', 'D', 'E'];
   const seatsPerRow = 8;
 
