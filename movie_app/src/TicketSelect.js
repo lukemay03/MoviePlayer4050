@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import Header from './components/Header';
-<<<<<<< HEAD
 import { Link, useLocation} from 'react-router-dom';
-=======
-import { Link} from 'react-router-dom';
 import './TheaterLayout.css';
->>>>>>> a51cfdc31693ec9695de1919a46df489ecf792e6
 
 
 function TicketSelect() {
@@ -15,13 +11,10 @@ function TicketSelect() {
   const [selectedSeats, setSelectedSeats] = useState([]);
 
   const showtimes = ['12:00 PM', '5:00 PM', '8:00 PM'];
-<<<<<<< HEAD
   //const info = location.state;
   const location = useLocation();
   const {state} = location;
-  console.log(state)
   const {image,name} = state;
-=======
   const rows = ['A', 'B', 'C', 'D', 'E'];
   const seatsPerRow = 8;
 
@@ -32,17 +25,12 @@ function TicketSelect() {
       setSelectedSeats([...selectedSeats, seat]);
     }
   };
->>>>>>> a51cfdc31693ec9695de1919a46df489ecf792e6
 
   return (
     <div className="ticket-select">
       <Header></Header>
       <div class="regConfirm">
-<<<<<<< HEAD
         <h3> Booking for Movie: {name}</h3>
-=======
-        <h3> Booking for Movie:</h3>
->>>>>>> a51cfdc31693ec9695de1919a46df489ecf792e6
         <h3> Choose a Date: 
             <input type="date" id="date"></input>
         </h3>
