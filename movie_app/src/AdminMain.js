@@ -5,7 +5,7 @@ import AdminHeader from './components/AdminHeader';
 function AdminMain() {
     return (
 
-        <body>
+        <div className="admin-option-container">
         <AdminHeader></AdminHeader>
 
         <Link to="/manage-movies">
@@ -22,7 +22,7 @@ function AdminMain() {
         <Link to="/">
             <button>User Home</button>
         </Link>
-        </body>
+        </div>
     );
 }
 

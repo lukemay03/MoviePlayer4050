@@ -1,21 +1,32 @@
 import React, { useState } from 'react';
 import Header from './components/Header';
 import { Link} from 'react-router-dom';
+import './TheaterLayout.css';
 
 
 function TicketSelect() {
   const [selectedShowtime, setSelectedShowtime] = useState('');
   const [adultCount, setAdultCount] = useState(0);
   const [kidCount, setKidCount] = useState(0);
+  const [selectedSeats, setSelectedSeats] = useState([]);
 
   const showtimes = ['12:00 PM', '5:00 PM', '8:00 PM'];
+  const rows = ['A', 'B', 'C', 'D', 'E'];
+  const seatsPerRow = 8;
 
+  const handleSeatClick = (seat) => {
+    if (selectedSeats.includes(seat)) {
+      setSelectedSeats(selectedSeats.filter(s => s !== seat));
+    } else {
+      setSelectedSeats([...selectedSeats, seat]);
+    }
+  };
 
   return (
     <div className="ticket-select">
       <Header></Header>
       <div class="regConfirm">
-        <h3> Booking for Movie: _______</h3>
+        <h3> Booking for Movie:</h3>
         <h3> Choose a Date: 
             <input type="date" id="date"></input>
         </h3>
@@ -33,7 +44,27 @@ function TicketSelect() {
         ))}
       </div>
     
-          <h1>~Theater view here~</h1>
+      <div className="theater-layout">
+      <div className="screen">Theater Screen Here</div>
+      <div className="seats">
+        {rows.map((row, rowIndex) => (
+          <div key={rowIndex} className="row">
+            {Array.from({ length: seatsPerRow }, (_, seatIndex) => {
+              const seat = `${row}${seatIndex + 1}`;
+              return (
+                <div
+                  key={seat}
+                  className={`seat ${selectedSeats.includes(seat) ? 'selected' : ''}`}
+                  onClick={() => handleSeatClick(seat)}
+                >
+                  {seat}
+                </div>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+    </div>
 
     <h2>Select Tickets</h2>
       <div className="ticket-counters">

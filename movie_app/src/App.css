@@ -300,20 +300,8 @@ body {
     text-align: center;
   }
 
-  .Seat {
-    background-color: white;
-    width: 1.5rem;
-    height: 1.5rem;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-  }
-
-  .Seat.sold {
-    background-color: black;
-  }
-
-  .Seat.selected {
-    background-color: green;
+  .admin-option-container {
+    display: grid;
   }
 
   
