@@ -16,7 +16,7 @@ app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
 app.get('/movie/trailers', (req, res) => {
-  db.all('SELECT movie_title,trailer_link, trailer_picture FROM Movies where current_running = \'True\' Limit 4', (err, rows) => {
+  db.all('SELECT movie_title,trailer_link, trailer_picture FROM Movies where current_running = \'True\';', (err, rows) => {
       if (err) {
           res.status(500).json({ error: err.message });
       } else {
@@ -26,7 +26,7 @@ app.get('/movie/trailers', (req, res) => {
   });
 });
 app.get('/movie/comingsoon', (req, res) => {
-  db.all('SELECT movie_title,trailer_link, trailer_picture FROM Movies where current_running = \'False\' Limit 3', (err, rows) => {
+  db.all('SELECT movie_title,trailer_link, trailer_picture FROM Movies where current_running = \'False\' Limit 4', (err, rows) => {
       if (err) {
           res.status(500).json({ error: err.message });
       } else {
