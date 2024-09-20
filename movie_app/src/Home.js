@@ -3,9 +3,16 @@ import { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
 import Header from './components/Header';
 import MovieCard from './components/MovieCard';
+
 function Home() {
     const [current_movies, setCurrent_movie] = useState([]);
     const [comingsoon_movies, setComingSoon_movie] = useState([]);
+    
+    //state variables to get searched term and array to hold filetered movies by search
+    const [searchQuery, setSearchQuery] = useState(''); 
+    const [filteredData, setFilteredData] = useState([]);   
+
+
     useEffect(() => {
         Promise.all([
             fetch('http://localhost:3001/movie/trailers'),
@@ -17,43 +24,44 @@ function Home() {
         .then(([current, coming]) => {
             setCurrent_movie(current);
             setComingSoon_movie(coming);
+            setFilteredData(current);
         });
     }, []);
-    //const firstMovie = data[0];
-    //const firstMovieTitle = firstMovie ? firstMovie.movie_title : 'Loading...';
-    //const firstMovieTrailer = firstMovie ? firstMovie.trailer_link : '';
+
+    const handleSearch = () => {
+    const filtered = data.filter(movie => 
+      movie.movie_title.toLowerCase().includes(searchQuery.toLowerCase()) 
+    );
+    setFilteredData(filtered); 
+  };
+
     return (
         <body>
         <Header></Header>
-        <Link to="/register">
-             <button>Register</button>
-        </Link>
-
-        <Link to="/login">
-             <button>Login</button>
-        </Link>
-
-        <Link to="/edit-profile">
-             <button>Edit Profile</button>
-        </Link>
-
-        <Link to="/admin-main">
-            <button>Admin</button>
-        </Link>
+        <Link to="/register"><button>Register</button></Link>
+        <Link to="/login"><button>Login</button></Link>
+        <Link to="/edit-profile"><button>Edit Profile</button></Link>
+        <Link to="/admin-main"><button>Admin</button></Link>
 
          <div class="container">
                  <div className="search-bar">
-                 <input type="text" placeholder="Search for movies by title..."></input>
-                 <button>Search</button>
-             </div>
+                 <input type="text" placeholder="Search for movies by title..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}></input>
+                 <button onClick={handleSearch}>Search</button>
+                 </div>
+
+            
+
              <h2>Now Playing</h2>
                  <div className="movie-row">
-                 {current_movies.map((movie, index) => (
+                 {filteredData.map((movie, index) => (
         <MovieCard 
+                  key={index}
                   poster= {movie.trailer_picture}
                   title={movie.movie_title}
                   trailerLink={movie.trailer_link}
-                  bookingLink="/BuyTickets"
+                  bookingLink="/ticket-select"
                   detailsLink="/details/movie1"
         />
                  ))}
@@ -70,6 +78,8 @@ function Home() {
         />
                  ))}
              </div>
+             
+    
          </div>
      </body>
        );
