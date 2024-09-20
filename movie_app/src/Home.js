@@ -6,6 +6,12 @@ import MovieCard from './components/MovieCard';
 
 function Home() {
     const [data, setData] = useState([]);
+    
+    //state variables to get searched term and array to hold filetered movies by search
+    const [searchQuery, setSearchQuery] = useState(''); 
+    const [filteredData, setFilteredData] = useState([]);   
+
+
     useEffect(() => {
         const fetchTrailers = async () => {
             try {
@@ -21,13 +27,6 @@ function Home() {
     
         fetchTrailers();
     }, []);
-    const firstMovie = data[0];
-    //const firstMovieTitle = firstMovie ? firstMovie.movie_title : 'Loading...';
-    //const firstMovieTrailer = firstMovie ? firstMovie.trailer_link : '';
-
-    //state variables to get searched term and array to hold filetered movies by search
-    const [searchQuery, setSearchQuery] = useState(''); 
-    const [filteredData, setFilteredData] = useState([]);
 
     const handleSearch = () => {
     const filtered = data.filter(movie => 
@@ -50,7 +49,9 @@ function Home() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}></input>
                  <button onClick={handleSearch}>Search</button>
-             </div>
+                 </div>
+
+            
 
              <h2>Now Playing</h2>
                  <div className="movie-row">
@@ -69,7 +70,7 @@ function Home() {
                     
              <h2>Coming Soon</h2>
                  <div className="movie-row">
-                 {data.map((movie, index) => (
+                 {filteredData.map((movie, index) => (
         <MovieCard 
                   poster= {movie.trailer_picture}
                   title={movie.movie_title}
