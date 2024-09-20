@@ -65,6 +65,11 @@ function EditMovie() {
                 </select>
             </div>
 
+
+            <Link to="/manage-movies">
+                <button type="submit" className="submit-edits-button">Submit Changes</button>
+            </Link>
+
         </form>
         </body>
     );
