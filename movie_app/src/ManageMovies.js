@@ -27,7 +27,7 @@ function ManageMovies() {
             <div className="movie-category">
                 <h2>Now Playing</h2>
                 <div className="movie">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/sampleTrailer1"
+                    <iframe src="https://www.youtube.com/embed/sampleTrailer1"
                             title="YouTube video player" frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
