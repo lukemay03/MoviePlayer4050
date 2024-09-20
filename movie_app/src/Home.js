@@ -4,22 +4,22 @@ import {Link} from 'react-router-dom';
 import Header from './components/Header';
 import MovieCard from './components/MovieCard';
 function Home() {
-    const [data, setData] = useState([]);
+    const [current_movies, setCurrent_movie] = useState([]);
+    const [comingsoon_movies, setComingSoon_movie] = useState([]);
     useEffect(() => {
-        const fetchTrailers = async () => {
-            try {
-                const response = await fetch('http://localhost:3001/movie/trailers');
-                const data = await response.json();
-                setData(data);
-                console.log(typeof(data)); // Check data type
-            } catch (error) {
-                console.error('Error fetching trailers:', error);
-            }
-        };
-    
-        fetchTrailers();
+        Promise.all([
+            fetch('http://localhost:3001/movie/trailers'),
+            fetch('http://localhost:3001/movie/comingsoon'),
+        ])
+        .then(([resCurrent, resComingMovie]) =>
+            Promise.all([resCurrent.json(), resComingMovie.json()])
+    )
+        .then(([current, coming]) => {
+            setCurrent_movie(current);
+            setComingSoon_movie(coming);
+        });
     }, []);
-    const firstMovie = data[0];
+    //const firstMovie = data[0];
     //const firstMovieTitle = firstMovie ? firstMovie.movie_title : 'Loading...';
     //const firstMovieTrailer = firstMovie ? firstMovie.trailer_link : '';
     return (
@@ -48,7 +48,7 @@ function Home() {
              </div>
              <h2>Now Playing</h2>
                  <div className="movie-row">
-                 {data.map((movie, index) => (
+                 {current_movies.map((movie, index) => (
         <MovieCard 
                   poster= {movie.trailer_picture}
                   title={movie.movie_title}
@@ -58,19 +58,17 @@ function Home() {
         />
                  ))}
              </div>
-         
-             <div className="movie-category">
-                 <h2>Coming Soon</h2>
-                 <div className="movie">
-                     <iframe src="https://www.youtube.com/embed/sampleTrailer3" title="Movie Trailer"></iframe>
-                     <h3>Movie Title 3</h3>
-                     <p>Release Date: December 2024</p>
-                 </div>
-                 <div className="movie">
-                     <iframe src="https://www.youtube.com/embed/sampleTrailer4" title="Movie Trailer"></iframe>
-                     <h3>Movie Title 4</h3>
-                     <p>Release Date: November 2024</p>
-                 </div>
+             <h2>Coming Soon</h2>
+             <div className="movie-row">
+             {comingsoon_movies.map((movie, index) => (
+        <MovieCard 
+                  poster= {movie.trailer_picture}
+                  title={movie.movie_title}
+                  trailerLink={movie.trailer_link}
+                  bookingLink="/BuyTickets"
+                  detailsLink="/details/movie1"
+        />
+                 ))}
              </div>
          </div>
      </body>
