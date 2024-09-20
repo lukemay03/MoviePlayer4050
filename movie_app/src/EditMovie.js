@@ -7,17 +7,19 @@ function EditMovie() {
         <body>
         <AdminHeader></AdminHeader>
         {/*<p>This is the Edit movie page</p>*/}
-        <Link to="/manage-movies">
-            <button>Manage Movies</button>
-        </Link>
+        <div>
+            <Link to="/manage-movies">
+                <button>Manage Movies</button>
+            </Link>
 
-        <Link to="/manage-promotions">
-            <button>Manage Promotions</button>
-        </Link>
+            <Link to="/manage-promotions">
+                <button>Manage Promotions</button>
+            </Link>
 
-        <Link to="/manage-users">
-            <button>Manage Users</button>
-        </Link>
+            <Link to="/manage-users">
+                <button>Manage Users</button>
+            </Link>
+        </div>
 
         <form className="movie-form">
             <div className="form-group">
