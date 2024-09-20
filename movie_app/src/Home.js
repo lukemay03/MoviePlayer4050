@@ -11,7 +11,7 @@ function Home() {
     //state variables to get searched term and array to hold filetered movies by search
     const [searchQuery, setSearchQuery] = useState(''); 
     const [filteredData, setFilteredData] = useState([]);   
-
+    const [filteredcomingsoon, setfilteredcomingsoon] = useState([])
 
     useEffect(() => {
         Promise.all([
@@ -25,6 +25,7 @@ function Home() {
             setCurrent_movie(current);
             setComingSoon_movie(coming);
             setFilteredData(current);
+            setfilteredcomingsoon(coming);
         });
     }, []);
 
@@ -32,7 +33,11 @@ function Home() {
     const filtered = current_movies.filter(movie => 
       movie.movie_title.toLowerCase().includes(searchQuery.toLowerCase()) 
     );
-    setFilteredData(filtered); 
+    const filteredcoming = comingsoon_movies.filter(movie => 
+        movie.movie_title.toLowerCase().includes(searchQuery.toLowerCase()) 
+      );
+    setFilteredData(filtered);
+    setfilteredcomingsoon(filteredcoming);
   };
 
     return (
@@ -68,7 +73,7 @@ function Home() {
              </div>
              <h2>Coming Soon</h2>
              <div className="movie-row">
-             {comingsoon_movies.map((movie, index) => (
+             {filteredcomingsoon.map((movie, index) => (
         <MovieCard 
                   poster= {movie.trailer_picture}
                   title={movie.movie_title}
