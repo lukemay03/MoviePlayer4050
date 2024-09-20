@@ -46,7 +46,7 @@ function Checkout() {
             <input type="text" id="billingAddress" placeholder="123 Main St, City, State" />
           </div>
 
-          <button className="confirm-button" type="submit">Confirm and Pay</button>
+          <Link to="/OrderConfirm"><button className="confirm-button" type="submit">Confirm and Pay</button></Link>
         </form>
       </div>
     </div>

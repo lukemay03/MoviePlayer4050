@@ -16,6 +16,7 @@ import TicketSelect from './TicketSelect'
 import SeatSelector from './components/SeatSelector'
 import EditMovie from './EditMovie'
 import Checkout from './Checkout'
+import OrderConfirm from './OrderConfirmPage'
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path="/seat-selector" element={<SeatSelector/>} />
           <Route path="manage-movies/edit-movie" element={<EditMovie/>} />
           <Route path="/checkout" element={<Checkout/>} />
+          <Route path="/OrderConfirm" element={<OrderConfirm/>} />
 
         </Routes>
       </div>
