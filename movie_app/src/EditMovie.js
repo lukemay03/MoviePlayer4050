@@ -64,6 +64,15 @@ function EditMovie() {
                     <option value="no">No</option>
                 </select>
             </div>
+            <div className="form-group">
+              <label htmlFor="Name">Change Theater Schedule:</label>
+              <input name="Date" placeholder="Date 01/10/2002" />
+                <div>
+                    <button type="submit">12pm</button>
+                    <button type="submit">5pm</button>
+                    <button type="submit">8pm</button>
+                </div>
+            </div>
 
 
             <Link to="/manage-movies">
