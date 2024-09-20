@@ -26,7 +26,7 @@ app.get('/movie/trailers', (req, res) => {
   });
 });
 app.get('/movie/comingsoon', (req, res) => {
-  db.all('SELECT movie_title,trailer_link, trailer_picture FROM Movies where current_running = \'False\' ', (err, rows) => {
+  db.all('SELECT movie_title,trailer_link, trailer_picture FROM Movies where current_running = \'False\'', (err, rows) => {
       if (err) {
           res.status(500).json({ error: err.message });
       } else {
@@ -44,5 +44,20 @@ app.get('/movie/search', (req, res) => {
       } else {
           res.json(rows);
       }
+  });
+});
+// Endpoint to insert a new user
+app.post('/movie/insert', (req, res) => {
+  let { title, cast, category, director, producer, synopsis, trailer_picture, trailer_link, movie_rating, Current_running } = req.body;
+
+  // Insert the user into the database
+  let sql = 'INSERT INTO Movies (title, cast, category, director, producer, synopsis, trailer_picture, trailer_link, movie_rating, Current_running) VALUES (?,?,?,?,?,?,?,?,?,?)'
+  db.run(sql, [title, cast, category, director,producer,synopsis,trailer_picture,trailer_link,movie_rating,Current_running], (err) => {
+    if (err) {
+      console.error(err.message);
+      res.status(500).send('Error inserting user');
+    } else {
+      res.status(201).send('User created successfully');
+    }
   });
 });

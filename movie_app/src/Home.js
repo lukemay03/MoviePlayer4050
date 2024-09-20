@@ -66,7 +66,6 @@ function Home() {
                   poster= {movie.trailer_picture}
                   title={movie.movie_title}
                   trailerLink={movie.trailer_link}
-                  bookingLink="/ticket-select"
                   detailsLink="/details/movie1"
         />
                  ))}
@@ -78,7 +77,6 @@ function Home() {
                   poster= {movie.trailer_picture}
                   title={movie.movie_title}
                   trailerLink={movie.trailer_link}
-                  bookingLink="/ticket-select"
                   detailsLink="/details/movie1"
         />
                  ))}
