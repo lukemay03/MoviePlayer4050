@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import AdminHeader from './AdminHeader';
+import AdminHeader from './components/AdminHeader';
 
 function ManagePromotions() {
     return (
@@ -17,9 +17,6 @@ function ManagePromotions() {
         <Link to="/manage-users">
             <button>Manage Users</button>
         </Link>
-
-
-
 
         </body>
     );

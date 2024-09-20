@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import AdminHeader from './AdminHeader';
+import AdminHeader from './components/AdminHeader';
 
 function AdminMain() {
     return (
@@ -29,6 +29,7 @@ function AdminMain() {
         {/*        <button>Search</button>*/}
         {/*    </div>*/}
 
+<<<<<<< HEAD
         {/*    <div className="movie-category">*/}
         {/*        <h2>Now Playing</h2>*/}
         {/*        <div className="movie">*/}
@@ -60,6 +61,11 @@ function AdminMain() {
         {/*        </div>*/}
         {/*    </div>*/}
         {/*</div>*/}
+=======
+        <Link to="/">
+            <button>User Home</button>
+        </Link>
+>>>>>>> 81bddda7c8deed5ae6640d41d1b0ce0cdbdd3393
         </body>
     );
 }

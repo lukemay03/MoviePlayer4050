@@ -14,7 +14,11 @@ import ManageUsers from './ManageUsers'
 import ManagePromotions from './ManagePromotions'
 import TicketSelect from './TicketSelect'
 import SeatSelector from './components/SeatSelector'
+<<<<<<< HEAD
 import EditMovie from './EditMovie'
+=======
+import Checkout from './Checkout'
+>>>>>>> 81bddda7c8deed5ae6640d41d1b0ce0cdbdd3393
 
 function App() {
   return (
@@ -34,7 +38,14 @@ function App() {
           <Route path="/manage-promotions" element={<ManagePromotions/>} />
           <Route path="/ticket-select" element={<TicketSelect/>} />
           <Route path="/seat-selector" element={<SeatSelector/>} />
+<<<<<<< HEAD
           <Route path="manage-movies/edit-movie" element={<EditMovie/>} />
+=======
+          <Route path="/checkout" element={<Checkout/>} />
+
+
+
+>>>>>>> 81bddda7c8deed5ae6640d41d1b0ce0cdbdd3393
         </Routes>
       </div>
     </Router>
