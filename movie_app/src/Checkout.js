@@ -8,17 +8,18 @@ function Checkout() {
     <div className="checkout-page">
       <Header></Header>
         <div className="summary-section">
-        <h2>Order Summary</h2>
+        <h2 class="checkout-h">Order Summary</h2>
         <p><strong>Movie:</strong></p>
         <p><strong>Showtime:</strong></p>
         <p><strong>Selected Seats:</strong> </p>
         <p><strong>Adult Tickets:</strong> </p>
         <p><strong>Kid Tickets:</strong></p>
         <h3>Total: </h3>
+        <Link to="/ticket-select"><button className="revert-button">Go back/Update order</button></Link>
       </div>
 
         <div className="payment-section">
-        <h2>Payment Information</h2>
+        <h2 className="checkout-h">Payment Information</h2>
         <form>
           <div className="input-group">
             <label htmlFor="cardholderName">Cardholder Name:</label>
