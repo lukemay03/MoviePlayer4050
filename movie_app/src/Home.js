@@ -22,8 +22,8 @@ function Home() {
         fetchTrailers();
     }, []);
     const firstMovie = data[0];
-    const firstMovieTitle = firstMovie ? firstMovie.movie_title : 'Loading...';
-    const firstMovieTrailer = firstMovie ? firstMovie.trailer_link : '';
+    //const firstMovieTitle = firstMovie ? firstMovie.movie_title : 'Loading...';
+    //const firstMovieTrailer = firstMovie ? firstMovie.trailer_link : '';
 
     //state variables to get searched term and array to hold filetered movies by search
     const [searchQuery, setSearchQuery] = useState(''); 
