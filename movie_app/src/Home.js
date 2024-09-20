@@ -58,7 +58,7 @@ function Home() {
 
             
 
-             <h2>Now Playing</h2>
+             <h1>Now Playing</h1>
                  <div className="movie-row">
                  {filteredData.map((movie, index) => (
         <MovieCard 
@@ -71,14 +71,14 @@ function Home() {
         />
                  ))}
              </div>
-             <h2>Coming Soon</h2>
+             <h1>Coming Soon</h1>
              <div className="movie-row">
              {filteredcomingsoon.map((movie, index) => (
         <MovieCard 
                   poster= {movie.trailer_picture}
                   title={movie.movie_title}
                   trailerLink={movie.trailer_link}
-                  bookingLink="/BuyTickets"
+                  bookingLink="/ticket-select"
                   detailsLink="/details/movie1"
         />
                  ))}
