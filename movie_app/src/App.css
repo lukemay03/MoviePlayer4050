@@ -120,8 +120,9 @@ body {
   }
 
   .movie-card {
-    min-width: 200px;           
-    flex-shrink: 0;             
+    width: 200px;          
+    flex-shrink: 0;
+    text-align: center;             
   }
   
   .movie-card iframe {
@@ -267,6 +268,7 @@ body {
   .movie-links {
     display: flex;
     justify-content: space-around;
+    flex-wrap: wrap;
     margin-top: 10px;
   }
   
@@ -360,6 +362,23 @@ body {
   .confirm-button:hover {
     background-color: #0056b3;
   }
+
+  .revert-button {
+    width: 25%;
+    padding: 15px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    align-self: center;
+  }
+
+  .rever-button:hover {
+    background-color: #0056b3;
+  }
+
 
   
   

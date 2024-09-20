@@ -5,13 +5,13 @@ import Header from './components/Header';
 import MovieCard from './components/MovieCard';
 
 function Home() {
-    const [current_movies, setCurrent_movie] = useState([]);
-    const [comingsoon_movies, setComingSoon_movie] = useState([]);
+    const [currentMovies, setCurrentMovie] = useState([]);
+    const [comingSoonMovies, setComingSoonMovie] = useState([]);
     
     //state variables to get searched term and array to hold filetered movies by search
     const [searchQuery, setSearchQuery] = useState(''); 
     const [filteredData, setFilteredData] = useState([]);   
-    const [filteredcomingsoon, setfilteredcomingsoon] = useState([])
+    const [filteredComingSoon, setFilteredComingSoon] = useState([])
 
     useEffect(() => {
         Promise.all([
@@ -22,23 +22,27 @@ function Home() {
             Promise.all([resCurrent.json(), resComingMovie.json()])
     )
         .then(([current, coming]) => {
-            setCurrent_movie(current);
-            setComingSoon_movie(coming);
-            setFilteredData(current);
-            setfilteredcomingsoon(coming);
+            setCurrentMovie(current);
+            setComingSoonMovie(coming);
+            setFilteredData(shuffleArray(current));
+            setFilteredComingSoon(shuffleArray(coming));
         });
     }, []);
 
     const handleSearch = () => {
-    const filtered = current_movies.filter(movie => 
+    const filtered = currentMovies.filter(movie => 
       movie.movie_title.toLowerCase().includes(searchQuery.toLowerCase()) 
     );
-    const filteredcoming = comingsoon_movies.filter(movie => 
+    const filteredcoming = comingSoonMovies.filter(movie => 
         movie.movie_title.toLowerCase().includes(searchQuery.toLowerCase()) 
       );
     setFilteredData(filtered);
-    setfilteredcomingsoon(filteredcoming);
+    setFilteredComingSoon(filteredcoming);
   };
+
+  function shuffleArray(array) {
+    return array.sort(() => Math.random() - 0.5);
+  }
 
     return (
         <body>
@@ -72,7 +76,7 @@ function Home() {
              </div>
              <h1>Coming Soon</h1>
              <div className="movie-row">
-             {filteredcomingsoon.map((movie, index) => (
+             {filteredComingSoon.map((movie, index) => (
         <MovieCard 
                   poster= {movie.trailer_picture}
                   title={movie.movie_title}

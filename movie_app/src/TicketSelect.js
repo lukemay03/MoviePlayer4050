@@ -18,9 +18,10 @@ function TicketSelect() {
   const rows = ['A', 'B', 'C', 'D', 'E'];
   const seatsPerRow = 8;
 
+  
   const handleSeatClick = (seat) => {
     if (selectedSeats.includes(seat)) {
-      setSelectedSeats(selectedSeats.filter(s => s !== seat));
+      setSelectedSeats(selectedSeats.filter(s => s !== seat)); 
     } else {
       setSelectedSeats([...selectedSeats, seat]);
     }
@@ -40,7 +41,7 @@ function TicketSelect() {
         {showtimes.map((showtime, index) => (
           <button 
             key={index}
-            onClick={() => setSelectedShowtime(showtime)} //need to implement this
+            onClick={() => setSelectedShowtime(showtime)} 
             className={selectedShowtime === showtime ? 'selected' : ''}
           >
             {showtime}
