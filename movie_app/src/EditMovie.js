@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import AdminHeader from './AdminHeader';
+import AdminHeader from './components/AdminHeader';
 
 function EditMovie() {
     return (
