@@ -33,7 +33,7 @@ function ManageMovies() {
                             referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
                     <h3>Movie Title 1</h3>
                     <p>Release Date: June 2024</p>
-                    <Link to="Edit Movie">
+                    <Link to="edit-movie">
                         <button>Edit Movie</button>
                     </Link>
                 </div>
@@ -41,7 +41,7 @@ function ManageMovies() {
                     <iframe src="https://www.youtube.com/embed/sampleTrailer2" title="Movie Trailer"></iframe>
                     <h3>Movie Title 2</h3>
                     <p>Release Date: May 2024</p>
-                    <Link to="Edit Movie">
+                    <Link to="edit-movie">
                         <button>Edit Movie</button>
                     </Link>
                 </div>
@@ -53,7 +53,7 @@ function ManageMovies() {
                     <iframe src="https://www.youtube.com/embed/sampleTrailer3" title="Movie Trailer"></iframe>
                     <h3>Movie Title 3</h3>
                     <p>Release Date: December 2024</p>
-                    <Link to="Edit Movie">
+                    <Link to="edit-movie">
                         <button>Edit Movie</button>
                     </Link>
                 </div>
@@ -61,7 +61,7 @@ function ManageMovies() {
                     <iframe src="https://www.youtube.com/embed/sampleTrailer4" title="Movie Trailer"></iframe>
                     <h3>Movie Title 4</h3>
                     <p>Release Date: November 2024</p>
-                    <Link to="Edit Movie">
+                    <Link to="edit-movie">
                         <button>Edit Movie</button>
                     </Link>
                 </div>

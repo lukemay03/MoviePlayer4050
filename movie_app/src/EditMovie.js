@@ -4,24 +4,23 @@ import AdminHeader from './AdminHeader';
 
 function EditMovie() {
     return (
-        <div className="edit-movie-container">
-            <AdminHeader></AdminHeader>
+        <body>
+        <AdminHeader></AdminHeader>
+        {/*<p>This is the Edit movie page</p>*/}
+        <Link to="/manage-movies">
+            <button>Manage Movies</button>
+        </Link>
 
-            <form className="edit-movie-form">
-                <div className="form-group">
-                    <label htmlFor="movie-name">Movie Name:</label>
-                    <input type="text" id="name" name="movie-name" placeholder="Old Movie Name" />
-                </div>
+        <Link to="/manage-promotions">
+            <button>Manage Promotions</button>
+        </Link>
 
-                <div className="form-group">
-                    <label htmlFor="rating">Rating</label>
-                    <input type="text" id="text" name="rating" value="Old Rating" />
-                </div>
+        <Link to="/manage-users">
+            <button>Manage Users</button>
+        </Link>
 
-                <button type="submit" className="save-button">Save Changes</button>
-            </form>
-        </div>
-        );
-        }
+        </body>
+    );
+}
 
-        export default EditMovie;
+export default EditMovie;

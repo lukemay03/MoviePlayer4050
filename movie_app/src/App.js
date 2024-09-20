@@ -14,6 +14,7 @@ import ManageUsers from './ManageUsers'
 import ManagePromotions from './ManagePromotions'
 import TicketSelect from './TicketSelect'
 import SeatSelector from './components/SeatSelector'
+import EditMovie from './EditMovie'
 
 function App() {
   return (
@@ -33,8 +34,7 @@ function App() {
           <Route path="/manage-promotions" element={<ManagePromotions/>} />
           <Route path="/ticket-select" element={<TicketSelect/>} />
           <Route path="/seat-selector" element={<SeatSelector/>} />
-
-
+          <Route path="manage-movies/edit-movie" element={<EditMovie/>} />
         </Routes>
       </div>
     </Router>
