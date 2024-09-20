@@ -15,6 +15,7 @@ function Checkout() {
         <p><strong>Adult Tickets:</strong> </p>
         <p><strong>Kid Tickets:</strong></p>
         <h3>Total: </h3>
+        <Link to="/ticket-select"><button className="revert-button">Go back/Update order</button></Link>
       </div>
 
         <div className="payment-section">
