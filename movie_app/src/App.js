@@ -17,7 +17,8 @@ import SeatSelector from './components/SeatSelector'
 import EditMovie from './EditMovie'
 import Checkout from './Checkout'
 import OrderConfirm from './OrderConfirmPage'
-
+import AddMovie from './AddMoviePage'
+import EditUser from './EditUsers'
 function App() {
   return (
 
@@ -39,6 +40,8 @@ function App() {
           <Route path="manage-movies/edit-movie" element={<EditMovie/>} />
           <Route path="/checkout" element={<Checkout/>} />
           <Route path="/OrderConfirm" element={<OrderConfirm/>} />
+          <Route path="/AddMoviePage" element={<AddMovie/>} />
+          <Route path="/EditUsers" element={<EditUser/>} />
 
         </Routes>
       </div>
