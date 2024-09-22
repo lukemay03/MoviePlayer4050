@@ -9,11 +9,7 @@ function ManageUsers() {
         <AdminHeader></AdminHeader>
         <div>
             <Link to="/manage-movies">
-                <button>Manage Movies</button>
-            </Link>
-
-            <Link to="/manage-promotions">
-                <button>Manage Promotions</button>
+                <button>Manage Movies and Promotions</button>
             </Link>
 
             <Link to="/manage-users">

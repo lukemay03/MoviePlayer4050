@@ -8,18 +8,8 @@ function ManageUsers() {
         <body>
         <AdminHeader></AdminHeader>
         <div>
-            <Link to="/manage-movies">
-                <button>Manage Movies</button>
-            </Link>
-
-            <Link to="/manage-promotions">
-                <button>Manage Promotions</button>
-            </Link>
-
-            <Link to="/manage-users">
-                <button>Manage Users</button>
-            </Link>
-
+            <Link to="/manage-movies"><button>Manage Movies and Promotions</button></Link>
+            <Link to="/manage-users"><button>Manage Users</button></Link>
         </div>
             <div className="search-bar">
                 <input name="text" placeholder="Search for users by email..."></input>
@@ -30,7 +20,7 @@ function ManageUsers() {
             <div>
             <p>User 1</p>
             <p>Password</p>
-            <Link to="/EditUsers">
+            <Link to="/edit-user">
                 <button>Edit User</button>
             </Link>
             </div>

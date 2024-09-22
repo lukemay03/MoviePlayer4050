@@ -1,75 +1,94 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
 import AdminHeader from './components/AdminHeader';
+import MovieCardAdmin from './components/MovieCardAdmin';
 
 function ManageMovies() {
+    const [currentMovies, setCurrentMovie] = useState([]);
+    const [comingSoonMovies, setComingSoonMovie] = useState([]);
+    
+    //state variables to get searched term and array to hold filetered movies by search
+    const [searchQuery, setSearchQuery] = useState(''); 
+    const [filteredData, setFilteredData] = useState([]);   
+    const [filteredComingSoon, setFilteredComingSoon] = useState([])
+
+    useEffect(() => {
+        Promise.all([
+            fetch('http://localhost:3001/movie/trailers'),
+            fetch('http://localhost:3001/movie/comingsoon'),
+        ])
+        .then(([resCurrent, resComingMovie]) =>
+            Promise.all([resCurrent.json(), resComingMovie.json()])
+    )
+        .then(([current, coming]) => {
+            setCurrentMovie(current);
+            setComingSoonMovie(coming);
+            setFilteredData(shuffleArray(current));
+            setFilteredComingSoon(shuffleArray(coming));
+        });
+    }, []);
+
+    const handleSearch = () => {
+    const filtered = currentMovies.filter(movie => 
+      movie.movie_title.toLowerCase().includes(searchQuery.toLowerCase()) 
+    );
+    const filteredcoming = comingSoonMovies.filter(movie => 
+        movie.movie_title.toLowerCase().includes(searchQuery.toLowerCase()) 
+      );
+    setFilteredData(filtered);
+    setFilteredComingSoon(filteredcoming);
+  };
+
+  function shuffleArray(array) {
+    return array.sort(() => Math.random() - 0.5);
+  }
+
     return (
         <body>
         <AdminHeader></AdminHeader>
-        <Link to="/manage-movies">
-            <button>Manage Movies</button>
-        </Link>
+        <Link to="/manage-movies"><button>Manage Movies and Promotions</button></Link>
+        <Link to="/manage-users"><button>Manage Users</button> </Link>
 
-        <Link to="/manage-promotions">
-            <button>Manage Promotions</button>
-        </Link>
+         <div class="container">
+                 <div className="search-bar">
+                 <input type="text" placeholder="Search for movies by title..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}></input>
+                 <button onClick={handleSearch}>Search</button>
+                 </div>
 
-        <Link to="/manage-users">
-            <button>Manage Users</button>
-        </Link>
+            
 
-        <div className="container">
-            <div className="search-bar">
-                <input type="text" placeholder="Search for movies by title..."></input>
-                <button>Search</button>
-            </div>
-
-            <div className="movie-category">
-                <h2>Now Playing</h2>
-                <div className="movie">
-                    <iframe src="https://www.youtube.com/embed/sampleTrailer1"
-                            title="YouTube video player" frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
-                    <h3>Movie Title 1</h3>
-                    <p>Release Date: June 2024</p>
-                    <Link to="edit-movie">
-                        <button>Edit Movie</button>
-                    </Link>
-                </div>
-                <div className="movie">
-                    <iframe src="https://www.youtube.com/embed/sampleTrailer2" title="Movie Trailer"></iframe>
-                    <h3>Movie Title 2</h3>
-                    <p>Release Date: May 2024</p>
-                    <Link to="edit-movie">
-                        <button>Edit Movie</button>
-                    </Link>
-                </div>
-            </div>
-
-            <div className="movie-category">
-                <h2>Coming Soon</h2>
-                <div className="movie">
-                    <iframe src="https://www.youtube.com/embed/sampleTrailer3" title="Movie Trailer"></iframe>
-                    <h3>Movie Title 3</h3>
-                    <p>Release Date: December 2024</p>
-                    <Link to="edit-movie">
-                        <button>Edit Movie</button>
-                    </Link>
-                </div>
-                <div className="movie">
-                    <iframe src="https://www.youtube.com/embed/sampleTrailer4" title="Movie Trailer"></iframe>
-                    <h3>Movie Title 4</h3>
-                    <p>Release Date: November 2024</p>
-                    <Link to="edit-movie">
-                        <button>Edit Movie</button>
-                    </Link>
-                </div>
-            </div>
-        </div>
-
-        </body>
-    );
+             <h1>Now Playing</h1>
+                 <div className="movie-row">
+                 {filteredData.map((movie, index) => (
+        <MovieCardAdmin 
+                  key={index}
+                  poster= {movie.trailer_picture}
+                  title={movie.movie_title}
+                  trailerLink={movie.trailer_link}
+                  detailsLink="/details/movie1"
+        />
+                 ))}
+             </div>
+             <h1>Coming Soon</h1>
+             <div className="movie-row">
+             {filteredComingSoon.map((movie, index) => (
+        <MovieCardAdmin 
+                  poster= {movie.trailer_picture}
+                  title={movie.movie_title}
+                  trailerLink={movie.trailer_link}
+                  detailsLink="/details/movie1"
+        />
+                 ))}
+             </div>
+             
+    
+         </div>
+     </body>
+       );
+    
 }
 
 export default ManageMovies;

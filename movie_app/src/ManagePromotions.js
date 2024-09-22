@@ -1,29 +1,22 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link, useLocation} from 'react-router-dom';
 import AdminHeader from './components/AdminHeader';
 
+
 function ManagePromotions() {
+  const location = useLocation();
+  const {state} = location || {};
+  const {image,name} = state || {};
+
     return (
         <body>
         <AdminHeader></AdminHeader>
         <div>
-          <Link to="/manage-movies">
-            <button>Manage Movies</button>
-          </Link>
-
-         <Link to="/manage-promotions">
-             <button>Manage Promotions</button>
-         </Link>
-
-           <Link to="/manage-users">
-             <button>Manage Users</button>
-           </Link>
+          <Link to="/manage-movies"><button>Manage Movies and Promotions</button></Link>
+          <Link to="/manage-users"><button>Manage Users</button></Link>
         </div>
-         <div className="movie">
-                    <iframe src="https://www.youtube.com/embed/sampleTrailer4" title="Movie Trailer"></iframe>
-                    <h3>Movie Title 4</h3>
-                    <p>Release Date: November 2024</p>
-                    <button>Edit Movie</button>
+         <div className="regConfirm">
+         <h3> Managing Promotions For: Shrek{name}</h3>
 
               <form className="Edit-form">
                 <div className="form-group">

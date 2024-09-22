@@ -34,14 +34,14 @@ function App() {
           <Route path="/admin-main" element={<AdminMain/>} />
           <Route path="/manage-movies" element={<ManageMovies/>} />
           <Route path="/manage-users" element={<ManageUsers/>} />
-          <Route path="/manage-promotions" element={<ManagePromotions/>} />
+          <Route path="manage-movies/manage-promotions" element={<ManagePromotions/>} />
           <Route path="/ticket-select" element={<TicketSelect/>} />
           <Route path="/seat-selector" element={<SeatSelector/>} />
           <Route path="manage-movies/edit-movie" element={<EditMovie/>} />
           <Route path="/checkout" element={<Checkout/>} />
-          <Route path="/OrderConfirm" element={<OrderConfirm/>} />
-          <Route path="/AddMoviePage" element={<AddMovie/>} />
-          <Route path="/EditUsers" element={<EditUser/>} />
+          <Route path="/order-confirm" element={<OrderConfirm/>} />
+          <Route path="/add-movie-page" element={<AddMovie/>} />
+          <Route path="/edit-user" element={<EditUser/>} />
 
         </Routes>
       </div>
