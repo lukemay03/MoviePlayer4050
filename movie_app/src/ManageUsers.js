@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import AdminHeader from './components/AdminHeader';
 
 function ManageUsers() {
+
     return (
         <body>
         <AdminHeader></AdminHeader>
@@ -18,12 +19,20 @@ function ManageUsers() {
             <Link to="/manage-users">
                 <button>Manage Users</button>
             </Link>
+
         </div>
+            <div className="search-bar">
+                <input name="text" placeholder="Search for users by email..."></input>
+                <button>Search</button>
+            </div>
         <form className="User-list">
+
             <div>
             <p>User 1</p>
             <p>Password</p>
-            <button>Edit User</button>
+            <Link to="/EditUsers">
+                <button>Edit User</button>
+            </Link>
             </div>
 
         </form>
