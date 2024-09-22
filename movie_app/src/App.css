@@ -360,6 +360,18 @@ body {
   .confirm-button:hover {
     background-color: #0056b3;
   }
+  .radio-item {
+    display: flex;
+    align-items: center; 
+    margin: 5px 0;
+}
+  .addmoviebutton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5px;
+  }
+
 
   
   
