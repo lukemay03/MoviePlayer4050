@@ -1,6 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 const express = require('express');
 const cors = require("cors");
+const multer = require('multer')
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -11,10 +12,23 @@ let db = new sqlite3.Database('./CinemaApp.db', sqlite3.OPEN_READWRITE, (err) =>
   }
   console.log('Connected to the  SQlite database.');
 });
-
+db.configure("busyTimeout", 5000); // Set timeout to 5 seconds
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, '../movie_app/public/pics')
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname)
+  },
+})
+const upload = multer({ storage: storage })
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+app.post('/image', upload.single('file'), function (req, res) {
+  const files = req.files;
+  res.json(files);
+})
 app.get('/movie/trailers', (req, res) => {
   db.all('SELECT movie_title,trailer_link, trailer_picture FROM Movies where current_running = \'True\' ', (err, rows) => {
       if (err) {
@@ -48,11 +62,12 @@ app.get('/movie/search', (req, res) => {
 });
 // Endpoint to insert a new user
 app.post('/movie/insert', (req, res) => {
-  let { title, cast, category, director, producer, synopsis, trailer_picture, trailer_link, movie_rating, Current_running } = req.body;
+  console.log(req.body);
+  let { moviename, cast, category, director, producer, synopsis, trailerpicture, trailerlink, movierating, current_running } = req.body;
 
   // Insert the user into the database
-  let sql = 'INSERT INTO Movies (title, cast, category, director, producer, synopsis, trailer_picture, trailer_link, movie_rating, Current_running) VALUES (?,?,?,?,?,?,?,?,?,?)'
-  db.run(sql, [title, cast, category, director,producer,synopsis,trailer_picture,trailer_link,movie_rating,Current_running], (err) => {
+  let sql = 'INSERT INTO Movies (movie_title, cast, category, director, producer, synopsis, trailer_picture, trailer_link, movie_rating, Current_running) VALUES (?,?,?,?,?,?,?,?,?,?)'
+  db.run(sql, [moviename, cast, category, director,producer,synopsis,trailerpicture,trailerlink,movierating,current_running], (err) => {
     if (err) {
       console.error(err.message);
       res.status(500).send('Error inserting user');

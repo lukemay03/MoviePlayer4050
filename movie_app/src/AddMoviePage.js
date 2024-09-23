@@ -1,20 +1,43 @@
 import React from 'react';
-import Header from './components/Header';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 function AddMovie() {
   const [inputs, setInputs] = useState({
     current_running: 'True'
   });
+  const navigate = useNavigate();
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.type === 'file' ? event.target.files[0] : event.target.value;
     setInputs(values => ({...values, [name]: value}))
     console.log(name)
   }
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(inputs)
+    let formData = new FormData()
+    formData.append('file', inputs.trailerpicture)
+    const response =await fetch('http://localhost:3001/image', {
+      method: 'POST',
+      body: formData,
+    })
+    if(response.ok) {
+      console.log("file downloaded")
+    }
+    inputs.trailerpicture = 'pics/' + String(inputs.trailerpicture.name)
+    console.log(inputs.trailerpicture)
+    //post to database
+    const result = await fetch('http://localhost:3001/movie/insert', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(inputs),
+    });
+    //console.log(inputs.trailerpicture)
+    //console.log(status)
+    //console.log(inputs)
+    console.log("navigate")
+    navigate('/manage-movies');
   }
     return (
     <form onSubmit={handleSubmit}>
