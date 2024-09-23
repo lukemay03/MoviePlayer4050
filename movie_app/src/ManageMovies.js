@@ -49,6 +49,7 @@ function ManageMovies() {
         <AdminHeader></AdminHeader>
         <Link to="/manage-movies"><button>Manage Movies and Promotions</button></Link>
         <Link to="/manage-users"><button>Manage Users</button> </Link>
+        <Link to="/add-movie-page"><button>Add Movie</button> </Link>
 
          <div class="container">
                  <div className="search-bar">
