@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import AdminHeader from './components/AdminHeader';
+
 function AddMovie() {
   const [inputs, setInputs] = useState({
     current_running: 'True'
@@ -40,6 +42,8 @@ function AddMovie() {
     navigate('/manage-movies');
   }
     return (
+      <div>
+        <AdminHeader></AdminHeader>
     <form onSubmit={handleSubmit}>
       <label>Enter Movie Name:
       <input 
@@ -122,6 +126,7 @@ function AddMovie() {
       </label>
       <button className = "addmoviebutton" type="submit">Submit</button>
     </form>
+    </div>
     );
 }
 
