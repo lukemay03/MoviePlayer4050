@@ -5,14 +5,14 @@ const multer = require('multer')
 const app = express();
 app.use(cors());
 app.use(express.json());
-const PORT = process.env.PORT || 3001; // PORT can be set by the environment or default to 3000
+const PORT = process.env.PORT || 3001; 
 let db = new sqlite3.Database('./CinemaApp.db', sqlite3.OPEN_READWRITE, (err) => {
   if (err) {
     return console.error(err.message);
   }
   console.log('Connected to the  SQlite database.');
 });
-db.configure("busyTimeout", 5000); // Set timeout to 5 seconds
+db.configure("busyTimeout", 5000); 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, '../movie_app/public/pics')
