@@ -5,6 +5,29 @@ const multer = require('multer')
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// crypto module
+const crypto = require("crypto");
+
+const algorithm = "aes-256-cbc"; 
+
+const initVector = Buffer.from('8c4fcb8d3e8c1a4c8a1b0df5d7f3e5e1', 'hex');
+const key = Buffer.from('7d2a3d4f7a6a05f6b51ec5677c3e9db5fb8d42c3770a0a4b9d31a3bc2e0d9531f', 'hex');
+function encrypt(text) {
+
+  const cipher = crypto.createCipheriv(algorithm, key, initVector);
+  let encrypted = cipher.update(text, 'utf8', 'hex');
+  encrypted += cipher.final('hex');
+
+  return encrypted;
+}
+function decrypt(text) {
+  const decipher = crypto.createDecipheriv(algorithm, key, initVector);
+  let decrypted = decipher.update(text, 'hex', 'utf-8');
+  decrypted += decipher.final('utf-8');
+
+  return decrypted;
+}
 const PORT = process.env.PORT || 3001; 
 let db = new sqlite3.Database('./CinemaApp.db', sqlite3.OPEN_READWRITE, (err) => {
   if (err) {
@@ -92,3 +115,8 @@ app.post('/user/insert', (req, res) => {
     }
   });
 });
+test = '1234566778';
+encryptedtest = encrypt(test);
+console.log(encryptedtest);
+decryptedtest = decrypt(encryptedtest);
+console.log(decryptedtest)
