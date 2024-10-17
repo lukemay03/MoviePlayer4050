@@ -23,7 +23,7 @@ function LoginPage() {
       //parse the response
       const data = await response.json();
   
-      //store token for future requests if authenticated and load home page
+      //if authenticated, store token for future requests and load home page
       if (response.ok) {
         localStorage.setItem('token', data.token);
         navigate('/');

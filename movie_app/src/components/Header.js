@@ -13,6 +13,8 @@ function Header() {
     navigate('/login'); 
   };
 
+  //conditionally show logout and edit buttons if user has token and is logged in
+  //else show register and login buttons
   return (
     <header className="site-header">
       <h1><Link to="/">Cinema E-Booking Site</Link></h1>
