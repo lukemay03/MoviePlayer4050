@@ -99,6 +99,7 @@ app.post('/movie/insert', (req, res) => {
     }
   });
 });
+
 // Endpoint to insert a new user
 app.post('/user/insert', (req, res) => {
   console.log(req.body);
@@ -120,3 +121,90 @@ encryptedtest = encrypt(test);
 console.log(encryptedtest);
 decryptedtest = decrypt(encryptedtest);
 console.log(decryptedtest)
+//login endpoint 
+const jwt = require('jsonwebtoken');
+
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  
+  //check credentials in db 
+  const sql = 'SELECT * FROM users WHERE email = ?';
+  db.get(sql, [email], (err, user) => {
+    if (err) return res.status(500).json({ message: 'Database error' });
+
+    if (!user || password !== user.password) {
+      return res.status(400).json({ message: 'Invalid email or password' });
+    }
+
+    //no error, create jwt token
+    //implement secretKey??
+    const token = jwt.sign({ email: user.email, userId: user.user_id }, 'secretKey', { expiresIn: '1h' });
+    
+    //send token to the client
+    res.status(200).json({ token });
+  });
+});
+
+//edit profile load info endpoint 
+app.get('/user/profile', (req, res) => {
+
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1]; //extract the token from the authorization header
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  jwt.verify(token, 'secretKey', (err, user) => {  //verify the token with the secretKey
+    if (err) {
+      return res.status(403).json({ message: 'Invalid token' });
+    }
+
+    //extract userID from token and query db for user info
+    const sql = 'SELECT first_name, last_name, email, status FROM Users WHERE user_id = ?';
+    db.get(sql, [user.userId], (err, userData) => {
+      if (err) {
+        return res.status(500).json({ message: 'Database error' });
+      }
+      
+  //check if userData exists before sending
+  if (userData) {
+    res.json(userData);
+  } else {
+    res.status(404).json({ message: 'User not found' });
+  }
+    });
+  });
+});
+
+//edit profile update endpoint
+app.post('/user/update', (req, res) => {
+  const { first_name, last_name, password } = req.body;
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  jwt.verify(token, 'secretKey', (err, user) => {
+    if (err) {
+      return res.status(403).json({ message: 'Invalid token' });
+    }
+
+    //update user info in db here
+    const sql = 'UPDATE users SET first_name = ?, last_name = ?, password = ? WHERE user_id = ?';
+    db.run(sql, [first_name, last_name, password, user.userId], (err) => {
+      if (err) {
+        return res.status(500).json({ message: 'Database error' });
+      }
+      res.status(200).json({ message: 'Profile updated successfully' });
+    });
+  });
+});
+
+
+
+
+
+
