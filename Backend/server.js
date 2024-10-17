@@ -165,6 +165,7 @@ app.post('/user/update', (req, res) => {
       return res.status(403).json({ message: 'Invalid token' });
     }
 
+    //update user info in db here
     const sql = 'UPDATE users SET first_name = ?, last_name = ?, password = ? WHERE user_id = ?';
     db.run(sql, [first_name, last_name, password, user.userId], (err) => {
       if (err) {
