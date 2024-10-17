@@ -121,6 +121,7 @@ encryptedtest = encrypt(test);
 console.log(encryptedtest);
 decryptedtest = decrypt(encryptedtest);
 console.log(decryptedtest)
+
 //login endpoint 
 const jwt = require('jsonwebtoken');
 
