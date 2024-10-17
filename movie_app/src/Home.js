@@ -47,12 +47,9 @@ function Home() {
     return (
         <body>
         <Header></Header>
-        <Link to="/register"><button>Register</button></Link>
-        <Link to="/login"><button>Login</button></Link>
-        <Link to="/edit-profile"><button>Edit Profile</button></Link>
         <Link to="/admin-main"><button>Admin</button></Link>
 
-         <div class="container">
+         <div className="container">
                  <div className="search-bar">
                  <input type="text" placeholder="Search for movies by title..."
                   value={searchQuery}

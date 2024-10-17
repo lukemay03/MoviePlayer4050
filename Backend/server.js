@@ -76,6 +76,7 @@ app.post('/movie/insert', (req, res) => {
     }
   });
 });
+
 // Endpoint to insert a new user
 app.post('/user/insert', (req, res) => {
   console.log(req.body);
@@ -92,3 +93,32 @@ app.post('/user/insert', (req, res) => {
     }
   });
 });
+
+//login endpoint 
+const jwt = require('jsonwebtoken');
+
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  
+  //check credentials in db 
+  const sql = 'SELECT * FROM users WHERE email = ?';
+  db.get(sql, [email], (err, user) => {
+    if (err) return res.status(500).json({ message: 'Database error' });
+
+    if (!user || password !== user.password) {
+      return res.status(400).json({ message: 'Invalid email or password' });
+    }
+
+    //no error, create jwt token
+    //implement secretKey??
+    const token = jwt.sign({ email: user.email, userId: user.id }, 'secretKey', { expiresIn: '1h' });
+
+    //send token to the client
+    res.status(200).json({ token });
+  });
+});
+
+
+
+
+

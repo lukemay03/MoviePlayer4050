@@ -239,7 +239,23 @@ body {
     transition: color 0.3s ease;
   }
   
+  
   .nav-links a:hover {
+    color: #BA0C2F;             
+  }
+
+  .nav-links button {
+    color: white;            
+    background: none;           
+    border: none;               
+    margin: 0 15px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-links button:hover {
     color: #BA0C2F;             
   }
 
@@ -390,6 +406,12 @@ body {
   .rever-button:hover {
     background-color: #0056b3;
   }
+
+  .error-message {
+    color: red;
+    margin-top: 10px;
+  }
+
 
 
   
