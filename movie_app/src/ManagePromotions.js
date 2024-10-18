@@ -1,13 +1,15 @@
 import React from 'react';
 import { Link, useLocation} from 'react-router-dom';
 import AdminHeader from './components/AdminHeader';
+import AdminErrorPage from './components/AdminErrorPage';
 
 
 function ManagePromotions() {
   const location = useLocation();
   const {state} = location || {};
   const {image,name} = state || {};
-
+  const role = localStorage.getItem('role');
+  if(role && role === 'admin') {
     return (
         <body>
         <AdminHeader></AdminHeader>
@@ -47,6 +49,9 @@ function ManagePromotions() {
 
         </body>
     );
+  } else {
+    <AdminErrorPage></AdminErrorPage>
+  }
 }
 
 export default ManagePromotions;

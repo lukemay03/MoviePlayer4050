@@ -27,7 +27,7 @@ function LoginPage() {
         setErrorMessage(userdata.message);
       }
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
       setErrorMessage('Error fetching user data');
     }
   };
@@ -45,25 +45,27 @@ function LoginPage() {
   
       //parse the response
       const data = await response.json();
-  
       //if authenticated, store token for future requests and load home page
       if (response.ok) {
         localStorage.setItem('token', data.token);
-        localStorage.setItem('role', role);
-        const userdata = fetchUserProfile();
+        const userdata = await fetchUserProfile();
+        //console.log(userdata.role);
+        localStorage.setItem('role', userdata.role);
         //console.log(userdata)
         //console.log(typeof(userdata))
-        //console.log(role)
+        //console.log(localStorage.getItem('role'));
         //console.log(userdata['role'] === 'admin');
-        if (role === 'user') {
-        navigate('/');
-        } else if (role === 'admin') {
+        //console.log('role is' + role);
+        if (userdata.role === 'user') {
+          navigate('/');
+        } else if (userdata.role === 'admin') {
           navigate('/admin-main');
         }
       } else {
         setErrorMessage(data.message || 'Invalid email or password');
       }
     } catch (error) {
+      console.log(error);
       setErrorMessage('Something went wrong. Please try again.');
     }
   };

@@ -116,7 +116,9 @@ app.post('/user/insert', (req, res) => {
     }
   });
 });
-// admin: fake@uga.edu, 123456, password, secure
+// admin: fake@uga.edu, 123456, 
+// user: bobsmith@gmail.com, password 
+// user: johnmason@gmail.com, secure
 //test = 'secure';
 //encryptedtest = encrypt(test);
 //console.log(encryptedtest);
