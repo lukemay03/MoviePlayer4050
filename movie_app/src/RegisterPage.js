@@ -14,6 +14,8 @@ function RegisterPage() {
     status:'Active'
   })
 
+  const [promotions, setPromotion] = useState(false);
+
 
   const navigate = useNavigate();
 
@@ -27,6 +29,11 @@ function RegisterPage() {
       alert("Passwords do not match");
     } else {
       e.preventDefault();
+      if (promotions === false) {
+        inputs.promo = "False";
+      } else {
+        inputs.promo = "True";
+      }
       const nameArray = inputs.name.split(" ");
       inputs.first_name = nameArray[0];
       inputs.last_name = nameArray[1];
@@ -77,6 +84,15 @@ function RegisterPage() {
           <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" value={inputs.phone || ""}onChange={handleInput} required/>
         </div>
 
+        <div className="form-group">
+       <label htmlFor="promotions">Receive Promotions:</label>
+       <input
+         type="checkbox"
+         id="promotions"
+          checked={promotions}
+          onChange={(e) => setPromotion(e.target.checked)}
+          />
+          </div>
 
         <button type="submit" className="register-button" >Register</button>
 
