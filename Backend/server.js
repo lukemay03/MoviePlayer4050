@@ -107,7 +107,7 @@ app.post('/user/insert', (req, res) => {
 
   // Insert the user into the database
   let sql = 'INSERT INTO Users (role, first_name, last_name, email, password, status) VALUES (?,?,?,?,?,?)'
-  db.run(sql, [role, first_name, last_name, email,password,status], (err) => {
+  db.run(sql, [role, first_name, last_name, email,encrypt(password),status], (err) => {
     if (err) {
       console.error(err.message);
       res.status(500).send('Error inserting user');
@@ -116,11 +116,11 @@ app.post('/user/insert', (req, res) => {
     }
   });
 });
-test = '1234566778';
-encryptedtest = encrypt(test);
-console.log(encryptedtest);
-decryptedtest = decrypt(encryptedtest);
-console.log(decryptedtest)
+//test = 'secure';
+//encryptedtest = encrypt(test);
+//console.log(encryptedtest);
+//decryptedtest = decrypt(encryptedtest);
+//console.log(decryptedtest)
 
 //login endpoint 
 const jwt = require('jsonwebtoken');
@@ -133,7 +133,7 @@ app.post('/login', (req, res) => {
   db.get(sql, [email], (err, user) => {
     if (err) return res.status(500).json({ message: 'Database error' });
 
-    if (!user || password !== user.password) {
+    if (!user || encrypt(password) !== user.password) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
 
@@ -195,7 +195,7 @@ app.post('/user/update', (req, res) => {
 
     //update user info in db here
     const sql = 'UPDATE users SET first_name = ?, last_name = ?, password = ? WHERE user_id = ?';
-    db.run(sql, [first_name, last_name, password, user.userId], (err) => {
+    db.run(sql, [first_name, last_name, encrypt(password), user.userId], (err) => {
       if (err) {
         return res.status(500).json({ message: 'Database error' });
       }
