@@ -49,7 +49,8 @@ function LoginPage() {
       //if authenticated, store token for future requests and load home page
       if (response.ok) {
         localStorage.setItem('token', data.token);
-        const userdata = fetchUserProfile()
+        localStorage.setItem('role', role);
+        const userdata = fetchUserProfile();
         //console.log(userdata)
         //console.log(typeof(userdata))
         //console.log(role)
