@@ -27,6 +27,7 @@ function EditProfile() {
           setFirstName(data.first_name);
           setLastName(data.last_name);
           setEmail(data.email);  
+          setPromotions(data.registeredforpromo);
         } else {
           setErrorMessage(data.message);
         }
@@ -55,6 +56,7 @@ function EditProfile() {
           first_name: firstName,
           last_name: lastName,
           password: password, 
+          registeredforpromo: promotions,
         }),
       });
 
