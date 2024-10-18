@@ -10,7 +10,8 @@ function Header() {
   const handleLogout = () => {
     //clear the token
     localStorage.removeItem('token');
-    navigate('/login'); 
+    localStorage.removeItem('role');
+    navigate('/logout'); 
   };
 
   //conditionally show logout and edit buttons if user has token and is logged in

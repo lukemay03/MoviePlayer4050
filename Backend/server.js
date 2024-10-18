@@ -107,7 +107,7 @@ app.post('/user/insert', (req, res) => {
 
   // Insert the user into the database
   let sql = 'INSERT INTO Users (role, first_name, last_name, email, password, status) VALUES (?,?,?,?,?,?)'
-  db.run(sql, [role, first_name, last_name, email,password,status], (err) => {
+  db.run(sql, [role, first_name, last_name, email,encrypt(password),status], (err) => {
     if (err) {
       console.error(err.message);
       res.status(500).send('Error inserting user');
@@ -116,11 +116,13 @@ app.post('/user/insert', (req, res) => {
     }
   });
 });
-test = '1234566778';
-encryptedtest = encrypt(test);
-console.log(encryptedtest);
-decryptedtest = decrypt(encryptedtest);
-console.log(decryptedtest)
+// admin: fake@uga.edu, 123456, password, secure
+//test = 'secure';
+//encryptedtest = encrypt(test);
+//console.log(encryptedtest);
+//decryptedtest = decrypt(encryptedtest);
+//console.log(decryptedtest)
+
 //login endpoint 
 const jwt = require('jsonwebtoken');
 
@@ -131,14 +133,14 @@ app.post('/login', (req, res) => {
   const sql = 'SELECT * FROM users WHERE email = ?';
   db.get(sql, [email], (err, user) => {
     if (err) return res.status(500).json({ message: 'Database error' });
-
-    if (!user || password !== user.password) {
+    //console.log(user);
+    if (!user || encrypt(password) !== user.password) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
 
     //no error, create jwt token
     //implement secretKey??
-    const token = jwt.sign({ email: user.email, userId: user.user_id }, 'secretKey', { expiresIn: '1h' });
+    const token = jwt.sign({ email: user.email, userId: user.user_id, role: user.role}, 'secretKey', { expiresIn: '1h' });
     
     //send token to the client
     res.status(200).json({ token });
@@ -161,7 +163,7 @@ app.get('/user/profile', (req, res) => {
     }
 
     //extract userID from token and query db for user info
-    const sql = 'SELECT first_name, last_name, email, status FROM Users WHERE user_id = ?';
+    const sql = 'SELECT first_name, last_name, email, status, role FROM Users WHERE user_id = ?';
     db.get(sql, [user.userId], (err, userData) => {
       if (err) {
         return res.status(500).json({ message: 'Database error' });
@@ -194,7 +196,7 @@ app.post('/user/update', (req, res) => {
 
     //update user info in db here
     const sql = 'UPDATE users SET first_name = ?, last_name = ?, password = ? WHERE user_id = ?';
-    db.run(sql, [first_name, last_name, password, user.userId], (err) => {
+    db.run(sql, [first_name, last_name, encrypt(password), user.userId], (err) => {
       if (err) {
         return res.status(500).json({ message: 'Database error' });
       }
