@@ -10,7 +10,7 @@ import { useState } from 'react';
 
 function RegisterPage() {
   const [inputs, setInputs] = useState({
-    role:'User',
+    role:'user',
     status:'Active'
   })
 
@@ -21,14 +21,6 @@ function RegisterPage() {
   const handleInput = (event) => {
     setInputs(prev => ({...prev, [event.target.name]: event.target.value}))
   }
-
-
- 
-
-
- 
- 
-
 
   const handleSubmit = async (e) => {
      if (inputs.password !== inputs.confirm_password) {
@@ -45,7 +37,7 @@ function RegisterPage() {
       },
       body: JSON.stringify(inputs),
     });
-    navigate('/RegistrationConfirmation');
+    navigate('/reg-confirm');
     }
    
    
