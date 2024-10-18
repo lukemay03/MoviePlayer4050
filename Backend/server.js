@@ -116,6 +116,7 @@ app.post('/user/insert', (req, res) => {
     }
   });
 });
+// 123456, password, secure
 //test = 'secure';
 //encryptedtest = encrypt(test);
 //console.log(encryptedtest);
@@ -132,7 +133,7 @@ app.post('/login', (req, res) => {
   const sql = 'SELECT * FROM users WHERE email = ?';
   db.get(sql, [email], (err, user) => {
     if (err) return res.status(500).json({ message: 'Database error' });
-
+    console.log(user);
     if (!user || encrypt(password) !== user.password) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
