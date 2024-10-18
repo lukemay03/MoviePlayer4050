@@ -58,7 +58,7 @@ function LoginPage() {
         if (role === 'user') {
         navigate('/');
         } else if (role === 'admin') {
-          navigate('/admin-main')
+          navigate('/admin-main');
         }
       } else {
         setErrorMessage(data.message || 'Invalid email or password');
