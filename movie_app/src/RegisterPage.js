@@ -30,9 +30,9 @@ function RegisterPage() {
     } else {
       e.preventDefault();
       if (promotions === false) {
-        inputs.promo = "False";
+        inputs.registeredforpromo = "False";
       } else {
-        inputs.promo = "True";
+        inputs.registeredforpromo = "True";
       }
       const nameArray = inputs.name.split(" ");
       inputs.first_name = nameArray[0];
