@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
+import {Link} from 'react-router-dom';
 
 function EditProfile() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');  
-  const [billingAddress, setBillingAddress] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [promotions, setPromotions] = useState(false);
 
   useEffect(() => {
     //send token and get user info
@@ -26,6 +27,7 @@ function EditProfile() {
           setFirstName(data.first_name);
           setLastName(data.last_name);
           setEmail(data.email);  
+          setPromotions(data.registeredforpromo);
         } else {
           setErrorMessage(data.message);
         }
@@ -54,6 +56,7 @@ function EditProfile() {
           first_name: firstName,
           last_name: lastName,
           password: password, 
+          registeredforpromo: promotions,
         }),
       });
 
@@ -99,16 +102,6 @@ function EditProfile() {
         </div>
 
         <div className="form-group">
-          <label htmlFor="billingAddress">Billing Address:</label>
-          <input 
-            type="text" 
-            id="billingAddress" 
-            value={billingAddress}
-            onChange={(e) => setBillingAddress(e.target.value)} 
-          />
-        </div>
-
-        <div className="form-group">
           <label htmlFor="password">New Password:</label>
           <input 
             type="password" 
@@ -119,9 +112,21 @@ function EditProfile() {
           />
         </div>
 
+      <div className="form-group">
+       <label htmlFor="promotions">Receive Promotions:</label>
+       <input
+         type="checkbox"
+         id="promotions"
+          checked={promotions}
+          onChange={(e) => setPromotions(e.target.checked)}
+          />
+          </div>
+
+
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         {successMessage && <p className="success-message">{successMessage}</p>}
 
+        <Link to="/edit-payments"><button>Edit Payment Cards</button></Link>
         <button type="submit" className="save-button">Save Changes</button>
       </form>
     </div>

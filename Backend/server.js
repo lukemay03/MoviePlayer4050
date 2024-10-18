@@ -163,7 +163,7 @@ app.get('/user/profile', (req, res) => {
     }
 
     //extract userID from token and query db for user info
-    const sql = 'SELECT first_name, last_name, email, status, role FROM Users WHERE user_id = ?';
+    const sql = 'SELECT first_name, last_name, email, status, registeredforpromo, role FROM Users WHERE user_id = ?';
     db.get(sql, [user.userId], (err, userData) => {
       if (err) {
         return res.status(500).json({ message: 'Database error' });
@@ -181,7 +181,7 @@ app.get('/user/profile', (req, res) => {
 
 //edit profile update endpoint
 app.post('/user/update', (req, res) => {
-  const { first_name, last_name, password } = req.body;
+  const { first_name, last_name, password, registeredforpromo } = req.body;
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
@@ -195,8 +195,8 @@ app.post('/user/update', (req, res) => {
     }
 
     //update user info in db here
-    const sql = 'UPDATE users SET first_name = ?, last_name = ?, password = ? WHERE user_id = ?';
-    db.run(sql, [first_name, last_name, encrypt(password), user.userId], (err) => {
+    const sql = 'UPDATE users SET first_name = ?, last_name = ?, password = ?,  registeredforpromo = ? WHERE user_id = ?';
+    db.run(sql, [first_name, last_name, encrypt(password), registeredforpromo, user.userId], (err) => {
       if (err) {
         return res.status(500).json({ message: 'Database error' });
       }

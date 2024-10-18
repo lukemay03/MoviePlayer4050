@@ -105,6 +105,9 @@ function LoginPage() {
         <p>
           Don’t have an account? <a href="/register">Register here</a>
         </p>
+        <p>
+          <a href="/register">Forgot Password?</a>
+        </p>
       </form>
     </div>
   );
