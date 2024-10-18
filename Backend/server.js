@@ -103,11 +103,12 @@ app.post('/movie/insert', (req, res) => {
 // Endpoint to insert a new user
 app.post('/user/insert', (req, res) => {
   console.log(req.body);
-  let { role, first_name, last_name , email, password, status} = req.body;
+  let { role, first_name, last_name , email, password, status, registeredforpromo} = req.body;
 
   // Insert the user into the database
-  let sql = 'INSERT INTO Users (role, first_name, last_name, email, password, status) VALUES (?,?,?,?,?,?)'
-  db.run(sql, [role, first_name, last_name, email,encrypt(password),status], (err) => {
+  console.log(registeredforpromo);
+  let sql = 'INSERT INTO Users (role, first_name, last_name, email, password, status, registeredforpromo) VALUES (?,?,?,?,?,?,?)'
+  db.run(sql, [role, first_name, last_name, email,encrypt(password),status, registeredforpromo], (err) => {
     if (err) {
       console.error(err.message);
       res.status(500).send('Error inserting user');

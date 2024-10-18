@@ -14,7 +14,7 @@ function RegisterPage() {
     status:'Active'
   })
 
-  const [promotions, setPromotion] = useState(false);
+  const [promotions, setPromotion] = useState();
 
 
   const navigate = useNavigate();
@@ -30,9 +30,9 @@ function RegisterPage() {
     } else {
       e.preventDefault();
       if (promotions === false) {
-        inputs.registeredforpromo = "False";
+        inputs.registeredforpromo = 0;
       } else {
-        inputs.registeredforpromo = "True";
+        inputs.registeredforpromo = 1;
       }
       const nameArray = inputs.name.split(" ");
       inputs.first_name = nameArray[0];
