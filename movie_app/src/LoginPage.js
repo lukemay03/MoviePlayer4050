@@ -5,9 +5,32 @@ import { useNavigate } from 'react-router-dom';
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('');
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
+  const fetchUserProfile = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/user/profile', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,  
+        },
+      });
 
+      //parse response
+      const userdata = await response.json();
+      if (response.ok) {
+        //console.log('user data is ' + userdata);
+        setRole(userdata.role);
+        //console.log(role)
+        return userdata;
+      } else {
+        setErrorMessage(userdata.message);
+      }
+    } catch (error) {
+      console.log(error.message)
+      setErrorMessage('Error fetching user data');
+    }
+  };
   //on sumbit send email and pass for server authentication and user receives token
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +49,17 @@ function LoginPage() {
       //if authenticated, store token for future requests and load home page
       if (response.ok) {
         localStorage.setItem('token', data.token);
+        localStorage.setItem('role', role);
+        const userdata = fetchUserProfile();
+        //console.log(userdata)
+        //console.log(typeof(userdata))
+        //console.log(role)
+        //console.log(userdata['role'] === 'admin');
+        if (role === 'user') {
         navigate('/');
+        } else if (role === 'admin') {
+          navigate('/admin-main');
+        }
       } else {
         setErrorMessage(data.message || 'Invalid email or password');
       }

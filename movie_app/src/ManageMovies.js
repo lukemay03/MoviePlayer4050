@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
 import AdminHeader from './components/AdminHeader';
 import MovieCardAdmin from './components/MovieCardAdmin';
+import AdminErrorPage from './components/AdminErrorPage';
 
 function ManageMovies() {
     const [currentMovies, setCurrentMovie] = useState([]);
@@ -12,7 +13,7 @@ function ManageMovies() {
     const [searchQuery, setSearchQuery] = useState(''); 
     const [filteredData, setFilteredData] = useState([]);   
     const [filteredComingSoon, setFilteredComingSoon] = useState([])
-
+    const role = localStorage.getItem('role');
     useEffect(() => {
         Promise.all([
             fetch('http://localhost:3001/movie/trailers'),
@@ -43,7 +44,7 @@ function ManageMovies() {
   function shuffleArray(array) {
     return array.sort(() => Math.random() - 0.5);
   }
-
+  if (role === 'admin') {
     return (
         <body>
         <AdminHeader></AdminHeader>
@@ -89,7 +90,11 @@ function ManageMovies() {
          </div>
      </body>
        );
-    
+  } else {
+    return(
+      <AdminErrorPage></AdminErrorPage>
+    );
+  }
 }
 
 export default ManageMovies;
