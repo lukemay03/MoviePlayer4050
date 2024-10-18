@@ -119,10 +119,11 @@ app.post('/user/insert', (req, res) => {
 // admin: fake@uga.edu, 123456, 
 // user: bobsmith@gmail.com, password 
 // user: johnmason@gmail.com, secure
-//test = 'secure';
-//encryptedtest = encrypt(test);
-//console.log(encryptedtest);
+test = 'secure';
+encryptedtest = encrypt(test);
+console.log(encryptedtest);
 //decryptedtest = decrypt(encryptedtest);
+//console.log(decrypt('5c06f6cce196bab68474cd294956e6c8'));
 //console.log(decryptedtest)
 
 //login endpoint 
@@ -135,7 +136,9 @@ app.post('/login', (req, res) => {
   const sql = 'SELECT * FROM users WHERE email = ?';
   db.get(sql, [email], (err, user) => {
     if (err) return res.status(500).json({ message: 'Database error' });
-    //console.log(user);
+    console.log(decrypt(user.password));
+    console.log(user.password);
+    console.log(encrypt(password));
     if (!user || encrypt(password) !== user.password) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
