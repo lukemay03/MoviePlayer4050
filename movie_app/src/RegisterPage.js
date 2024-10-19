@@ -1,61 +1,101 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Header from './components/Header';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+
+
+
+
 
 
 function RegisterPage() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  // Step 1: Create a state variable for the email
-  const [email, setEmail] = useState('');
-  const navigate = useNavigate(); // Use useNavigate for programmatic navigation
+  const [inputs, setInputs] = useState({
+    role:'user',
+    status:'Active'
+  })
 
-  // Step 2: Handle change events for the input field
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value); // Update state with the current input value
+  const [promotions, setPromotion] = useState(false);
+
+
+  const navigate = useNavigate();
+
+
+  const handleInput = (event) => {
+    setInputs(prev => ({...prev, [event.target.name]: event.target.value}))
+  }
+
+  const handleSubmit = async (e) => {
+     if (inputs.password !== inputs.confirm_password) {
+      alert("Passwords do not match");
+    } else {
+      e.preventDefault();
+      if (promotions === false) {
+        inputs.registeredforpromo = "False";
+      } else {
+        inputs.registeredforpromo = "True";
+      }
+      const nameArray = inputs.name.split(" ");
+      inputs.first_name = nameArray[0];
+      inputs.last_name = nameArray[1];
+      const result = await fetch('http://localhost:3001/user/insert', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(inputs),
+    });
+    navigate('/reg-confirm');
+    }
+   
+   
+   
   };
-
-  // Step 3: Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent the default form submission
-    // Navigate to the reg-confirm page with the email state
-    console.log("Email being sent:", email); // Log email to verify
-    if (isSubmitting) return; // Prevent further submissions
-    setIsSubmitting(true); // Disable the button
-    navigate("/reg-confirm", { state: { email: email } }); // Pass the existing email to the next page
-  };
-
   return (
     <div className="register-container">
       <Header></Header>
-
+     
       <form className="register-form" onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">Name:</label>
-          <input type="text" id="name" name="name" placeholder="Enter your name"/>
+          <input type="text" id="name" name="name" placeholder="Enter your name" value={inputs.name || ""} onChange={handleInput} required/>
         </div>
+
 
         <div className="form-group">
           <label htmlFor="email">Email:</label>
-          <input type="email" id="email" name="email" placeholder="Enter your email" value={email}
-                 onChange={handleEmailChange}/>
+          <input type="email" id="email" name="email" placeholder="Enter your email" value={inputs.email || ""} onChange={handleInput} required/>
         </div>
+
 
         <div className="form-group">
           <label htmlFor="password">Password:</label>
-          <input type="password" id="password" name="password" placeholder="Enter your password"/>
+          <input type="password" id="password" name="password" placeholder="Enter your password" value={inputs.password || ""} onChange={handleInput} required/>
         </div>
+
 
         <div className="form-group">
           <label htmlFor="confirm-password">Confirm Password:</label>
-          <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password"/>
+          <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" value={inputs.confirm_password || ""} onChange={handleInput} required/>
         </div>
+
 
         <div className="form-group">
           <label htmlFor="phone">Phone Number:</label>
-          <input type="tel" id="phone" name="phone" placeholder="Enter your phone number"/>
+          <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" value={inputs.phone || ""}onChange={handleInput} required/>
         </div>
 
-        <button type="submit" className="register-button">Register</button>
+        <div className="form-group">
+       <label htmlFor="promotions">Receive Promotions:</label>
+       <input
+         type="checkbox"
+         id="promotions"
+          checked={promotions}
+          onChange={(e) => setPromotion(e.target.checked)}
+          />
+          </div>
+
+        <button type="submit" className="register-button" >Register</button>
+
 
         <p>
           Already have an account? <a href="/login">Login here</a>
@@ -65,6 +105,9 @@ function RegisterPage() {
   );
 }
 
+
 export default RegisterPage;
+
+
 
 

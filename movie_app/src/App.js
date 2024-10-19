@@ -20,6 +20,7 @@ import OrderConfirm from './OrderConfirmPage'
 import AddMovie from './AddMoviePage'
 import EditUser from './EditUsers'
 import LogoutPage from './LogoutPage'
+import EditPayments from './EditPayments'
 function App() {
   return (
 
@@ -44,6 +45,7 @@ function App() {
           <Route path="/add-movie-page" element={<AddMovie/>} />
           <Route path="/edit-user" element={<EditUser/>} />
           <Route path="/logout" element={<LogoutPage/>} />
+          <Route path="/edit-payments" element={<EditPayments/>} />
 
         </Routes>
       </div>

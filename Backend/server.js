@@ -103,11 +103,12 @@ app.post('/movie/insert', (req, res) => {
 // Endpoint to insert a new user
 app.post('/user/insert', (req, res) => {
   console.log(req.body);
-  let { role, first_name, last_name , email, password, status} = req.body;
+  let { role, first_name, last_name , email, password, status, registeredforpromo} = req.body;
 
   // Insert the user into the database
-  let sql = 'INSERT INTO Users (role, first_name, last_name, email, password, status) VALUES (?,?,?,?,?,?)'
-  db.run(sql, [role, first_name, last_name, email,encrypt(password),status], (err) => {
+  console.log(registeredforpromo);
+  let sql = 'INSERT INTO Users (role, first_name, last_name, email, password, status, registeredforpromo) VALUES (?,?,?,?,?,?,?)'
+  db.run(sql, [role, first_name, last_name, email,encrypt(password),status, registeredforpromo], (err) => {
     if (err) {
       console.error(err.message);
       res.status(500).send('Error inserting user');
@@ -116,11 +117,14 @@ app.post('/user/insert', (req, res) => {
     }
   });
 });
-// 123456, password, secure
-//test = 'secure';
-//encryptedtest = encrypt(test);
-//console.log(encryptedtest);
+// admin: fake@uga.edu, 123456, 
+// user: bobsmith@gmail.com, password 
+// user: johnmason@gmail.com, secure
+test = 'secure';
+encryptedtest = encrypt(test);
+console.log(encryptedtest);
 //decryptedtest = decrypt(encryptedtest);
+//console.log(decrypt('5c06f6cce196bab68474cd294956e6c8'));
 //console.log(decryptedtest)
 
 //login endpoint 
@@ -133,14 +137,16 @@ app.post('/login', (req, res) => {
   const sql = 'SELECT * FROM users WHERE email = ?';
   db.get(sql, [email], (err, user) => {
     if (err) return res.status(500).json({ message: 'Database error' });
-    console.log(user);
+    console.log(decrypt(user.password));
+    console.log(user.password);
+    console.log(encrypt(password));
     if (!user || encrypt(password) !== user.password) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
 
     //no error, create jwt token
     //implement secretKey??
-    const token = jwt.sign({ email: user.email, userId: user.user_id }, 'secretKey', { expiresIn: '1h' });
+    const token = jwt.sign({ email: user.email, userId: user.user_id, role: user.role}, 'secretKey', { expiresIn: '1h' });
     
     //send token to the client
     res.status(200).json({ token });
@@ -163,7 +169,7 @@ app.get('/user/profile', (req, res) => {
     }
 
     //extract userID from token and query db for user info
-    const sql = 'SELECT first_name, last_name, email, status FROM Users WHERE user_id = ?';
+    const sql = 'SELECT first_name, last_name, email, status, registeredforpromo, role FROM Users WHERE user_id = ?';
     db.get(sql, [user.userId], (err, userData) => {
       if (err) {
         return res.status(500).json({ message: 'Database error' });
@@ -181,7 +187,7 @@ app.get('/user/profile', (req, res) => {
 
 //edit profile update endpoint
 app.post('/user/update', (req, res) => {
-  const { first_name, last_name, password } = req.body;
+  const { first_name, last_name, password, registeredforpromo } = req.body;
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
@@ -195,8 +201,8 @@ app.post('/user/update', (req, res) => {
     }
 
     //update user info in db here
-    const sql = 'UPDATE users SET first_name = ?, last_name = ?, password = ? WHERE user_id = ?';
-    db.run(sql, [first_name, last_name, encrypt(password), user.userId], (err) => {
+    const sql = 'UPDATE users SET first_name = ?, last_name = ?, password = ?,  registeredforpromo = ? WHERE user_id = ?';
+    db.run(sql, [first_name, last_name, encrypt(password), registeredforpromo, user.userId], (err) => {
       if (err) {
         return res.status(500).json({ message: 'Database error' });
       }

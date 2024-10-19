@@ -26,7 +26,6 @@ function MovieCardAdmin({poster, title, trailerLink, detailsLink }) {
   
         <div className="movie-links">
         <Link to="edit-movie"><button>Edit Movie</button></Link>
-        <Link to="manage-promotions"><button>Manage Promotions</button></Link>
         </div>
       </div>
     );

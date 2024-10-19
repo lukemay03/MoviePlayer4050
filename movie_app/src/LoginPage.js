@@ -5,9 +5,32 @@ import { useNavigate } from 'react-router-dom';
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('');
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
+  const fetchUserProfile = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/user/profile', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,  
+        },
+      });
 
+      //parse response
+      const userdata = await response.json();
+      if (response.ok) {
+        //console.log('user data is ' + userdata);
+        setRole(userdata.role);
+        //console.log(role)
+        return userdata;
+      } else {
+        setErrorMessage(userdata.message);
+      }
+    } catch (error) {
+      console.log(error.message);
+      setErrorMessage('Error fetching user data');
+    }
+  };
   //on sumbit send email and pass for server authentication and user receives token
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,15 +45,27 @@ function LoginPage() {
   
       //parse the response
       const data = await response.json();
-  
       //if authenticated, store token for future requests and load home page
       if (response.ok) {
         localStorage.setItem('token', data.token);
-        navigate('/');
+        const userdata = await fetchUserProfile();
+        //console.log(userdata.role);
+        localStorage.setItem('role', userdata.role);
+        //console.log(userdata)
+        //console.log(typeof(userdata))
+        //console.log(localStorage.getItem('role'));
+        //console.log(userdata['role'] === 'admin');
+        //console.log('role is' + role);
+        if (userdata.role === 'user') {
+          navigate('/');
+        } else if (userdata.role === 'admin') {
+          navigate('/admin-main');
+        }
       } else {
         setErrorMessage(data.message || 'Invalid email or password');
       }
     } catch (error) {
+      console.log(error);
       setErrorMessage('Something went wrong. Please try again.');
     }
   };
@@ -71,6 +106,9 @@ function LoginPage() {
 
         <p>
           Don’t have an account? <a href="/register">Register here</a>
+        </p>
+        <p>
+          <a href="/register">Forgot Password?</a>
         </p>
       </form>
     </div>

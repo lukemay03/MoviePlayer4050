@@ -47,7 +47,6 @@ function Home() {
     return (
         <body>
         <Header></Header>
-        <Link to="/admin-main"><button>Admin</button></Link>
 
          <div className="container">
                  <div className="search-bar">
