@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Header from './components/Header';
 
-function RegistrationConfirm() {
+function ResetPasswordConfirm() {
     return (
         <div className="register-container">
             <Header />
