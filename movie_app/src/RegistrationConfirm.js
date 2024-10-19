@@ -10,14 +10,18 @@ function RegistrationConfirm() {
     // This function sends a request to the backend to send the email
     const sendConfirmationEmail = async () => {
         try {
+            const htmlMessage = "<h2>Thank you for registering!</h2>" +
+                "<p>Your registration is confirmed. Welcome to Movie Player Co!</p>" +
+                "<p>Best regards,</p>" +
+                "Movie Player Co.";
+            const subject = "Registration Confirmation";
             const response = await fetch('http://localhost:3001/trigger-order-confirm', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email }), // passes the user email to the backend
+                body: JSON.stringify({ email, htmlMessage, subject }), // passes the user email to the backend
             });
-
             const data = await response.json();
             if (response.ok) {
                 console.log(data.message); // "Confirmation email sent."

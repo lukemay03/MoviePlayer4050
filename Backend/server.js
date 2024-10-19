@@ -222,36 +222,51 @@ const transporter = nodemailer.createTransport({
 });
 
 // Email-sending function
-function sendConfirmationEmail(toEmail) {
+function sendEmail(toEmail, htmlMessage, subjectLine) {
   const mailOptions = {
     from: 'lmay.old@gmail.com',
     to: toEmail,
-    subject: 'Registration Confirmation',
-    html: `
-      <h2>Thank you for Registering!</h2>
-      <p>Your registration is confirmed. Welcome to Movie Player Co!</p>
-      <p>Best regards,</p>
-      <p>Movie Player Co.</p>
-    `,
+    subject: subjectLine,
+    html: htmlMessage,
   };
-
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.error('Error sending email:', error);
     } else {
-      console.log('Confirmation email sent:', info.response);
+      console.log('Email sent:', info.response);
     }
   });
 }
 
 // Backend route to trigger the email
 app.post('/trigger-order-confirm', (req, res) => {
-  const { email } = req.body; // Expecting email from the frontend
+  const { email, htmlMessage, subject } = req.body; // Expecting email from the frontend
   if (!email) {
     return res.status(400).json({ message: 'Email is required.' });
   }
+  if (!htmlMessage) {
+    return res.status(400).json({ message: 'Message Body is required.' });
+  }
+  if (!subject) {
+    return res.status(400).json({ message: 'Subject Line is required.' });
+  }
 
-  sendConfirmationEmail(email); // Send the email
+  sendEmail(email, htmlMessage, subject); // Send the email
 
-  res.status(200).json({ message: 'Confirmation email sent to ' + email + '.' });
+  res.status(200).json({ message: 'Email sent to ' + email + '.' });
+});
+
+app.post('/generate-token', (req, res) => {
+  const {email} = req.body;
+
+  //check credentials in db
+  const sql = 'SELECT * FROM users WHERE email = ?';
+  db.get(sql, [email], (err, user) => {
+    //no error, create jwt token
+    //implement secretKey??
+    const token = jwt.sign({email: user.email, userId: user.user_id, role: user.role}, 'secretKey', {expiresIn: '1h'});
+
+    //send token to the client
+    res.status(200).json({token});
+  });
 });

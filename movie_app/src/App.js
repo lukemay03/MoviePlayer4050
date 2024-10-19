@@ -21,6 +21,10 @@ import AddMovie from './AddMoviePage'
 import EditUser from './EditUsers'
 import LogoutPage from './LogoutPage'
 import EditPayments from './EditPayments'
+import ForgotPassword from './ForgotPassword'
+import ForgotPasswordConfirm from './ForgotPasswordConfirm'
+import ResetPassword from './ResetPassword'
+import ResetPasswordConfirm from './ResetPasswordConfirm'
 function App() {
   return (
 
@@ -46,6 +50,10 @@ function App() {
           <Route path="/edit-user" element={<EditUser/>} />
           <Route path="/logout" element={<LogoutPage/>} />
           <Route path="/edit-payments" element={<EditPayments/>} />
+          <Route path="/forgot-pass" element={<ForgotPassword/>} />
+          <Route path="/forgot-pass-confirm" element={<ForgotPasswordConfirm/>} />
+          <Route path="/reset-pass" element={<ResetPassword/>} />
+          <Route path="/reset-pass-confirm" element={<ResetPasswordConfirm/>} />
 
         </Routes>
       </div>
