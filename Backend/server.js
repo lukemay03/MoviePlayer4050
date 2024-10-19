@@ -205,8 +205,47 @@ app.post('/user/update', (req, res) => {
   });
 });
 
+// Nodemailer transporter configuration
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'lmay.old@gmail.com',
+    pass: 'stboeteyemxkudgn',
+  },
+});
 
+// Email-sending function
+function sendConfirmationEmail(toEmail) {
+  const mailOptions = {
+    from: 'lmay.old@gmail.com',
+    to: toEmail,
+    subject: 'Registration Confirmation',
+    html: `
+      <h2>Thank you for Registering!</h2>
+      <p>Your registration is confirmed. Welcome to Movie Player Co!</p>
+      <p>Best regards,</p>
+      <p>Movie Player Co.</p>
+    `,
+  };
 
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error sending email:', error);
+    } else {
+      console.log('Confirmation email sent:', info.response);
+    }
+  });
+}
 
+// Backend route to trigger the email
+app.post('/trigger-order-confirm', (req, res) => {
+  const { email } = req.body; // Expecting email from the frontend
+  if (!email) {
+    return res.status(400).json({ message: 'Email is required.' });
+  }
 
+  sendConfirmationEmail(email); // Send the email
 
+  res.status(200).json({ message: 'Confirmation email sent to ' + email + '.' });
+});
