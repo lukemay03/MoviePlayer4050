@@ -10,6 +10,8 @@ function Header() {
   const handleLogout = () => {
       //clear the token
       localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      localStorage.removeItem('id');
       navigate('/logout');
   };
 

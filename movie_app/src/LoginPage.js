@@ -51,6 +51,7 @@ function LoginPage() {
         const userdata = await fetchUserProfile();
         //console.log(userdata.role);
         localStorage.setItem('role', userdata.role);
+        localStorage.setItem('id', userdata.id);
         //console.log(userdata)
         //console.log(typeof(userdata))
         //console.log(localStorage.getItem('role'));

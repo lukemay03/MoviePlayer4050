@@ -120,7 +120,7 @@ app.post('/user/insert', (req, res) => {
 // admin: fake@uga.edu, 123456, 
 // user: bobsmith@gmail.com, password 
 // user: johnmason@gmail.com, secure
-test = 'secure';
+test = '123456';
 encryptedtest = encrypt(test);
 console.log(encryptedtest);
 //decryptedtest = decrypt(encryptedtest);
@@ -137,9 +137,9 @@ app.post('/login', (req, res) => {
   const sql = 'SELECT * FROM users WHERE email = ?';
   db.get(sql, [email], (err, user) => {
     if (err) return res.status(500).json({ message: 'Database error' });
-    console.log(decrypt(user.password));
-    console.log(user.password);
-    console.log(encrypt(password));
+    //console.log(decrypt(user.password));
+    //console.log(user.password);
+    //console.log(encrypt(password));
     if (!user || encrypt(password) !== user.password) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
@@ -268,5 +268,20 @@ app.post('/generate-token', (req, res) => {
 
     //send token to the client
     res.status(200).json({token});
+  });
+});
+app.post('/paymentcard/insert', (req, res) => {
+  console.log(req.body);
+  let { cardnumber, expirationdate, cvv, user_id, name} = req.body;
+
+  // Insert the user into the database
+  let sql = 'INSERT INTO PaymentCard(cardnumber, expirationdate, cvv, user_id, name) VALUES (?,?,?,?, ?)'
+  db.run(sql, [cardnumber, expirationdate, cvv, user_id, name], (err) => {
+    if (err) {
+      console.error(err.message);
+      res.status(500).send('Error inserting user');
+    } else {
+      res.status(201).send('User created successfully');
+    }
   });
 });
