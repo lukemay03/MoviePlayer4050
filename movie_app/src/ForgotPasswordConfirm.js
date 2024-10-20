@@ -28,7 +28,7 @@ function ForgotPasswordConfirm() {
                 setErrorMessage(dataToken.message || 'Invalid email');
             }
             const htmlMessage = "<h2>Forgot Password Link</h2>" +
-                "<p>Here is your link to reset your password: <a href=\"http://localhost:3001/reset-pass?token=" + token + "\">Reset Password</a></p>" +
+                "<p>Here is your link to reset your password: <a href=\"http://localhost:3000/reset-pass?token=" + token + "\">Reset Password</a></p>" +
                 "<p>Best regards,</p>" +
                 "Movie Player Co.";
             const subject = "Password Reset";
