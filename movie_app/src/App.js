@@ -25,6 +25,7 @@ import ForgotPassword from './ForgotPassword'
 import ForgotPasswordConfirm from './ForgotPasswordConfirm'
 import ResetPassword from './ResetPassword'
 import ResetPasswordConfirm from './ResetPasswordConfirm'
+import AddPaymentCard from './AddPaymentCard';
 function App() {
   return (
 
@@ -54,6 +55,7 @@ function App() {
           <Route path="/forgot-pass-confirm" element={<ForgotPasswordConfirm/>} />
           <Route path="/reset-pass" element={<ResetPassword/>} />
           <Route path="/reset-pass-confirm" element={<ResetPasswordConfirm/>} />
+          <Route path="/addpaymentcard/:userId" element={<AddPaymentCard/>} />
 
         </Routes>
       </div>

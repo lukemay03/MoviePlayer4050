@@ -169,7 +169,7 @@ app.get('/user/profile', (req, res) => {
     }
 
     //extract userID from token and query db for user info
-    const sql = 'SELECT first_name, last_name, email, status, registeredforpromo, role FROM Users WHERE user_id = ?';
+    const sql = 'SELECT first_name, last_name, email, status, registeredforpromo, user_id, role FROM Users WHERE user_id = ?';
     db.get(sql, [user.userId], (err, userData) => {
       if (err) {
         return res.status(500).json({ message: 'Database error' });
@@ -272,16 +272,72 @@ app.post('/generate-token', (req, res) => {
 });
 app.post('/paymentcard/insert', (req, res) => {
   console.log(req.body);
-  let { cardnumber, expirationdate, cvv, user_id, name} = req.body;
+  let { cardnumber, expiration_date, cvv, user_id, name} = req.body;
 
   // Insert the user into the database
-  let sql = 'INSERT INTO PaymentCard(cardnumber, expirationdate, cvv, user_id, name) VALUES (?,?,?,?, ?)'
-  db.run(sql, [cardnumber, expirationdate, cvv, user_id, name], (err) => {
+  let sql = 'INSERT INTO PaymentCard(cardnumber, expiration_date, cvv, user_id, name) VALUES (?,?,?,?, ?)'
+  db.run(sql, [cardnumber, expiration_date, cvv, user_id, name], (err) => {
     if (err) {
       console.error(err.message);
       res.status(500).send('Error inserting user');
     } else {
       res.status(201).send('User created successfully');
     }
+  });
+});
+app.delete('/paymentcard/delete/:id', (req, res) => {
+
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1]; //extract the token from the authorization header
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  jwt.verify(token, 'secretKey', (err, user) => {  //verify the token with the secretKey
+    if (err) {
+      return res.status(403).json({ message: 'Invalid token' });
+    }
+
+    const cardId = req.params.id; // Get the payment card ID from the request parameters
+    const sql = 'DELETE FROM PaymentCard WHERE payment_card_id = ? AND user_id = ?'; // Ensure the card belongs to the user
+    db.run(sql, [cardId, user.userId], (err, userData) => {
+      if (err) {
+        return res.status(500).json({ message: 'Database error' });
+      }
+      
+    if (this.changes === 0) {
+      return res.status(404).json({ message: 'Payment card not found or does not belong to user' });
+    }
+
+    res.json({ message: 'Payment card deleted successfully' });
+    });
+  });
+});
+app.get('/paymentcard/get', (req, res) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1]; // Extract the token from the authorization header
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  jwt.verify(token, 'secretKey', (err, user) => { // Verify the token with the secretKey
+    if (err) {
+      return res.status(403).json({ message: 'Invalid token' });
+    }
+    const sql = 'SELECT * FROM PaymentCard WHERE user_id = ?'; // Ensure the card belongs to the user
+
+    db.all(sql, [user.userId], (err, paymentCard) => {
+      if (err) {
+        return res.status(500).json({ message: 'Database error' });
+      }
+
+      if (!paymentCard) {
+        return res.status(404).json({ message: 'Payment card not found or does not belong to user' });
+      }
+
+      res.json(paymentCard); // Return the found payment card
+    });
   });
 });
