@@ -7,6 +7,20 @@ function Header() {
 
   const token = localStorage.getItem('token');
 
+  function clearStorage() {
+
+    let session = sessionStorage.getItem('register');
+
+        if (session == null) {
+
+            localStorage.removeItem('role');
+            localStorage.removeItem('token');
+            localStorage.removeItem('id');
+        }
+        sessionStorage.setItem('register', 1);
+    }
+    window.addEventListener('load', clearStorage);
+
   const handleLogout = () => {
       //clear the token
       localStorage.removeItem('token');
