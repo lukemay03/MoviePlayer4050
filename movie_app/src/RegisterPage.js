@@ -85,6 +85,12 @@ function RegisterPage() {
           </div>
 
           <div className="form-group">
+            <label htmlFor="address">Billing Address:</label>
+            <input type="address" id="address" name="address" placeholder="Enter your billing address" value={inputs.address || ""}
+                   onChange={handleInput} required/>
+          </div>
+
+          <div className="form-group">
             <label htmlFor="promotions">Receive Promotions:</label>
             <input
                 type="checkbox"

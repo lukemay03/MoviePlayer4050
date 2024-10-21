@@ -116,12 +116,12 @@ app.post('/movie/insert', (req, res) => {
 // Endpoint to insert a new user
 app.post('/user/insert', (req, res) => {
   console.log(req.body);
-  let { role, first_name, last_name , email, password, status, registeredforpromo} = req.body;
+  let { role, first_name, last_name , email, password, status, registeredforpromo, address} = req.body;
 
   // Insert the user into the database
   console.log(registeredforpromo);
-  let sql = 'INSERT INTO Users (role, first_name, last_name, email, password, status, registeredforpromo) VALUES (?,?,?,?,?,?,?)'
-  db.run(sql, [role, first_name, last_name, email,encrypt(password),status, registeredforpromo], (err) => {
+  let sql = 'INSERT INTO Users (role, first_name, last_name, email, password, status, registeredforpromo, address) VALUES (?,?,?,?,?,?,?,?)'
+  db.run(sql, [role, first_name, last_name, email,encrypt(password),status, registeredforpromo, address], (err) => {
     if (err) {
       console.error(err.message);
       res.status(500).send('Error inserting user');
@@ -182,7 +182,7 @@ app.get('/user/profile', (req, res) => {
     }
 
     //extract userID from token and query db for user info
-    const sql = 'SELECT first_name, last_name, email, status, registeredforpromo, user_id, role FROM Users WHERE user_id = ?';
+    const sql = 'SELECT first_name, last_name, email, status, registeredforpromo, user_id, role, address FROM Users WHERE user_id = ?';
     db.get(sql, [user.userId], (err, userData) => {
       if (err) {
         return res.status(500).json({ message: 'Database error' });
@@ -200,7 +200,7 @@ app.get('/user/profile', (req, res) => {
 
 //edit profile update endpoint
 app.post('/user/update', (req, res) => {
-  const { first_name, last_name, password, registeredforpromo } = req.body;
+  const { first_name, last_name, password, registeredforpromo, address} = req.body;
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
@@ -214,8 +214,8 @@ app.post('/user/update', (req, res) => {
     }
 
     //update user info in db here
-    const sql = 'UPDATE users SET first_name = ?, last_name = ?, password = ?,  registeredforpromo = ? WHERE user_id = ?';
-    db.run(sql, [first_name, last_name, encrypt(password), registeredforpromo, user.userId], (err) => {
+    const sql = 'UPDATE users SET first_name = ?, last_name = ?, password = ?,  registeredforpromo = ?, address = ? WHERE user_id = ?';
+    db.run(sql, [first_name, last_name, encrypt(password), registeredforpromo, address, user.userId], (err) => {
       if (err) {
         return res.status(500).json({ message: 'Database error' });
       }
@@ -399,6 +399,32 @@ app.put('/paymentcard/edit', (req, res) => {
         return res.status(500).json({ message: 'Database error' });
       }
       res.status(200).json({ message: 'Profile updated successfully' });
+    });
+  });
+});
+
+//password reset endpoint
+app.post('/user/reset-password', (req, res) => {
+  const { password } = req.body;  
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  jwt.verify(token, 'secretKey', (err, user) => {
+    if (err) {
+      return res.status(403).json({ message: 'Invalid token' });
+    }
+
+    //update only the password in the database
+    const sql = 'UPDATE users SET password = ? WHERE user_id = ?';
+    db.run(sql, [encrypt(password), user.userId], (err) => {
+      if (err) {
+        return res.status(500).json({ message: 'Database error' });
+      }
+      res.status(200).json({ message: 'Password updated successfully' });
     });
   });
 });

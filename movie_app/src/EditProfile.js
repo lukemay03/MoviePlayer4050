@@ -10,6 +10,7 @@ function EditProfile() {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [promotions, setPromotions] = useState(false);
+  const [address, setAddress] = useState('');  
 
   useEffect(() => {
     //send token and get user info
@@ -28,6 +29,7 @@ function EditProfile() {
           setLastName(data.last_name);
           setEmail(data.email);  
           setPromotions(data.registeredforpromo);
+          setAddress(data.address);
         } else {
           setErrorMessage(data.message);
         }
@@ -57,6 +59,7 @@ function EditProfile() {
           last_name: lastName,
           password: password, 
           registeredforpromo: promotions,
+          address: address,
         }),
       });
 
@@ -109,6 +112,17 @@ function EditProfile() {
             placeholder="Enter new password"
             value={password}
             onChange={(e) => setPassword(e.target.value)} 
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="address">New Billing Address:</label>
+          <input 
+            type="address" 
+            id="address" 
+            placeholder="Enter billing address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)} 
           />
         </div>
 

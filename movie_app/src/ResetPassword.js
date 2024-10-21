@@ -48,7 +48,7 @@ function ResetPassword() {
         } else {
             //send token along with updated user info
             try {
-                const response = await fetch('http://localhost:3001/user/update', {
+                const response = await fetch('http://localhost:3001/user/reset-password', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
