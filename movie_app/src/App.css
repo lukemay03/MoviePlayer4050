@@ -412,7 +412,20 @@ body {
     color: red;
     margin-top: 10px;
   }
-
+  .payment-card { 
+    border: 1px solid #e0e0e0;
+    border-radius: 10px; 
+    padding: 20px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 0 0 auto;
+    margin-right: 15px;
+  }
+  .edit-payments-container {
+    display: flex; 
+    flex-wrap: nowrap;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    padding: 20px;
+  }
 
 
   

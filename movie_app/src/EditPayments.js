@@ -1,108 +1,53 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from './components/Header'
-
+import PaymentCard from './components/PaymentCard';
+import { Link} from 'react-router-dom';
 function EditPayments() {
-  const [cards, setCards] = useState([
-    { cardNumber: '', nameOnCard: '', expirationDate: '', cvv: '' },
-  ]);
 
-  const handleInputChange = (index, event) => {
-    const updatedCards = [...cards];
-    updatedCards[index][event.target.name] = event.target.value;
-    setCards(updatedCards);
-  };
+  const [cards, setCards] = useState([]);
+  const [userId, setUserId] = useState(null); // State to store userId
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/paymentcard/get', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,  
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch cards');
+        }
+        const data = await response.json();
+        setCards(data);
+        setUserId(localStorage.getItem('id'));
+        //console.log('id is ' + localStorage.getItem('id'));
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-  const handleAddCard = () => {
-    if (cards.length < 3) {
-      setCards([...cards, { cardNumber: '', nameOnCard: '', expirationDate: '', cvv: '' }]);
-    }
-  };
-
-  const handleRemoveCard = (index) => {
-    const updatedCards = cards.filter((_, i) => i !== index);
-    setCards(updatedCards);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Saved cards:', cards);
-    //handle submitting the card information (e.g., send to backend)
-  };
-
+    fetchCards();
+}, []);
+const handleDelete = (cardId) => {
+  setCards(prevCards => prevCards.filter(card => card.payment_card_id !== cardId));
+};
+console.log(cards);
   return (
-    <div className="edit-payments-container">
-    <Header/>
-      <form onSubmit={handleSubmit}>
-        {cards.map((card, index) => (
-          <div key={index} className="card-group">
-            <h3>Card {index + 1}</h3>
-            <div className="form-group">
-              <label htmlFor={`cardNumber-${index}`}>Card Number:</label>
-              <input
-                type="text"
-                id={`cardNumber-${index}`}
-                name="cardNumber"
-                value={card.cardNumber}
-                onChange={(e) => handleInputChange(index, e)}
-                placeholder="Enter card number"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor={`nameOnCard-${index}`}>Name on Card:</label>
-              <input
-                type="text"
-                id={`nameOnCard-${index}`}
-                name="nameOnCard"
-                value={card.nameOnCard}
-                onChange={(e) => handleInputChange(index, e)}
-                placeholder="Enter name on card"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor={`expirationDate-${index}`}>Expiration Date:</label>
-              <input
-                type="text"
-                id={`expirationDate-${index}`}
-                name="expirationDate"
-                value={card.expirationDate}
-                onChange={(e) => handleInputChange(index, e)}
-                placeholder="MM/YY"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor={`cvv-${index}`}>CVV:</label>
-              <input
-                type="text"
-                id={`cvv-${index}`}
-                name="cvv"
-                value={card.cvv}
-                onChange={(e) => handleInputChange(index, e)}
-                placeholder="Enter CVV"
-                required
-              />
-            </div>
-
-            <button type="button" onClick={() => handleRemoveCard(index)} disabled={cards.length <= 1}>
-              Remove Card
-            </button>
-            <hr />
-          </div>
-        ))}
-
-        {cards.length < 3 && (
-          <button type="button" onClick={handleAddCard}>
-            Add Another Card
-          </button>
-        )}
-
-        <button type="submit">Save Changes</button>
-      </form>
+    <div>
+      <Header></Header>
+      <h1>Your Payment Cards</h1>
+        <div className="edit-payments-container">
+          {cards.map(card => (
+            <PaymentCard 
+              key={card.payment_card_id} // Assuming each card has a unique id
+              card={card} 
+              handleDelete={handleDelete}
+            />
+          ))}
+        </div>
+        <Link to={`/addpaymentcard/${userId}`}>
+        <button>Add New Payment Card</button>
+      </Link>
     </div>
   );
 }
