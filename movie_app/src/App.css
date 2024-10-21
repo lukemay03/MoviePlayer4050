@@ -426,7 +426,16 @@ body {
     overflow-x: auto; /* Enable horizontal scrolling */
     padding: 20px;
   }
-
+  .button-link {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none; /* Optional: if you want to remove any default button styles */
+  }
 
   
   

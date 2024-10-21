@@ -33,7 +33,7 @@ function PaymentCard({card, handleDelete }) {
       <p> Expiration Date: {expiration_date}</p>
       <p> CVV: {cvv}</p>
       <div>
-        <button onClick={onEdit}>Edit</button>
+      <Link to={{ pathname: '/editpaymentcard' }} state={card} className="button-link">Edit PaymentCard</Link>
         <button onClick={onDelete}>Delete</button>
       </div>
       </div>

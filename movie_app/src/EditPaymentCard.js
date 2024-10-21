@@ -1,16 +1,19 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams,useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import Header from './components/Header';
 
-function AddPaymentCard() {
-    const  {userId }  = useParams();
+function EditPaymentCard() {
+    const location = useLocation();
+    const {state} = location || {};
+    const { cardnumber, expiration_date, name, cvv, user_id, payment_card_id } = state;
   const [inputs, setInputs] = useState({
-    name: '',
-    cardnumber: '',
-    expiration_date: '',
-    cvv: '',
-    user_id: Number(userId) 
+    name: name,
+    cardnumber: cardnumber,
+    expiration_date: expiration_date,
+    cvv: cvv,
+    user_id: user_id,
+    payment_card_id: payment_card_id 
   });
   const navigate = useNavigate();
   const handleChange = (event) => {
@@ -19,23 +22,18 @@ function AddPaymentCard() {
   const handleSubmit = async (event) => {
     event.preventDefault()
     //post to database
-    const result = await fetch('http://localhost:3001/paymentcard/insert', {
-      method: 'POST',
+    const result = await fetch('http://localhost:3001/paymentcard/edit', {
+      method: 'PUT',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,  
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(inputs),
     });
-    if (!result.ok) {
-      const errorData = await result.json();
-      alert(errorData.message || 'Failed to add payment card.');
-      return;
-    }
     //console.log(inputs.trailerpicture)
     //console.log(status)
     //console.log(inputs)
-    alert("added new payment card");
+    alert("edited payment card");
     navigate('/edit-payments');
   }
     return (
@@ -80,4 +78,4 @@ function AddPaymentCard() {
     );
 }
 
-export default AddPaymentCard;
+export default EditPaymentCard;

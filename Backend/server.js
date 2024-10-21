@@ -271,6 +271,27 @@ app.post('/generate-token', (req, res) => {
   });
 });
 app.post('/paymentcard/insert', (req, res) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1]; //extract the token from the authorization header
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  jwt.verify(token, 'secretKey', (err, user) => {  //verify the token with the secretKey
+    if (err) {
+      return res.status(403).json({ message: 'Invalid token' });
+    }
+    // Check how many cards the user has
+    const countSql = 'SELECT COUNT(*) AS cardCount FROM PaymentCard WHERE user_id = ?';
+    db.get(countSql, [user.userId], (err, row) => {
+      if (err) {
+        return res.status(500).json({ message: 'Database error' });
+      }
+
+      if (row.cardCount >= 4) {
+        return res.status(400).json({ message: 'You can only have a maximum of 4 payment cards.' });
+      }
   console.log(req.body);
   let { cardnumber, expiration_date, cvv, user_id, name} = req.body;
 
@@ -283,6 +304,8 @@ app.post('/paymentcard/insert', (req, res) => {
     } else {
       res.status(201).send('User created successfully');
     }
+  });
+  });
   });
 });
 app.delete('/paymentcard/delete/:id', (req, res) => {
@@ -301,7 +324,7 @@ app.delete('/paymentcard/delete/:id', (req, res) => {
 
     const cardId = req.params.id; // Get the payment card ID from the request parameters
     const sql = 'DELETE FROM PaymentCard WHERE payment_card_id = ? AND user_id = ?'; // Ensure the card belongs to the user
-    db.run(sql, [cardId, user.userId], (err, userData) => {
+    db.run(sql, [cardId, user.userId], function(err) {
       if (err) {
         return res.status(500).json({ message: 'Database error' });
       }
@@ -338,6 +361,31 @@ app.get('/paymentcard/get', (req, res) => {
       }
 
       res.json(paymentCard); // Return the found payment card
+    });
+  });
+});
+//edit profile update endpoint
+app.put('/paymentcard/edit', (req, res) => {
+  const { cardnumber, expiration_date, name, cvv, user_id, payment_card_id } = req.body;
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  console.log(req.body);
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  jwt.verify(token, 'secretKey', (err, user) => {
+    if (err) {
+      return res.status(403).json({ message: 'Invalid token' });
+    }
+
+    //update user info in db here
+    const sql = 'UPDATE PaymentCard SET cardnumber = ?, expiration_date = ?, cvv = ?, name = ? WHERE user_id = ? and payment_card_id = ?';
+    db.run(sql, [cardnumber, expiration_date, cvv, name, user.userId, payment_card_id], (err) => {
+      if (err) {
+        return res.status(500).json({ message: 'Database error' });
+      }
+      res.status(200).json({ message: 'Profile updated successfully' });
     });
   });
 });
