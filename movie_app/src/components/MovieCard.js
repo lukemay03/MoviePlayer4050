@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 
-function MovieCard({poster, title, trailerLink, detailsLink }) {
+function MovieCard({poster, title, trailerLink, onDetailsClick }) {
   const info = { image: poster, name: title};
   const [showTrailer, setShowTrailer] = useState(false);
 
@@ -29,7 +29,7 @@ function MovieCard({poster, title, trailerLink, detailsLink }) {
         {showTrailer ? 'Show Poster' : 'Watch Trailer'}
         </button>
         <Link to={{ pathname: '/ticket-select' }} state={info}>Book Tickets</Link>
-        <Link to={detailsLink}>Movie Details</Link>
+            <button onClick={onDetailsClick}>Movie Details</button>
         </div>
       </div>
     );

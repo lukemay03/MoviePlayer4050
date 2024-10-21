@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
 import Header from './components/Header';
 import MovieCard from './components/MovieCard';
+import MovieDetailsCard from './components/MovieDetailsCard'
 
 function Home() {
     const [currentMovies, setCurrentMovie] = useState([]);
@@ -12,6 +13,9 @@ function Home() {
     const [searchQuery, setSearchQuery] = useState(''); 
     const [filteredData, setFilteredData] = useState([]);   
     const [filteredComingSoon, setFilteredComingSoon] = useState([])
+
+    const [selectedMovie, setSelectedMovie] = useState(null);
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         Promise.all([
@@ -44,6 +48,33 @@ function Home() {
     return array.sort(() => Math.random() - 0.5);
   }
 
+    const openModal = async (movie) => {
+      const movieTitle = movie.movie_title;
+        try {
+            const link = 'http://localhost:3001/movie/details?string=' + encodeURIComponent(movieTitle);
+            const response = await fetch(link);
+            //parse response
+            const movie_details =  await response.json();
+
+            if (!response.ok) {
+                console.log('An error occurred', response.statusText);
+            } else {
+                setSelectedMovie(movie_details[0]);
+                console.log("Movie: ", movie_details[0]);
+                console.log("movie rating: ", movie_details[0].movie_rating);
+                console.log("movie cast: ", movie_details[0].cast);
+                setShowModal(true);
+            }
+        } catch (error) {
+            console.log(error.message)
+        }
+    };
+
+    const closeModal = () => {
+        setSelectedMovie(null);
+        setShowModal(false);
+    };
+
     return (
         <body>
         <Header></Header>
@@ -66,7 +97,7 @@ function Home() {
                   poster= {movie.trailer_picture}
                   title={movie.movie_title}
                   trailerLink={movie.trailer_link}
-                  detailsLink="/details/movie1"
+                  onDetailsClick={() => openModal(movie)}
         />
                  ))}
              </div>
@@ -77,14 +108,24 @@ function Home() {
                   poster= {movie.trailer_picture}
                   title={movie.movie_title}
                   trailerLink={movie.trailer_link}
-                  detailsLink="/details/movie1"
+                  onDetailsClick={() => openModal(movie)}
         />
                  ))}
              </div>
-             
-    
+             {showModal && selectedMovie && (
+                 <MovieDetailsCard
+                     title={selectedMovie.movie_title}
+                     details={selectedMovie.synopsis}
+                     cast={selectedMovie.cast}
+                     category={selectedMovie.category}
+                     director={selectedMovie.director}
+                     producer={selectedMovie.producer}
+                     rating={selectedMovie.movie_rating}
+                     closeModal={closeModal}
+                 />
+             )}
          </div>
-     </body>
+        </body>
        );
 }
 

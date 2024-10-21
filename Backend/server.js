@@ -83,6 +83,19 @@ app.get('/movie/search', (req, res) => {
       }
   });
 });
+// Endpoint to get a movie's details
+app.get('/movie/details', (req, res) => {
+  let inputString = req.query.string;
+  let querystring = 'SELECT movie_title, category, director, producer, movie_rating, synopsis, \"cast\" FROM Movies where movie_title like \'%' + inputString + '%\'';
+  db.all(querystring, (err, rows) => {
+    if (err) {
+      console.log("query string: ", querystring);
+      res.status(500).json({ error: err.message });
+    } else {
+      res.json(rows); // Return a single movie object
+    }
+  });
+});
 // Endpoint to insert a new movie
 app.post('/movie/insert', (req, res) => {
   console.log(req.body);
