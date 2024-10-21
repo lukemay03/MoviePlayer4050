@@ -22,6 +22,7 @@ function encrypt(text) {
   return encrypted;
 }
 function decrypt(text) {
+  //console.log(text);
   const decipher = crypto.createDecipheriv(algorithm, key, initVector);
   let decrypted = decipher.update(text, 'hex', 'utf-8');
   decrypted += decipher.final('utf-8');
@@ -310,7 +311,7 @@ app.post('/paymentcard/insert', (req, res) => {
 
   // Insert the user into the database
   let sql = 'INSERT INTO PaymentCard(cardnumber, expiration_date, cvv, user_id, name) VALUES (?,?,?,?, ?)'
-  db.run(sql, [cardnumber, expiration_date, cvv, user_id, name], (err) => {
+  db.run(sql, [encrypt(cardnumber), encrypt(expiration_date), encrypt(cvv), user_id, name], (err) => {
     if (err) {
       console.error(err.message);
       res.status(500).send('Error inserting user');
@@ -372,8 +373,15 @@ app.get('/paymentcard/get', (req, res) => {
       if (!paymentCard) {
         return res.status(404).json({ message: 'Payment card not found or does not belong to user' });
       }
-
-      res.json(paymentCard); // Return the found payment card
+      const decryptedCards = paymentCard.map(card => {
+        return {
+          ...card,
+          cardnumber: decrypt(card.cardnumber),
+          expiration_date: decrypt(card.expiration_date),
+          cvv: decrypt(card.cvv),
+        };
+      });
+      res.json(decryptedCards); // Return the found payment card
     });
   });
 });
@@ -394,7 +402,7 @@ app.put('/paymentcard/edit', (req, res) => {
 
     //update user info in db here
     const sql = 'UPDATE PaymentCard SET cardnumber = ?, expiration_date = ?, cvv = ?, name = ? WHERE user_id = ? and payment_card_id = ?';
-    db.run(sql, [cardnumber, expiration_date, cvv, name, user.userId, payment_card_id], (err) => {
+    db.run(sql, [encrypt(cardnumber), encrypt(expiration_date), encrypt(cvv), name, user.userId, payment_card_id], (err) => {
       if (err) {
         return res.status(500).json({ message: 'Database error' });
       }

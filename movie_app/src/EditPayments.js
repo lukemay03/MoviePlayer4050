@@ -9,6 +9,7 @@ function EditPayments() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
+        setUserId(localStorage.getItem('id'));
         const response = await fetch('http://localhost:3001/paymentcard/get', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,  
@@ -19,7 +20,6 @@ function EditPayments() {
         }
         const data = await response.json();
         setCards(data);
-        setUserId(localStorage.getItem('id'));
         //console.log('id is ' + localStorage.getItem('id'));
       } catch (err) {
         console.log(err);
