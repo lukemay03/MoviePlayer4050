@@ -134,9 +134,9 @@ app.post('/user/insert', (req, res) => {
 // admin: fake@uga.edu, 123456, 
 // user: bobsmith@gmail.com, password 
 // user: johnmason@gmail.com, secure
-test = '123456';
-encryptedtest = encrypt(test);
-console.log(encryptedtest);
+//test = 'Kevin';
+//encryptedtest = encrypt(test);
+//console.log(encryptedtest);
 //decryptedtest = decrypt(encryptedtest);
 //console.log(decrypt('5c06f6cce196bab68474cd294956e6c8'));
 //console.log(decryptedtest)
@@ -213,7 +213,8 @@ app.post('/user/update', (req, res) => {
     if (err) {
       return res.status(403).json({ message: 'Invalid token' });
     }
-
+    console.log(password);
+    if (password) {
     //update user info in db here
     const sql = 'UPDATE users SET first_name = ?, last_name = ?, password = ?,  registeredforpromo = ?, address = ? WHERE user_id = ?';
     db.run(sql, [first_name, last_name, encrypt(password), registeredforpromo, address, user.userId], (err) => {
@@ -222,6 +223,15 @@ app.post('/user/update', (req, res) => {
       }
       res.status(200).json({ message: 'Profile updated successfully' });
     });
+  } else {
+    const sql = 'UPDATE users SET first_name = ?, last_name = ?, registeredforpromo = ?, address = ? WHERE user_id = ?';
+    db.run(sql, [first_name, last_name, registeredforpromo, address, user.userId], (err) => {
+      if (err) {
+        return res.status(500).json({ message: 'Database error' });
+      }
+      res.status(200).json({ message: 'Profile updated successfully' });
+    });
+  }
   });
 });
 
@@ -311,7 +321,7 @@ app.post('/paymentcard/insert', (req, res) => {
 
   // Insert the user into the database
   let sql = 'INSERT INTO PaymentCard(cardnumber, expiration_date, cvv, user_id, name) VALUES (?,?,?,?, ?)'
-  db.run(sql, [encrypt(cardnumber), encrypt(expiration_date), encrypt(cvv), user_id, name], (err) => {
+  db.run(sql, [encrypt(cardnumber), encrypt(expiration_date), encrypt(cvv), user_id, encrypt(name)], (err) => {
     if (err) {
       console.error(err.message);
       res.status(500).send('Error inserting user');
@@ -373,12 +383,14 @@ app.get('/paymentcard/get', (req, res) => {
       if (!paymentCard) {
         return res.status(404).json({ message: 'Payment card not found or does not belong to user' });
       }
+      console.log(paymentCard);
       const decryptedCards = paymentCard.map(card => {
         return {
           ...card,
           cardnumber: decrypt(card.cardnumber),
           expiration_date: decrypt(card.expiration_date),
           cvv: decrypt(card.cvv),
+          name: decrypt(card.name)
         };
       });
       res.json(decryptedCards); // Return the found payment card
@@ -402,7 +414,7 @@ app.put('/paymentcard/edit', (req, res) => {
 
     //update user info in db here
     const sql = 'UPDATE PaymentCard SET cardnumber = ?, expiration_date = ?, cvv = ?, name = ? WHERE user_id = ? and payment_card_id = ?';
-    db.run(sql, [encrypt(cardnumber), encrypt(expiration_date), encrypt(cvv), name, user.userId, payment_card_id], (err) => {
+    db.run(sql, [encrypt(cardnumber), encrypt(expiration_date), encrypt(cvv), encrypt(name), user.userId, payment_card_id], (err) => {
       if (err) {
         return res.status(500).json({ message: 'Database error' });
       }

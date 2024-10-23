@@ -24,11 +24,16 @@ function EditProfile() {
 
         //parse response
         const data = await response.json();
+        //console.log(data);
         if (response.ok) {
           setFirstName(data.first_name);
           setLastName(data.last_name);
-          setEmail(data.email);  
-          setPromotions(data.registeredforpromo);
+          setEmail(data.email);
+          if (data.registeredforpromo === '0') {  
+            setPromotions(false);
+          } else {
+            setPromotions(true);
+          }
           setAddress(data.address);
         } else {
           setErrorMessage(data.message);
@@ -73,7 +78,7 @@ function EditProfile() {
       setErrorMessage('Error updating profile');
     }
   };
-
+  console.log(promotions);
   return (
     <div className="edit-profile-container">
       <Header />
