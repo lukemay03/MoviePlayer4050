@@ -16,6 +16,16 @@ function AddMovie() {
   }
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const fields = ['moviename', 'cast', 'category', 'director', 'producer', 'synopsis', 'trailerlink', 'movierating'];
+    const filled = fields.every(field => inputs[field] && inputs[field].trim() !== '');
+
+    if (!filled) {
+      alert('Please input something in all required fields.');
+      return;
+    }
+    if (!inputs.trailerpicture) {
+      inputs.trailerpicture = 'pics/png-clipart-clapperboard-computer-icons-film-movie-poster-angle-text.png'; // Replace with your default image path
+    } else {
     let formData = new FormData()
     formData.append('file', inputs.trailerpicture)
     const response =await fetch('http://localhost:3001/image', {
@@ -27,6 +37,7 @@ function AddMovie() {
     }
     inputs.trailerpicture = 'pics/' + String(inputs.trailerpicture.name)
     console.log(inputs.trailerpicture)
+  }
     //post to database
     const result = await fetch('http://localhost:3001/movie/insert', {
       method: 'POST',
