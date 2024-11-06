@@ -45,14 +45,7 @@ function Home() {
     setFilteredComingSoon(filteredcoming);
   };
 
-  //IM HERE
-  const handleFilter = () => {
-    const filtered = currentMovies.filter(movie => 
-      movie.category && movie.category.toLowerCase().includes(filterQuery.toLowerCase())
-    );
-    const filteredcoming = comingSoonMovies.filter(movie => 
-        movie.category && movie.category.toLowerCase().includes(filterQuery.toLowerCase()) 
-    );
+  
   const handleFilter = (e) => {
     const filtered = currentMovies.filter(movie => 
       movie.category && movie.category.toLowerCase() === filterQuery.toLowerCase()
@@ -168,7 +161,7 @@ function Home() {
          </div>
         </body>
        );
-    }
+    
 }
 
 export default Home;
