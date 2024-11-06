@@ -52,6 +52,13 @@ function Home() {
     );
     const filteredcoming = comingSoonMovies.filter(movie => 
         movie.category && movie.category.toLowerCase().includes(filterQuery.toLowerCase()) 
+    );
+  const handleFilter = (e) => {
+    const filtered = currentMovies.filter(movie => 
+      movie.category && movie.category.toLowerCase() === filterQuery.toLowerCase()
+    );
+    const filteredcoming = comingSoonMovies.filter(movie => 
+        movie.category && movie.category.toLowerCase() === filterQuery.toLowerCase() 
       );
     setFilteredData(filtered);
     setFilteredComingSoon(filteredcoming);
@@ -113,6 +120,9 @@ function Home() {
                     <option value="horror">Horror</option>
                     <option value="musical">Musical</option>
                     <option value="Science Fiction">Sci-Fi</option>
+                    <option value="Science Fiction">Sci-Fi</option>
+                    <option value="fantasy">Fantasy</option>
+                    <option value="comedy">Comedy</option>
                 </select>
                 <button onClick={handleFilter}>Filter</button>
                  </div>
@@ -158,6 +168,7 @@ function Home() {
          </div>
         </body>
        );
+    }
 }
 
 export default Home;
