@@ -54,7 +54,7 @@ app.post('/image', upload.single('file'), function (req, res) {
   res.json(files);
 })
 app.get('/movie/trailers', (req, res) => {
-  db.all('SELECT movie_title,trailer_link, trailer_picture FROM Movies where current_running = \'True\' ', (err, rows) => {
+  db.all('SELECT * FROM Movies where current_running = \'True\' ', (err, rows) => {
       if (err) {
           res.status(500).json({ error: err.message });
       } else {
@@ -64,7 +64,7 @@ app.get('/movie/trailers', (req, res) => {
   });
 });
 app.get('/movie/comingsoon', (req, res) => {
-  db.all('SELECT movie_title,trailer_link, trailer_picture FROM Movies where current_running = \'False\'', (err, rows) => {
+  db.all('SELECT * FROM Movies where current_running = \'False\'', (err, rows) => {
       if (err) {
           res.status(500).json({ error: err.message });
       } else {

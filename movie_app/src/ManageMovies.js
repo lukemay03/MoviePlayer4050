@@ -48,7 +48,7 @@ function ManageMovies() {
     return (
         <body>
         <AdminHeader></AdminHeader>
-        <Link to="/manage-movies"><button>Manage Movies and Promotions</button></Link>
+        <Link to="/manage-movies"><button>Manage Movies</button></Link>
         <Link to="/manage-users"><button>Manage Users</button></Link>
         <Link to="/add-movie-page"><button>Add Movie</button></Link>
 
@@ -70,7 +70,7 @@ function ManageMovies() {
                   poster= {movie.trailer_picture}
                   title={movie.movie_title}
                   trailerLink={movie.trailer_link}
-                  detailsLink="/details/movie1"
+                  detailsLink={movie}
         />
                  ))}
              </div>
@@ -81,7 +81,7 @@ function ManageMovies() {
                   poster= {movie.trailer_picture}
                   title={movie.movie_title}
                   trailerLink={movie.trailer_link}
-                  detailsLink="/details/movie1"
+                  detailsLink={movie}
         />
                  ))}
              </div>

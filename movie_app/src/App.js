@@ -42,7 +42,7 @@ function App() {
           <Route path="/admin-main" element={<AdminMain/>} />
           <Route path="/manage-movies" element={<ManageMovies/>} />
           <Route path="/manage-users" element={<ManageUsers/>} />
-          <Route path="manage-movies/manage-promotions" element={<ManagePromotions/>} />
+          <Route path="manage-movies/edit-movie/manage-promotions" element={<ManagePromotions/>} />
           <Route path="/ticket-select" element={<TicketSelect/>} />
           <Route path="/seat-selector" element={<SeatSelector/>} />
           <Route path="manage-movies/edit-movie" element={<EditMovie/>} />

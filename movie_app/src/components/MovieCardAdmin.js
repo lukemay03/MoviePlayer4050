@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 
 function MovieCardAdmin({poster, title, trailerLink, detailsLink }) {
-  const info = { image: poster, name: title};
+  //const info = { image: poster, name: title};
   const [showTrailer, setShowTrailer] = useState(false);
 
   const toggleTrailer = () => {
@@ -25,7 +25,7 @@ function MovieCardAdmin({poster, title, trailerLink, detailsLink }) {
         <h3>{title}</h3>
   
         <div className="movie-links">
-        <Link to="edit-movie"><button>Edit Movie</button></Link>
+        <Link to="edit-movie" state={detailsLink}><button>Edit Movie</button></Link>
         </div>
       </div>
     );
