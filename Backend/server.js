@@ -448,3 +448,33 @@ app.post('/user/reset-password', (req, res) => {
     });
   });
 });
+app.get('/promotion/get/:id', (req, res) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1]; // Extract the token from the authorization header
+  const movie_id = req.params.id;
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  jwt.verify(token, 'secretKey', (err, user) => { // Verify the token with the secretKey
+    if (err) {
+      return res.status(403).json({ message: 'Invalid token' });
+    }
+
+    const sql = 'SELECT Promo.*, Movies.movie_title FROM Promo JOIN Movies ON Promo.movie_id = Movies.movie_id WHERE Promo.movie_id = ?';
+
+    db.all(sql, [movie_id], (err, promoCards) => {
+      if (err) {
+        return res.status(500).json({ message: 'Database error' });
+      }
+
+      if (promoCards.length === 0) {
+        return res.status(404).json({ message: 'Promotion card not found' });
+      }
+
+      console.log(promoCards); // Log the retrieved promotion cards
+      return res.status(200).json(promoCards); // Send the promotion cards back to the client
+    });
+  });
+});

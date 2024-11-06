@@ -1,14 +1,45 @@
 import React from 'react';
 import { Link, useLocation} from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import AdminHeader from './components/AdminHeader';
 import AdminErrorPage from './components/AdminErrorPage';
-
+import PromotionCard from './components/PromotionCard';
 
 function ManagePromotions() {
   const location = useLocation();
   const {state} = location || {};
-  const {image,name} = state || {};
+  const {movie_title, movie_id} = state || {};
+  console.log(movie_title);
   const role = localStorage.getItem('role');
+  const [cards, setCards] = useState([]);
+  const [userId, setUserId] = useState(null); // State to store userId
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        setUserId(localStorage.getItem('id'));
+        const response = await fetch(`http://localhost:3001/promotion/get/${movie_id}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'  
+          }
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch cards');
+        }
+        const data = await response.json();
+        console.log(data);
+        setCards(data);
+        //console.log('id is ' + localStorage.getItem('id'));
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchCards();
+}, []);
+const handleDelete = (cardId) => {
+  setCards(prevCards => prevCards.filter(card => card.payment_card_id !== cardId));
+};
   if(role && role === 'admin') {
     return (
         <body>
@@ -18,32 +49,21 @@ function ManagePromotions() {
           <Link to="/manage-users"><button>Manage Users</button></Link>
         </div>
          <div className="regConfirm">
-         <h3> Managing Promotions For: Shrek{name}</h3>
-
-              <form className="Edit-form">
-                <div className="form-group">
-                  <label htmlFor="Name">Change Discount:</label>
-                  <input name="Dpercent" placeholder="Current dicount = 0%" />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="Name">Date for discount:</label>
-                  <input name="Ddate" placeholder="Date 10/10/2010" />
-                 </div>
-
-                <div className="form-group">
-                   <label htmlFor="requirecode">Require Code:</label>
-                   <button>yes</button>
-                   <button>no</button>
-                   <input name="Dcode" placeholder="Enter code if yes" />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="Release Email to update users">Release Email to update users and Finalize Channges:</label>
-                  <button type="submit">yes</button>
-                  <button type="submit">no</button>
-                </div>
-
-           </form>
+         <div>
+      <h1>Promos for this movie</h1>
+        <div className="edit-payments-container">
+          {cards.map(card => (
+            <PromotionCard 
+              key={card.Promo_id} // Assuming each card has a unique id
+              card={card} 
+              handleDelete={handleDelete}
+            />
+          ))}
+        </div>
+        <Link to={`/addpaymentcard/${userId}`}>
+        <button>Add New Payment Card</button>
+      </Link>
+    </div>
 
           </div>
 

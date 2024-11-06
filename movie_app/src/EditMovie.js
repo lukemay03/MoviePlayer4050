@@ -19,7 +19,7 @@ function EditMovie() {
             <Link to="/manage-users">
                 <button>Manage Users</button>
             </Link>
-            <Link to="manage-promotions"><button>Manage Promotions</button></Link>
+            <Link to="manage-promotions" state={state}><button>Manage Promotions</button></Link>
         </div>
 
         <form className="movie-form">
