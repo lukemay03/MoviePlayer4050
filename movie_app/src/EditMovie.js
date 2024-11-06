@@ -1,8 +1,12 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import AdminHeader from './components/AdminHeader';
 
 function EditMovie() {
+    const location = useLocation();
+  const {state} = location || {};
+  //console.log(state);
+  const {cast,category, director, movie_rating, movie_title, producer, synopsis, trailer_link, trailer_picture} = state || {};
     return (
         <body>
         <AdminHeader></AdminHeader>
@@ -15,24 +19,25 @@ function EditMovie() {
             <Link to="/manage-users">
                 <button>Manage Users</button>
             </Link>
+            <Link to="manage-promotions"><button>Manage Promotions</button></Link>
         </div>
 
         <form className="movie-form">
             <div className="form-group">
                 <label htmlFor="title">Title:</label>
-                <input type="text" id="movie_title" name="movie_title" placeholder="Shrek"/>
+                <input type="text" id="movie_title" name="movie_title" placeholder={movie_title}/>
             </div>
             <div className="form-group">
                 <label htmlFor="rating">Rating:</label>
-                <input type="text" id="movie_rating" name="movie_rating" placeholder="PG"/>
+                <input type="text" id="movie_rating" name="movie_rating" placeholder={movie_rating}/>
             </div>
             <div className="form-group">
                 <label htmlFor="category">Category:</label>
-                <input type="text" id="category" name="category" placeholder="Cartoon"/>
+                <input type="text" id="category" name="category" placeholder={category}/>
             </div>
             <div className="form-group">
                 <label htmlFor="cast">Cast:</label>
-                <input type="text" id="cast" name="cast" placeholder="Cast list"/>
+                <input type="text" id="cast" name="cast" placeholder={cast}/>
             </div>
             <div className="form-group">
                 <label htmlFor="director">Director:</label>
@@ -40,20 +45,20 @@ function EditMovie() {
             </div>
             <div className="form-group">
                 <label htmlFor="producer">Producer:</label>
-                <input type="text" id="producer" name="producer" placeholder="Producer"/>
+                <input type="text" id="producer" name="producer" placeholder={producer}/>
             </div>
             <div className="form-group">
                 <label htmlFor="synopsis">Synopsis:</label>
-                <textarea id="synopsis" name="synopsis" placeholder="Movie synopsis"></textarea>
+                <textarea id="synopsis" name="synopsis" placeholder={synopsis}></textarea>
             </div>
             <div className="form-group">
                 <label htmlFor="trailer_picture">Trailer Picture URL:</label>
                 <input type="text" id="trailer_picture" name="trailer_picture"
-                       placeholder="URL of the trailer picture"/>
+                       placeholder={trailer_picture}/>
             </div>
             <div className="form-group">
                 <label htmlFor="trailer_link">Trailer Link:</label>
-                <input type="text" id="trailer_link" name="trailer_link" placeholder="URL of the trailer"/>
+                <input type="text" id="trailer_link" name="trailer_link" placeholder={trailer_link}/>
             </div>
             <div className="form-group">
                 <label htmlFor="current_running">Currently Running:</label>
