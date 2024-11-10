@@ -27,6 +27,25 @@ function TicketSelect() {
     }
   };
 
+localStorage.setItem('movie', JSON.stringify(name));
+const movie = localStorage.getItem('movie');
+localStorage.setItem('time', 12.00);
+const time = localStorage.getItem('time');
+localStorage.setItem('seat', "A1");
+const seat = localStorage.getItem('seat');
+localStorage.setItem('number_of_tickets', 2);
+const numoftic = localStorage.getItem('number_of_tickets');
+localStorage.setItem('adult_tickets', 1);
+const adulttic = localStorage.getItem('adult_tickets');
+localStorage.setItem('children_tickets', 1);
+const childtic = localStorage.getItem('children_tickets');
+
+const price = (adulttic * 15) + (childtic * 9);
+localStorage.setItem('total', price);
+
+
+
+
   return (
     <div className="ticket-select">
       <Header></Header>
