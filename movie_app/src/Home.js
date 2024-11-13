@@ -113,9 +113,6 @@ function Home() {
                     <option value="horror">Horror</option>
                     <option value="musical">Musical</option>
                     <option value="Science Fiction">Sci-Fi</option>
-                    <option value="Science Fiction">Sci-Fi</option>
-                    <option value="fantasy">Fantasy</option>
-                    <option value="comedy">Comedy</option>
                 </select>
                 <button onClick={handleFilter}>Filter</button>
                  </div>
