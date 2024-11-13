@@ -6,12 +6,14 @@ import Header from './components/Header';
 function EditPromo() {
   const role = localStorage.getItem('role');
   const location = useLocation();
-  const { movie_title, movie_id, description, date, Promo_id } = location.state || {};
+  const { movie_title, movie_id, description, date, Promo_id, code, mailed } = location.state || {};
   const [inputs, setInputs] = useState({
     description: description,
     date: date,
     movie_id: Number(movie_id),
-    Promo_id: Promo_id
+    Promo_id: Promo_id,
+    code: code,
+    mailed: mailed
 
   });
   const navigate = useNavigate();
@@ -19,6 +21,9 @@ function EditPromo() {
     setInputs(prev => ({...prev, [event.target.name]: event.target.value}))
   }
   const handleSubmit = async (event) => {
+    if(mailed === 'True') {
+      alert('promo has already been sent out.');
+    }
     event.preventDefault()
     //post to database
     console.log('inputs are');
@@ -59,6 +64,14 @@ function EditPromo() {
           type="text" 
           name="description" 
           value={inputs.description || ""} 
+          onChange={handleChange}
+        />
+      </label>
+      <label>Enter Code:
+        <input 
+          type="text" 
+          name="code" 
+          value={inputs.code || ""} 
           onChange={handleChange}
         />
       </label>

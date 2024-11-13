@@ -10,7 +10,8 @@ function AddPromo() {
   const [inputs, setInputs] = useState({
     description: '',
     date: '',
-    movie_id: Number(movie_id) 
+    movie_id: Number(movie_id),
+    code: '' 
   });
   const navigate = useNavigate();
   const handleChange = (event) => {
@@ -64,7 +65,14 @@ function AddPromo() {
           onChange={handleChange}
         />
       </label>
-      
+      <label>Enter code:
+        <input 
+          type="text" 
+          name="code" 
+          value={inputs.code || ""} 
+          onChange={handleChange}
+        />
+      </label>
       <button className = "addmoviebutton" type="submit">Submit</button>
     </form>
     </div>

@@ -51,7 +51,6 @@ function ManageMovies() {
         <Link to="/manage-movies"><button>Manage Movies</button></Link>
         <Link to="/manage-users"><button>Manage Users</button></Link>
         <Link to="/add-movie-page"><button>Add Movie</button></Link>
-
          <div className="container">
                  <div className="search-bar">
                  <input type="text" placeholder="Search for movies by title..."

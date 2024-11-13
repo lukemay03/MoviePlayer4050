@@ -490,11 +490,11 @@ app.post('/promo/insert', (req, res) => {
     if (err) {
       return res.status(403).json({ message: 'Invalid token' });
     }
-  let { description, date, movie_id} = req.body;
+  let { description, date, movie_id, code} = req.body;
 
   // Insert the user into the database
-  let sql = 'INSERT INTO Promo(description, date, movie_id) VALUES (?,?,?)'
-  db.run(sql, [description, date, movie_id], (err) => {
+  let sql = 'INSERT INTO Promo(description, date, movie_id, code, mailed) VALUES (?,?,?, ?, ?)'
+  db.run(sql, [description, date, movie_id, code, 'False'], (err) => {
     if (err) {
       console.error(err.message);
       res.status(500).send('Error inserting user');
@@ -534,7 +534,7 @@ app.post('/promo/insert', (req, res) => {
     });
   });
   app.put('/promo/edit', (req, res) => {
-    const { date, description, movie_id, Promo_id} = req.body;
+    const { date, description, movie_id, Promo_id, code, mailed} = req.body;
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
     console.log(req.body);
@@ -548,12 +548,22 @@ app.post('/promo/insert', (req, res) => {
       }
   
       //update user info in db here
-      const sql = 'UPDATE Promo SET description = ?, date = ? WHERE Promo_id = ?';
-      db.run(sql, [description, date, Promo_id], (err) => {
+      const sql = 'UPDATE Promo SET description = ?, date = ?, code = ?, mailed = ? WHERE Promo_id = ?';
+      db.run(sql, [description, date, code, mailed, Promo_id], (err) => {
         if (err) {
           return res.status(500).json({ message: 'Database error' });
         }
         res.status(200).json({ message: 'Promo updated successfully' });
       });
+    });
+  });
+  app.get('/users/promo', (req, res) => {
+    db.all('SELECT email FROM Users where registeredforpromo = 1', (err, rows) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+        } else {
+            res.json(rows);
+            //console.log(rows)
+        }
     });
   });
