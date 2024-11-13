@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
-import { Link } from 'react-router-dom';
+import { Link, useLocation} from 'react-router-dom';
 
 
 function Checkout() {
@@ -24,7 +24,7 @@ if (role == null) {
         <div className="summary-section">
         <h2 class="checkout-h">Order Summary</h2>
         <p><strong>Movie:{name}</strong></p>
-        <p><strong>Showtime:{SelectedShowtime}</strong></p>
+        <p><strong>Showtime:{selectedShowtime}</strong></p>
         <p><strong>Selected Seats:{selectedSeats}</strong> </p>
         <p><strong>Adult Tickets:{adultCount}</strong> </p>
         <p><strong>Kid Tickets:{kidCount}</strong></p>
