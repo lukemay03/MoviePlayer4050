@@ -106,7 +106,10 @@ localStorage.setItem('total', price);
         </div>
       </div>
 
-        <Link to="/checkout"><button>Checkout</button></Link>
+        <Link to={"/checkout/${name}"} state={{ name, selectedShowtime, selectedSeats, adultCount, kidCount }}>
+            <button>Check Out</button>
+        </Link>
+          
       </div>
     </div>
   );
