@@ -38,7 +38,7 @@ function ManagePromotions() {
     fetchCards();
 }, []);
 const handleDelete = (cardId) => {
-  setCards(prevCards => prevCards.filter(card => card.payment_card_id !== cardId));
+  setCards(prevCards => prevCards.filter(card => card.Promo_id !== cardId));
 };
   if(role && role === 'admin') {
     return (
@@ -60,8 +60,8 @@ const handleDelete = (cardId) => {
             />
           ))}
         </div>
-        <Link to={`/addpaymentcard/${userId}`}>
-        <button>Add New Payment Card</button>
+        <Link to={`/addpromo/${movie_id}`} state={{ movie_title, movie_id }}>
+        <button>Add New Promo Card</button>
       </Link>
     </div>
 

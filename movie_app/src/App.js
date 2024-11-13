@@ -27,6 +27,8 @@ import ResetPassword from './ResetPassword'
 import ResetPasswordConfirm from './ResetPasswordConfirm'
 import AddPaymentCard from './AddPaymentCard';
 import EditPaymentCard from './EditPaymentCard';
+import AddPromo from './AddPromo';
+import EditPromo from './EditPromo';
 function App() {
   return (
 
@@ -42,10 +44,10 @@ function App() {
           <Route path="/admin-main" element={<AdminMain/>} />
           <Route path="/manage-movies" element={<ManageMovies/>} />
           <Route path="/manage-users" element={<ManageUsers/>} />
-          <Route path="manage-movies/edit-movie/manage-promotions" element={<ManagePromotions/>} />
+          <Route path="/manage-promotions" element={<ManagePromotions/>} />
           <Route path="/ticket-select" element={<TicketSelect/>} />
           <Route path="/seat-selector" element={<SeatSelector/>} />
-          <Route path="manage-movies/edit-movie" element={<EditMovie/>} />
+          <Route path="/edit-movie" element={<EditMovie/>} />
           <Route path="/checkout" element={<Checkout/>} />
           <Route path="/order-confirm" element={<OrderConfirm/>} />
           <Route path="/add-movie-page" element={<AddMovie/>} />
@@ -57,7 +59,9 @@ function App() {
           <Route path="/reset-pass" element={<ResetPassword/>} />
           <Route path="/reset-pass-confirm" element={<ResetPasswordConfirm/>} />
           <Route path="/addpaymentcard/:userId" element={<AddPaymentCard/>} />
+          <Route path="/addpromo/:movie_id" element={<AddPromo/>} />
           <Route path="/editpaymentcard" element={<EditPaymentCard/>} />
+          <Route path="/editpromo" element={<EditPromo/>} />
         </Routes>
       </div>
     </Router>

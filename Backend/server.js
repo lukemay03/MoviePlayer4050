@@ -478,3 +478,82 @@ app.get('/promotion/get/:id', (req, res) => {
     });
   });
 });
+app.post('/promo/insert', (req, res) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1]; //extract the token from the authorization header
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  jwt.verify(token, 'secretKey', (err, user) => {  //verify the token with the secretKey
+    if (err) {
+      return res.status(403).json({ message: 'Invalid token' });
+    }
+  let { description, date, movie_id} = req.body;
+
+  // Insert the user into the database
+  let sql = 'INSERT INTO Promo(description, date, movie_id) VALUES (?,?,?)'
+  db.run(sql, [description, date, movie_id], (err) => {
+    if (err) {
+      console.error(err.message);
+      res.status(500).send('Error inserting user');
+    } else {
+      res.status(201).send('Promo created successfully');
+    }
+  });
+  });
+  });
+  app.delete('/promo/delete/:id', (req, res) => {
+
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; //extract the token from the authorization header
+  
+    if (!token) {
+      return res.status(401).json({ message: 'No token provided' });
+    }
+  
+    jwt.verify(token, 'secretKey', (err, user) => {  //verify the token with the secretKey
+      if (err) {
+        return res.status(403).json({ message: 'Invalid token' });
+      }
+  
+      const promoId = req.params.id; // Get the payment card ID from the request parameters
+      const sql = 'DELETE FROM Promo WHERE Promo_id = ?'; // Ensure the card belongs to the user
+      db.run(sql, [promoId], function(err) {
+        if (err) {
+          return res.status(500).json({ message: 'Database error' });
+        }
+        
+      if (this.changes === 0) {
+        return res.status(404).json({ message: 'Promo card not found' });
+      }
+  
+      res.json({ message: 'Payment card deleted successfully' });
+      });
+    });
+  });
+  app.put('/promo/edit', (req, res) => {
+    const { date, description, movie_id, Promo_id} = req.body;
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    console.log(req.body);
+    if (!token) {
+      return res.status(401).json({ message: 'No token provided' });
+    }
+  
+    jwt.verify(token, 'secretKey', (err, user) => {
+      if (err) {
+        return res.status(403).json({ message: 'Invalid token' });
+      }
+  
+      //update user info in db here
+      const sql = 'UPDATE Promo SET description = ?, date = ? WHERE Promo_id = ?';
+      db.run(sql, [description, date, Promo_id], (err) => {
+        if (err) {
+          return res.status(500).json({ message: 'Database error' });
+        }
+        res.status(200).json({ message: 'Promo updated successfully' });
+      });
+    });
+  });

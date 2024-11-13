@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-function PaymentCard({card, handleDelete }) {
+function PromotionCard({card, handleDelete }) {
     const {movie_id, description, date, Promo_id, movie_title } = card;
     const navigate = useNavigate();
     const onEdit = () => {
@@ -9,7 +9,7 @@ function PaymentCard({card, handleDelete }) {
       };
       const onDelete = async () => {
         console.log('Delete clicked');
-        const response = await fetch(`http://localhost:3001/promotioncard/delete/${Promo_id}`, {
+        const response = await fetch(`http://localhost:3001/promo/delete/${Promo_id}`, {
             method: 'DELETE',
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -32,12 +32,12 @@ function PaymentCard({card, handleDelete }) {
       </p>
       <p> description: {description}</p>
       <div>
-      <Link to={{ pathname: '/editpaymentcard' }} state={card} className="button-link">Edit PaymentCard</Link>
+      <Link to={{ pathname: '/editpromo' }} state={card} className="button-link">Edit Promo</Link>
         <button onClick={onDelete}>Delete</button>
       </div>
       </div>
     );
   }
   
-  export default PaymentCard;
+  export default PromotionCard;
   
