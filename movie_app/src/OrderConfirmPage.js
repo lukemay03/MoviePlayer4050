@@ -38,9 +38,12 @@ function RegistrationConfirm() {
 
   // This function sends a request to the backend to send the email
   const sendConfirmationEmail = async () => {
+    if (!email) {
+      console.log("No email");
+    }
     try {
         const htmlMessage = "<h2>Thank you for ordering!</h2>" +
-            "<p>Your order is confirmed. Welcome to Movie Player Co!</p>" +
+            "<p>Your order is confirmed. We hope you enjoy the movie!</p>" +
             "<p>Best regards,</p>" +
             "Movie Player Co.";
         const subject = "Order Confirmation";
@@ -64,13 +67,17 @@ function RegistrationConfirm() {
 
 // Trigger email sending when the component loads
 useEffect(() => {
-  sendConfirmationEmail();
-}, []); // Empty dependency array ensures this runs only once when the component mounts
+  if (email) {
+    sendConfirmationEmail();
+
+  }
+}, [email]); // Empty dependency array ensures this runs only once when the component mounts
 
   return (
     <div className="register-container">
       <Header></Header>
       <div class="regConfirm">
+        <p>{email}</p>
         <h1> Thank you for Confirming! </h1>
         <h2> Check your e-mail for a confirmation.</h2>
       </div>
