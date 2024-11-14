@@ -29,6 +29,7 @@ import AddPaymentCard from './AddPaymentCard';
 import EditPaymentCard from './EditPaymentCard';
 import AddPromo from './AddPromo';
 import EditPromo from './EditPromo';
+import ScheduleMovie from './ScheduleMovie';
 function App() {
   return (
 
@@ -62,6 +63,7 @@ function App() {
           <Route path="/addpromo/:movie_id" element={<AddPromo/>} />
           <Route path="/editpaymentcard" element={<EditPaymentCard/>} />
           <Route path="/editpromo" element={<EditPromo/>} />
+          <Route path="/schedule-movie" element={<ScheduleMovie/>} />
         </Routes>
       </div>
     </Router>

@@ -567,3 +567,61 @@ app.post('/promo/insert', (req, res) => {
         }
     });
   });
+app.get('/auditoriums/get', (req, res) => {
+  const sql = 'SELECT * FROM AUDITORIUM'; // SQL query to fetch all auditoriums
+
+  db.all(sql, (err, rows) => {
+    if (err) {
+      console.error('Error fetching auditoriums: ', err);
+      return res.status(500).json({ error: err.message });
+    }
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'No auditoriums found' });
+    }
+    // console.log('auditoriums: ', rows);  // Optionally log the fetched rows
+    return res.json(rows);  // Send the rows as a JSON response
+  });
+});
+app.post('/movieshow/post', (req,res) => {
+  console.log(req.body);
+  let { aud_id, movie_id, showstarttime, noofseats } = req.body;
+
+  // Insert the MovieShow (showtime) into the database
+  let sql = 'INSERT INTO MovieShow (aud_id, movie_id, showstarttime, noofseats) VALUES (?,?,?,?)'
+  db.run(sql, [aud_id, movie_id, showstarttime, noofseats], (err) => {
+    if (err) {
+      console.error(err.message);
+      res.status(500).send('Error creating showtime');
+    } else {
+      res.status(201).send('Showtime Created Successfully!');
+    }
+  });
+});
+app.post('/movieshow/check', (req, res) => {
+  // SQL query to find any movie shows with the same auditorium and a start time within 1 hour
+  let { showstarttime, aud_id } = req.body;
+
+  let sql = `
+    SELECT * FROM MovieShow
+    WHERE aud_id = ?
+      AND ABS(STRFTIME('%s', showstarttime) - STRFTIME('%s', ?)) <= 3600
+  `
+
+  console.log(sql);
+  // Execute the query with the provided auditorium ID and showstarttime
+  db.all(sql, [aud_id, showstarttime], (err, rows) => {
+    if (err) {
+      console.error('Error checking for overlapping showtime:', err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+
+    // If any rows are returned, it means there is a conflict
+    if (rows.length > 0) {
+      return res.json({ exists: true });
+    }
+
+    // No overlapping showtimes found
+    return res.json({ exists: false });
+  });
+});

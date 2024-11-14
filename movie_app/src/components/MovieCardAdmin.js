@@ -25,8 +25,10 @@ function MovieCardAdmin({poster, title, trailerLink, detailsLink }) {
         <h3>{title}</h3>
   
         <div className="movie-links">
-        <Link to="/edit-movie" state={detailsLink}><button>Edit Movie</button></Link>
+            <Link to="/edit-movie" state={detailsLink}><button>Edit Movie</button></Link>
+            <Link to="/schedule-movie" state={detailsLink}><button>Schedule Movie</button></Link>
         </div>
+
       </div>
     );
   }
