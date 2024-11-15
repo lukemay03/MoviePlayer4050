@@ -71,7 +71,7 @@ function Checkout() {
         <p><strong>Kid Tickets: {kidCount}</strong></p>
         <h3>Total: ${total}.00</h3>
         
-        {/* Dynamically generate the URL with the movie name */}
+        {/*dynamically generates the URL with the movie name */}
         <Link 
           to={`/ticket-select/${encodeURIComponent(name)}`} 
           state={{ name, selectedShowtime, selectedSeats, adultCount, kidCount, auditorium }}
