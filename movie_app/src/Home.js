@@ -45,17 +45,30 @@ function Home() {
     setFilteredComingSoon(filteredcoming);
   };
 
+    //using includes to filter movies with multiple genres 
+    //clicking filter by genre resets filter now 
+    const handleFilter = () => {
+    if (!filterQuery || filterQuery === "Filter by Genre") {
+      setFilteredData(currentMovies); 
+      setFilteredComingSoon(comingSoonMovies); 
+      return;
+    }
   
-  const handleFilter = (e) => {
     const filtered = currentMovies.filter(movie => 
-      movie.category && movie.category.toLowerCase() === filterQuery.toLowerCase()
+      movie.category && movie.category.toLowerCase().includes(filterQuery.toLowerCase())
     );
-    const filteredcoming = comingSoonMovies.filter(movie => 
-        movie.category && movie.category.toLowerCase() === filterQuery.toLowerCase() 
-      );
+    const filteredComing = comingSoonMovies.filter(movie => 
+      movie.category && movie.category.toLowerCase().includes(filterQuery.toLowerCase())
+    );
+  
     setFilteredData(filtered);
-    setFilteredComingSoon(filteredcoming);
+    setFilteredComingSoon(filteredComing);
   };
+  
+  //apply the filter whenever we select, removing filter button
+  useEffect(() => {
+    handleFilter();
+  }, [filterQuery]);
 
   function shuffleArray(array) {
     return array.sort(() => Math.random() - 0.5);
@@ -98,25 +111,24 @@ function Home() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}></input>
                  <button onClick={handleSearch}>Search</button>
-
-
-
-                <select 
-                value={filterQuery}
-                onChange={(e) => setFilterQuery(e.target.value)}>
-                    <option value="">Filter by Genre</option>
-                    <option value="action">Action</option>
-                    <option value="adventure">Adventure</option>
-                    <option value="comedy">Comedy</option>
-                    <option value="drama">Drama</option>
-                    <option value="fantasy">Fantasy</option>
-                    <option value="horror">Horror</option>
-                    <option value="musical">Musical</option>
-                    <option value="Science Fiction">Sci-Fi</option>
-                </select>
-                <button onClick={handleFilter}>Filter</button>
                  </div>
                  
+        <div className="filter-div">
+            <select 
+            className="select-filter" 
+            value={filterQuery}
+             onChange={(e) => setFilterQuery(e.target.value)}>
+                 <option value="">Filter by Genre</option>
+                 <option value="action">Action</option>
+                 <option value="adventure">Adventure</option>
+                 <option value="comedy">Comedy</option>
+                 <option value="drama">Drama</option>
+                 <option value="fantasy">Fantasy</option>
+                 <option value="horror">Horror</option>
+                 <option value="musical">Musical</option>
+                 <option value="Science Fiction">Sci-Fi</option>
+            </select>
+        </div>
 
             
 

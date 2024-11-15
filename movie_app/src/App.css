@@ -35,7 +35,6 @@ body {
   
   .search-bar {
     text-align: center;
-    margin-bottom: 30px;
   }
   
   .search-bar input {
@@ -404,7 +403,7 @@ body {
     align-self: center;
   }
 
-  .rever-button:hover {
+  .revert-button:hover {
     background-color: #0056b3;
   }
 
@@ -505,10 +504,6 @@ body {
   color: #000;
 }
 
-.dropdown {
-  
-}
-
 .schedule-button {
   background-color: #4CAF50;  /* Normal button color */
   color: white;
@@ -603,4 +598,46 @@ body {
 .modal-footer button {
   padding: 8px 16px;
   margin: 0 20px; /* Increases spacing between buttons */
+}
+
+.filter-div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  margin-left: 112px;
+}
+
+.select-filter {
+  padding: 8px 12px;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.select-filter:focus {
+  border-color: #007BFF; 
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.clear-cart-button {
+  width: 25%;
+  padding: 15px;
+  background-color: #d30c0c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+  align-self: center;
+}
+
+.clear-cart-button:hover {
+  background-color: #840101;
 }

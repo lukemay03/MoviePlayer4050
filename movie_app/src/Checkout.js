@@ -7,21 +7,24 @@ function Checkout() {
   const navigate = useNavigate();
 
   //redirect if location.state is missing to prevent uninitialized access
+  //check if cart data is still available in localStorage on component mount
   useEffect(() => {
-    if (!location.state) {
-      navigate('/ticket-select');
+    if (!location.state && !localStorage.getItem('cartData')) {
+      alert('Your cart is empty. Redirecting to home page.');
+      navigate('/');
     }
   }, [location.state, navigate]);
 
   //retrieve cart data from localStorage if location.state is not provided
   const storedCartData = JSON.parse(localStorage.getItem('cartData')) || {};
-  const { name = storedCartData.name || 'Unknown Movie', 
-          selectedShowtime = storedCartData.selectedShowtime || 'No Showtime Selected', 
-          selectedSeats = storedCartData.selectedSeats || [], 
-          adultCount = storedCartData.adultCount || 0, 
-          kidCount = storedCartData.kidCount || 0 } = location.state || storedCartData;
+  const { 
+    name = storedCartData.name || 'Unknown Movie', 
+    selectedShowtime = storedCartData.selectedShowtime || 'No Showtime Selected', 
+    selectedSeats = storedCartData.selectedSeats || [], 
+    adultCount = storedCartData.adultCount || 0, 
+    kidCount = storedCartData.kidCount || 0 
+  } = location.state || storedCartData;
 
-          
   const total = adultCount * 15 + kidCount * 9;
 
   const role = localStorage.getItem('role');
@@ -33,6 +36,13 @@ function Checkout() {
       </div>
     );
   }
+
+  //clear cart function
+  const handleClearCart = () => {
+    localStorage.removeItem('cartData');
+    alert('Cart has been cleared.');
+    window.location.href = '/'; //redirect to home page
+  };
 
   return (
     <div className="checkout-page">
@@ -46,9 +56,9 @@ function Checkout() {
         <p><strong>Kid Tickets: {kidCount}</strong></p>
         <h3>Total: ${total}.00</h3>
         <Link to="/ticket-select" state={{ name, selectedShowtime, selectedSeats, adultCount, kidCount }}>
-        <button className="revert-button">Go back/Update order</button>
+          <button className="revert-button">Go back/Update order</button>
         </Link>
-
+        <button className="clear-cart-button" onClick={handleClearCart}>Clear Cart</button>
       </div>
 
       <div className="payment-section">
