@@ -28,12 +28,20 @@ function Header() {
   const handleCartClick = () => {
     const cartData = localStorage.getItem('cartData');
     if (cartData) {
-      const { name } = JSON.parse(cartData);
-      navigate(`/checkout/${name}`, { state: JSON.parse(cartData) });
+      const parsedCartData = JSON.parse(cartData);
+      console.log('Cart Data:', parsedCartData); // Debugging log
+  
+      const { name } = parsedCartData;
+      if (name) {
+        navigate(`/checkout/${encodeURIComponent(name)}`, { state: parsedCartData });
+      } else {
+        alert('Movie name is missing from the cart.');
+      }
     } else {
       alert('Your cart is empty.');
     }
   };
+  
 
   return (
     <header className="site-header">

@@ -40,61 +40,80 @@ function ScheduleMovie() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
-        if (!showTime || !showDate) {
+        if (!showTime || !showDate || !selectedAuditorium) {
             alert('Please fill in all fields');
             setIsSubmitting(false);
             return;
         }
-
-        const showStartTime = showDate + ' ' + showTime + ":00";
+    
+        const showstarttime = showDate + ' ' + showTime + ":00";
         const currentTime = new Date().toISOString().slice(0, 19).replace("T", " ");
-
-        // Check if the showStartTime is in the past
-        if (new Date(showStartTime) < new Date(currentTime)) {
+    
+        //check if the showstarttime is in the past
+        if (new Date(showstarttime) < new Date(currentTime)) {
             setErrorMessage('The showtime cannot be in the past.');
             setIsSubmitting(false);
             return;
         }
-
-        // Check if a show already exists within 1 hour of the new showStartTime
+    
         try {
-            // console.log('about to call movieshow/check: ', showStartTime, selectedAuditorium);
-            const response = await fetch('http://localhost:3001/movieshow/check', {
+            // Step 1: Check if the showtime already exists in the `showtimes` table
+            let showtimesId;
+            const checkShowtimeResponse = await fetch('http://localhost:3001/showtimes/check', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ showstarttime: showStartTime, aud_id: selectedAuditorium })
+                body: JSON.stringify({ timestamp: showstarttime })
             });
-            const data = await response.json();
-
-            if (data.exists) {
+            
+            const checkShowtimeData = await checkShowtimeResponse.json();
+    
+            if (checkShowtimeData.exists) {
+                showtimesId = checkShowtimeData.showtimes_id; // Get existing showtimes_id
+            } else {
+                // Step 2: If showtime doesn't exist, add it to the `showtimes` table
+                const addShowtimeResponse = await fetch('http://localhost:3001/showtimes/add', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ timestamp: showstarttime })
+                });
+                
+                const addShowtimeData = await addShowtimeResponse.json();
+                showtimesId = addShowtimeData.showtimes_id; // Get the new showtimes_id
+            }
+    
+            // Step 3: Check if a show already exists within 1 hour in the selected auditorium
+            const checkConflictResponse = await fetch('http://localhost:3001/MovieShow/check', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ showtimes_id: showtimesId, aud_id: selectedAuditorium })
+            });
+    
+            const checkConflictData = await checkConflictResponse.json();
+    
+            if (checkConflictData.exists) {
                 setErrorMessage('A show with the same start time (within an hour) already exists in this auditorium.');
                 setIsSubmitting(false);
                 return;
             }
-
-            // Set the noOfSeats based on the selected auditorium at the time of submission
+    
+            // Step 4: Add the showtime to the `MovieShow` table
             const selectedAuditoriumData = auditoriums.find(
                 (auditorium) => auditorium.aud_id === parseInt(selectedAuditorium)
             );
-            // console.log('Selected Auditorium Data: ', selectedAuditoriumData);
-            if (selectedAuditoriumData) {
-                setNoOfSeats(selectedAuditoriumData.numseats);  // Update noOfSeats to the selected auditorium's numseats
-            }
-
-            // If no conflict, proceed with submission
+    
             const dataToSubmit = {
                 aud_id: selectedAuditorium,
                 movie_id,
-                showstarttime: showStartTime,
-                noofseats: noOfSeats
+                showtimes_id: showtimesId,
+                noofseats: selectedAuditoriumData ? selectedAuditoriumData.numseats : noOfSeats
             };
-
-            const postResponse = await fetch('http://localhost:3001/movieshow/post', {
+    
+            const postResponse = await fetch('http://localhost:3001/MovieShow/post', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dataToSubmit)
             });
-
+    
             if (!postResponse.ok) {
                 setErrorMessage('Failed to submit the movie show.');
             } else {
@@ -107,6 +126,7 @@ function ScheduleMovie() {
         }
         setIsSubmitting(false);
     };
+    
 
     const handleCloseModal = () => {
         setShowModal(false);

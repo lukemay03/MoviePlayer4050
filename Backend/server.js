@@ -557,6 +557,7 @@ app.post('/promo/insert', (req, res) => {
       });
     });
   });
+
   app.get('/users/promo', (req, res) => {
     db.all('SELECT email FROM Users where registeredforpromo = 1', (err, rows) => {
         if (err) {
@@ -567,6 +568,7 @@ app.post('/promo/insert', (req, res) => {
         }
     });
   });
+
 app.get('/auditoriums/get', (req, res) => {
   const sql = 'SELECT * FROM AUDITORIUM'; // SQL query to fetch all auditoriums
 
@@ -583,13 +585,14 @@ app.get('/auditoriums/get', (req, res) => {
     return res.json(rows);  // Send the rows as a JSON response
   });
 });
-app.post('/movieshow/post', (req,res) => {
+
+app.post('/MovieShow/post', (req,res) => {
   // console.log(req.body);
-  let { aud_id, movie_id, showstarttime, noofseats } = req.body;
+  let { aud_id, movie_id, showtimes_id, noofseats } = req.body;
 
   // Insert the MovieShow (showtime) into the database
-  let sql = 'INSERT INTO MovieShow (aud_id, movie_id, showstarttime, noofseats) VALUES (?,?,?,?)'
-  db.run(sql, [aud_id, movie_id, showstarttime, noofseats], (err) => {
+  let sql = 'INSERT INTO MovieShow (aud_id, movie_id, showtimes_id, noofseats) VALUES (?,?,?,?)'
+  db.run(sql, [aud_id, movie_id, showtimes_id, noofseats], (err) => {
     if (err) {
       console.error(err.message);
       res.status(500).send('Error creating showtime');
@@ -598,18 +601,19 @@ app.post('/movieshow/post', (req,res) => {
     }
   });
 });
-app.post('/movieshow/check', (req, res) => {
+
+app.post('/MovieShow/check', (req, res) => {
   // SQL query to find any movie shows with the same auditorium and a start time within 1 hour
-  let { showstarttime, aud_id } = req.body;
+  let { showtimes_id, aud_id } = req.body;
 
   let sql = `
     SELECT * FROM MovieShow
     WHERE aud_id = ?
-      AND ABS(STRFTIME('%s', showstarttime) - STRFTIME('%s', ?)) <= 3600
+      AND ABS(STRFTIME('%s', showtimes_id) - STRFTIME('%s', ?)) <= 3600
   `
 
   // Execute the query with the provided auditorium ID and showstarttime
-  db.all(sql, [aud_id, showstarttime], (err, rows) => {
+  db.all(sql, [aud_id, showtimes_id], (err, rows) => {
     if (err) {
       console.error('Error checking for overlapping showtime:', err);
       return res.status(500).json({ error: 'Database error' });
@@ -622,5 +626,79 @@ app.post('/movieshow/check', (req, res) => {
 
     // No overlapping showtimes found
     return res.json({ exists: false });
+  });
+});
+
+//showtimes check
+app.post('/showtimes/check', (req, res) => {
+  const { timestamp } = req.body;
+  const query = `SELECT showtimes_id FROM showtimes WHERE TimeStamp = ?`;
+
+  db.get(query, [timestamp], (err, row) => {
+    if (err) {
+      return res.status(500).json({ error: 'Database error' });
+    }
+    res.json({ exists: !!row, showtimes_id: row ? row.showtimes_id : null });
+  });
+});
+
+//add a showtime
+app.post('/showtimes/add', (req, res) => {
+  const { timestamp } = req.body;
+  const query = `INSERT INTO showtimes (TimeStamp) VALUES (?)`;
+
+  db.run(query, [timestamp], function (err) {
+    if (err) {
+      return res.status(500).json({ error: 'Database error' });
+    }
+    res.json({ showtimes_id: this.lastID });
+  });
+});
+
+
+
+//endpoint to get showtimes for a specific movie
+app.get('/api/movies/:movieName/showtimes', (req, res) => {
+  const { movieName } = req.params;
+  console.log(`Received movieName: ${movieName}`);
+
+  //query to fetch movie_id from movieName
+  const movieIdQuery = `SELECT movie_id FROM Movies WHERE LOWER(movie_title) = LOWER(?)`;
+  db.get(movieIdQuery, [movieName], (err, movie) => {
+  if (err || !movie) {
+    console.error('Error fetching movie ID:', err || 'Movie not found');
+    return res.status(404).json({ error: 'Movie not found' });
+  }
+
+  const movieId = movie.movie_id;
+
+    //fetch showtimes for the resolved movie_id
+    const query = `
+      SELECT 
+        s.TimeStamp AS startTime, 
+        a.audname AS theaterName, 
+        ms.noofseats AS availableSeats
+      FROM MovieShow ms
+      JOIN showtimes s ON ms.showtimes_id = s.showtimes_id
+      JOIN Auditorium a ON ms.aud_id = a.aud_id
+      WHERE ms.movie_id = ?;
+    `;
+
+    db.all(query, [movieId], (err, rows) => {
+      if (err) {
+        console.error('Error fetching showtimes:', err);
+        return res.status(500).json({ error: 'Failed to fetch showtimes' });
+      }
+
+      console.log('Fetched Showtimes:', rows);
+
+      const showtimes = rows.map(row => ({
+        startTime: row.startTime,
+        theaterName: row.theaterName,
+        availableSeats: row.availableSeats
+      }));
+
+      res.json({ showtimes });
+    });
   });
 });

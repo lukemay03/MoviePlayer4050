@@ -34,16 +34,22 @@ function Home() {
         });
     }, []);
 
+    //now handles genres as well as by title
     const handleSearch = () => {
-    const filtered = currentMovies.filter(movie => 
-      movie.movie_title.toLowerCase().includes(searchQuery.toLowerCase()) 
-    );
-    const filteredcoming = comingSoonMovies.filter(movie => 
-        movie.movie_title.toLowerCase().includes(searchQuery.toLowerCase()) 
+      const filtered = currentMovies.filter(movie => 
+        movie.movie_title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (movie.category && movie.category.toLowerCase().includes(searchQuery.toLowerCase()))
       );
-    setFilteredData(filtered);
-    setFilteredComingSoon(filteredcoming);
-  };
+    
+      const filteredcoming = comingSoonMovies.filter(movie => 
+        movie.movie_title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (movie.category && movie.category.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
+    
+      setFilteredData(filtered);
+      setFilteredComingSoon(filteredcoming);
+    };
+    
 
     //using includes to filter movies with multiple genres 
     //clicking filter by genre resets filter now 
@@ -101,16 +107,24 @@ function Home() {
         setShowModal(false);
     };
 
+    //clear search and reset filtered data
+  const clearSearch = () => {
+    setSearchQuery(''); 
+    setFilteredData(currentMovies); 
+    setFilteredComingSoon(comingSoonMovies); 
+  };
+
     return (
         <body>
         <Header></Header>
 
          <div className="container">
                  <div className="search-bar">
-                 <input type="text" placeholder="Search for movies by title..."
+                 <input type="text" placeholder="Search for movies by title or genre..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}></input>
                  <button onClick={handleSearch}>Search</button>
+                 <button onClick={clearSearch}>Clear Search</button> 
                  </div>
                  
         <div className="filter-div">

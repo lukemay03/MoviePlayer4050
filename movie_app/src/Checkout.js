@@ -6,8 +6,7 @@ function Checkout() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  //redirect if location.state is missing to prevent uninitialized access
-  //check if cart data is still available in localStorage on component mount
+  //redirect if cart data is missing
   useEffect(() => {
     if (!location.state && !localStorage.getItem('cartData')) {
       alert('Your cart is empty. Redirecting to home page.');
@@ -15,14 +14,15 @@ function Checkout() {
     }
   }, [location.state, navigate]);
 
-  //retrieve cart data from localStorage if location.state is not provided
+  //retrieve cart data from localStorage if not in state
   const storedCartData = JSON.parse(localStorage.getItem('cartData')) || {};
   const { 
     name = storedCartData.name || 'Unknown Movie', 
     selectedShowtime = storedCartData.selectedShowtime || 'No Showtime Selected', 
     selectedSeats = storedCartData.selectedSeats || [], 
     adultCount = storedCartData.adultCount || 0, 
-    kidCount = storedCartData.kidCount || 0 
+    kidCount = storedCartData.kidCount || 0,
+    auditorium = storedCartData.auditorium || 'Unknown Auditorium'  
   } = location.state || storedCartData;
 
   const total = adultCount * 15 + kidCount * 9;
@@ -44,18 +44,38 @@ function Checkout() {
     window.location.href = '/'; //redirect to home page
   };
 
+  //format showtime date and time
+  const formatDateTime = (dateTimeString) => {
+    const options = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    };
+    return new Date(dateTimeString).toLocaleString('en-US', options);
+  };
+
   return (
     <div className="checkout-page">
       <Header />
       <div className="summary-section">
         <h2 className="checkout-h">Order Summary</h2>
         <p><strong>Movie: {name}</strong></p>
-        <p><strong>Showtime: {selectedShowtime}</strong></p>
+        <p><strong>Showtime: {formatDateTime(selectedShowtime)}</strong></p> 
+        <p><strong>Auditorium: {auditorium}</strong></p> 
         <p><strong>Selected Seats: {selectedSeats.join(', ')}</strong></p>
         <p><strong>Adult Tickets: {adultCount}</strong></p>
         <p><strong>Kid Tickets: {kidCount}</strong></p>
         <h3>Total: ${total}.00</h3>
-        <Link to="/ticket-select" state={{ name, selectedShowtime, selectedSeats, adultCount, kidCount }}>
+        
+        {/* Dynamically generate the URL with the movie name */}
+        <Link 
+          to={`/ticket-select/${encodeURIComponent(name)}`} 
+          state={{ name, selectedShowtime, selectedSeats, adultCount, kidCount, auditorium }}
+        >
           <button className="revert-button">Go back/Update order</button>
         </Link>
         <button className="clear-cart-button" onClick={handleClearCart}>Clear Cart</button>
