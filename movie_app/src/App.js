@@ -3,6 +3,7 @@ import './App.css';
 
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import ScrollToTop from './components/ScrollToTop';
 import RegisterPage from './RegisterPage'; 
 import Home from './Home'; 
 import LoginPage from './LoginPage';
@@ -37,6 +38,7 @@ function App() {
 
     <Router>
       <div>
+      <ScrollToTop />
         <Routes>
           <Route exact path="/" element={<Home/>} />
           <Route path="/register" element={<RegisterPage/>} />
@@ -50,7 +52,7 @@ function App() {
           <Route path="/ticket-select" element={<TicketSelect/>} />
           <Route path="/seat-selector" element={<SeatSelector/>} />
           <Route path="/edit-movie" element={<EditMovie/>} />
-          <Route path="/checkout" element={<Checkout/>} />
+          <Route path="/checkout/:name" element={<Checkout />} />
           <Route path="/order-confirm" element={<OrderConfirm/>} />
           <Route path="/add-movie-page" element={<AddMovie/>} />
           <Route path="/edit-user" element={<EditUser/>} />
