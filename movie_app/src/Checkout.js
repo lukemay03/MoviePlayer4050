@@ -1,38 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Header from './components/Header';
-import { Link, useLocation} from 'react-router-dom';
-
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 function Checkout() {
-const location = useLocation();
-const { name, selectedShowtime, selectedSeats, adultCount, kidCount } = location.state || {};
-const total = adultCount*15 + kidCount*9;
+  const location = useLocation();
+  const navigate = useNavigate();
 
-const role = localStorage.getItem('role');
-if (role == null) {
+  //redirect if location.state is missing to prevent uninitialized access
+  useEffect(() => {
+    if (!location.state) {
+      navigate('/ticket-select');
+    }
+  }, [location.state, navigate]);
+
+  //retrieve cart data from localStorage if location.state is not provided
+  const storedCartData = JSON.parse(localStorage.getItem('cartData')) || {};
+  const { name = storedCartData.name || 'Unknown Movie', 
+          selectedShowtime = storedCartData.selectedShowtime || 'No Showtime Selected', 
+          selectedSeats = storedCartData.selectedSeats || [], 
+          adultCount = storedCartData.adultCount || 0, 
+          kidCount = storedCartData.kidCount || 0 } = location.state || storedCartData;
+
+          
+  const total = adultCount * 15 + kidCount * 9;
+
+  const role = localStorage.getItem('role');
+  if (role == null) {
     return (
-        <div>
-        <Header></Header>
+      <div>
+        <Header />
         <p>Please Log in before proceeding to check out</p>
-        </div>
+      </div>
     );
-}
+  }
 
   return (
     <div className="checkout-page">
-      <Header></Header>
-        <div className="summary-section">
-        <h2 class="checkout-h">Order Summary</h2>
-        <p><strong>Movie:{name}</strong></p>
-        <p><strong>Showtime:{selectedShowtime}</strong></p>
-        <p><strong>Selected Seats:{selectedSeats}</strong> </p>
-        <p><strong>Adult Tickets:{adultCount}</strong> </p>
-        <p><strong>Kid Tickets:{kidCount}</strong></p>
-        <h3>Total: ${total}.00 </h3>
-        <Link to="/ticket-select"><button className="revert-button">Go back/Update order</button></Link>
+      <Header />
+      <div className="summary-section">
+        <h2 className="checkout-h">Order Summary</h2>
+        <p><strong>Movie: {name}</strong></p>
+        <p><strong>Showtime: {selectedShowtime}</strong></p>
+        <p><strong>Selected Seats: {selectedSeats.join(', ')}</strong></p>
+        <p><strong>Adult Tickets: {adultCount}</strong></p>
+        <p><strong>Kid Tickets: {kidCount}</strong></p>
+        <h3>Total: ${total}.00</h3>
+        <Link to="/ticket-select" state={{ name, selectedShowtime, selectedSeats, adultCount, kidCount }}>
+        <button className="revert-button">Go back/Update order</button>
+        </Link>
+
       </div>
 
-        <div className="payment-section">
+      <div className="payment-section">
         <h2 className="checkout-h">Payment Information</h2>
         <form>
           <div className="input-group">
@@ -60,7 +79,7 @@ if (role == null) {
             <input type="text" id="billingAddress" placeholder="123 Main St, City, State" />
           </div>
 
-          <Link to="/order-confirm"><button className="confirm-button" type="submit">Confirm and Pay</button></Link>
+          <button className="confirm-button" type="submit">Confirm and Pay</button>
         </form>
       </div>
     </div>
