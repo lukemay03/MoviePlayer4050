@@ -1,9 +1,7 @@
-import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 
-function MovieDetailsCard({title, details, cast, category, director, producer, rating, closeModal}) {
-    const info = { title, details, cast, category, director, producer, rating };
 
+function MovieDetailsCard({ title, details, cast, category, director, producer, rating, showtimes, closeModal }) {
     return (
         <div className="movie-details-container" onClick={closeModal}>
             <div className="movie-details" onClick={(e) => e.stopPropagation()}>
@@ -46,12 +44,43 @@ function MovieDetailsCard({title, details, cast, category, director, producer, r
                         <div className="details-value">{details}</div>
                     </div>
 
+                    <div className="details-row">
+                     <div className="details-label">Showtimes:</div>
+                     <div className="details-value">
+                      {showtimes.length > 0 ? (
+                        <ul>
+                        {showtimes.map((showtime, index) => {
+                         const showDate = new Date(showtime.startTime); 
+                         const formattedDate = showDate.toLocaleDateString(undefined, {
+                         weekday: 'short',
+                         month: 'short',
+                         day: 'numeric',
+                         year: 'numeric',
+                        });
+                    const formattedTime = showDate.toLocaleTimeString(undefined, {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true,
+                    });
+
+                    return (
+                        <li key={index}>
+                            {formattedDate} at {formattedTime} - {showtime.theater_name}
+                        </li>
+                    );
+                })}
+            </ul>
+        ) : (
+            <p>No showtimes available.</p>
+        )}
+    </div>
+</div>
+
                 </div>
                 <button onClick={closeModal}>Close</button>
             </div>
         </div>
     );
 }
-
 
 export default MovieDetailsCard;
