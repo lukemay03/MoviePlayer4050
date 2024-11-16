@@ -18,7 +18,7 @@ function RegistrationConfirm() {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,  
           },
         });
-
+        localStorage.removeItem('cartData');
         //parse response
         const data = await response.json();
         //console.log(data);

@@ -109,8 +109,9 @@ function Checkout() {
             <label htmlFor="billingAddress">Billing Address:</label>
             <input type="text" id="billingAddress" placeholder="123 Main St, City, State" />
           </div>
-
+          <Link to="/order-confirm">
           <button className="confirm-button" type="submit">Confirm and Pay</button>
+          </Link>
         </form>
       </div>
     </div>

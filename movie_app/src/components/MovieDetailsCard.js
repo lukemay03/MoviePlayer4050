@@ -65,7 +65,7 @@ function MovieDetailsCard({ title, details, cast, category, director, producer, 
 
                     return (
                         <li key={index}>
-                            {formattedDate} at {formattedTime} - {showtime.theater_name}
+                            {formattedDate} at {formattedTime} - {showtime.theaterName}
                         </li>
                     );
                 })}
