@@ -16,6 +16,7 @@ function Checkout() {
 
   //retrieve cart data from localStorage if not in state
   const storedCartData = JSON.parse(localStorage.getItem('cartData')) || {};
+  //destructuring object, location.state is first priority, if not applicable, get from local storage
   const { 
     name = storedCartData.name || 'Unknown Movie', 
     selectedShowtime = storedCartData.selectedShowtime || 'No Showtime Selected', 

@@ -155,6 +155,7 @@ function Home() {
                   title={movie.movie_title}
                   trailerLink={movie.trailer_link}
                   onDetailsClick={() => openModal(movie)}
+                  rating={movie.movie_rating}
         />
                  ))}
              </div>
@@ -166,6 +167,7 @@ function Home() {
                   title={movie.movie_title}
                   trailerLink={movie.trailer_link}
                   onDetailsClick={() => openModal(movie)}
+                  rating={movie.movie_rating}
         />
                  ))}
              </div>

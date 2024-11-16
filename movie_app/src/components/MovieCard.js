@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-function MovieCard({ poster, title, trailerLink, movie_id, onDetailsClick }) {
+function MovieCard({ poster, title, trailerLink, movie_id, onDetailsClick, rating }) {
   const info = { image: poster, name: title };
   const [showTrailer, setShowTrailer] = useState(false);
 
@@ -23,6 +23,7 @@ function MovieCard({ poster, title, trailerLink, movie_id, onDetailsClick }) {
         <img src={`/${poster}`} alt={title} className="movie-poster" />
       )}
       <h3>{title}</h3>
+      <h5>Rated {rating}</h5>
 
       <div className="movie-links">
         <button onClick={toggleTrailer}>
