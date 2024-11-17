@@ -277,7 +277,7 @@ app.post('/trigger-order-confirm', (req, res) => {
 
   sendEmail(email, htmlMessage, subject); // Send the email
 
-  res.status(200).json({ message: 'Email sent to ' + email + '.' });
+  res.status(200).json({ message: 'Order Confirmed! Confirmation email and details sent to: ' + email + '.' });
 });
 
 app.post('/generate-token', (req, res) => {
