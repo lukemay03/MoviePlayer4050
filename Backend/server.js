@@ -559,7 +559,7 @@ app.post('/promo/insert', (req, res) => {
   });
 
   app.get('/users/promo', (req, res) => {
-    db.all('SELECT email FROM Users where registeredforpromo = 1', (err, rows) => {
+    db.all('SELECT email FROM Users where registeredforpromo = 1 OR registeredforpromo = \'True\'', (err, rows) => {
         if (err) {
             res.status(500).json({ error: err.message });
         } else {

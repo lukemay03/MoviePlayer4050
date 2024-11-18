@@ -48,8 +48,7 @@ const handleDelete = (cardId) => {
           <Link to="/manage-movies"><button>Manage Movies and Promotions</button></Link>
           <Link to="/manage-users"><button>Manage Users</button></Link>
         </div>
-         <div className="regConfirm">
-         <div>
+         <div className="managepromo">
       <h1>Promos for this movie</h1>
         <div className="edit-payments-container">
           {cards.map(card => (
@@ -65,7 +64,6 @@ const handleDelete = (cardId) => {
       </Link>
     </div>
 
-          </div>
 
         </body>
     );

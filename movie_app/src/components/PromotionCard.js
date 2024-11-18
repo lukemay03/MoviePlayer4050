@@ -54,6 +54,7 @@ function PromotionCard({ card, handleDelete }) {
             body: JSON.stringify(inputs),
           });
           alert("All promotion emails processed.");
+          navigate(0);
   
       } catch (error) {
           console.error("Error sending promotion emails:", error);
@@ -105,6 +106,7 @@ function PromotionCard({ card, handleDelete }) {
             <p>Description: {description}</p>
             <p>Code: {code}</p>
             <p> has been mailed</p>
+            <button onClick={onDelete}>Delete</button>
         </div>
     );
   }
