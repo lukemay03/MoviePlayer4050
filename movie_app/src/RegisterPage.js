@@ -11,19 +11,39 @@ function RegisterPage() {
 
   const [promotions, setPromotion] = useState(false);
 
-
   const navigate = useNavigate();
 
+
+  const checkEmailExists = async (email) => {
+    try {
+      const response = await fetch(`http://localhost:3001/user/check-email?email=${email}`);
+      const data = await response.json();
+
+      if(data.exists) {
+        alert(data.message);
+        return true; // Email already exists
+      }
+      return false; // email does not exist
+    } catch (error) {
+      console.error("Error checking email:", error);
+      alert("An error occurred while checking email availability.");
+      return true; // Assume email exists to prevent registration
+    }
+  };
 
   const handleInput = (event) => {
     setInputs(prev => ({...prev, [event.target.name]: event.target.value}))
   }
 
-    const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
      if (inputs.password !== inputs.confirm_password) {
       alert("Passwords do not match");
     } else {
       e.preventDefault();
+      const emailExists = await checkEmailExists(inputs.email);
+      if(emailExists) {
+        return;
+      }
       if (promotions === false) {
         inputs.registeredforpromo = "False";
       } else {
@@ -32,14 +52,29 @@ function RegisterPage() {
       const nameArray = inputs.name.split(" ");
       inputs.first_name = nameArray[0];
       inputs.last_name = nameArray[1];
-      const result = await fetch('http://localhost:3001/user/insert', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(inputs),
-    });
-    navigate('/reg-confirm', { state: { email: inputs.email} });
+      try {
+
+        const result = await fetch('http://localhost:3001/user/insert', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(inputs),
+        });
+
+        if (!result.ok) { 
+          const errorData = await result.json();
+          alert(errorData.message); // Display error if email already exists
+          return;
+        }
+
+        navigate('/reg-confirm', { state: { email: inputs.email} });
+
+      } catch (error) {
+        console.error("An error occurred during registration:", error);
+        alert("An error occurred.");
+      }
+      
     }
    
    
