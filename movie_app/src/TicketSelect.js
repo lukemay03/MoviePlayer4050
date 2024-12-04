@@ -65,7 +65,7 @@ function TicketSelect() {
   const handleCheckoutClick = (e) => {
     if (selectedSeatsState.length !== totalTickets) {
       e.preventDefault();
-      alert(`Please select exactly ${totalTickets} seats to match the number of tickets.`);
+      alert(`Please select exactly ${selectedSeatsState.length} seats to match the number of tickets.`);
     }
   };
 
