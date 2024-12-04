@@ -31,6 +31,7 @@ import EditPaymentCard from './EditPaymentCard';
 import AddPromo from './AddPromo';
 import EditPromo from './EditPromo';
 import ScheduleMovie from './ScheduleMovie';
+import ActivateAccount from './ActivateAccount';
 
 function App() {
   return (
@@ -67,6 +68,7 @@ function App() {
           <Route path="/editpaymentcard" element={<EditPaymentCard/>} />
           <Route path="/editpromo" element={<EditPromo/>} />
           <Route path="/schedule-movie" element={<ScheduleMovie/>} />
+          <Route path="/activate-account" element={<ActivateAccount/>} />
         </Routes>
       </div>
     </Router>

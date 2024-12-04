@@ -702,3 +702,20 @@ app.get('/api/movies/:movieName/showtimes', (req, res) => {
     });
   });
 });
+
+app.post('/activate-account', (req,res) => {
+  let { email } = req.body;
+  if (!email) {
+    return res.status(400).send('Email is required');
+  }
+  // activate account given email
+  let sql = 'UPDATE Users SET status = \'Active\' where email=?';
+  db.run(sql, [email], (err) => {
+    if (err) {
+      console.error(err.message);
+      res.status(500).send('Error activating user');
+    } else {
+      res.status(201).send('User Activated Successfully!');
+    }
+  });
+});
