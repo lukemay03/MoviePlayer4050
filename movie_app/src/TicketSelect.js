@@ -170,7 +170,6 @@ function TicketSelect() {
             <button onClick={() => setKidCount(kidCountState + 1)}>+</button>
           </div>
         </div>
-
         <Link
           to={`/checkout/${name}`}
           state={{ name, selectedShowtime: selectedShowtimeState, selectedSeats: selectedSeatsState, adultCount: adultCountState, kidCount: kidCountState, auditorium: selectedAuditorium }}

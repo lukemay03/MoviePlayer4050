@@ -723,3 +723,25 @@ app.get('/api/movies/:movieName/showtimes', (req, res) => {
     });
   });
 });
+app.post('/promocode/check', (req, res) => {
+  const { movie_title, promoCode } = req.body;
+  // Check if promoCode is provided
+  if (!promoCode) {
+    return res.status(400).json({ error: 'Promo code is required' });
+  }
+
+  // SQL query to check for the promo code in the database
+  const query = `
+  SELECT p.* FROM Promo p INNER JOIN Movies m ON p.movie_id = m.movie_id WHERE m.movie_title = ? AND p.code = ?;`;
+  // Query the database
+  db.get(query, [movie_title, promoCode], (err, row) => {
+    if (err) {
+      return res.status(500).json({ error: 'Database error' });
+    }
+    // If the promo code does not exist
+    if (!row) {
+      return res.status(404).json({ error: 'Invalid promo code' });
+    }
+    return res.json(row);
+  });
+});
