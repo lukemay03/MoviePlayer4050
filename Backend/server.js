@@ -114,6 +114,27 @@ app.post('/movie/insert', (req, res) => {
   });
 });
 
+// Endpoint to see if email already exists
+app.get('/user/check-email', (req, res) => {
+  const { email } = req.query;
+
+  if (!email) {
+    return res.status(400).json({message: 'Email is required'});
+  }
+
+  const checkEmailSQL = 'SELECT * FROM Users WHERE email = ?';
+  db.get(checkEmailSQL, [email], (err, row) => {
+    if (err) {
+      console.error("Error checking email: ", err.message);
+      return res.status(500).json({message: ' Error checking email'});
+    }
+    if (row) {
+      return res.status(200).json({exists: true, message: 'Email already registered'});
+    }
+    res.status(200).json({exists: false, message: 'Email is available'});
+  });
+});
+
 // Endpoint to insert a new user
 app.post('/user/insert', (req, res) => {
   console.log(req.body);
