@@ -63,7 +63,7 @@ function RegistrationConfirm() {
         <p><strong>Selected Seats:</strong> ${selectedSeats.join(', ')}</p>
         <p><strong>Adult Tickets:</strong> ${adultCount}</p>
         <p><strong>Kid Tickets:</strong> ${kidCount}</p>
-        <h3><strong>Total:</strong> $${total}</h3>
+        <h3><strong>Total:</strong> $${total}.00</h3>
         <p>We hope you enjoy the movie!</p>
         <p>Best regards,</p>
         <p>Movie Player Co.</p>

@@ -114,6 +114,27 @@ app.post('/movie/insert', (req, res) => {
   });
 });
 
+// Endpoint to see if email already exists
+app.get('/user/check-email', (req, res) => {
+  const { email } = req.query;
+
+  if (!email) {
+    return res.status(400).json({message: 'Email is required'});
+  }
+
+  const checkEmailSQL = 'SELECT * FROM Users WHERE email = ?';
+  db.get(checkEmailSQL, [email], (err, row) => {
+    if (err) {
+      console.error("Error checking email: ", err.message);
+      return res.status(500).json({message: ' Error checking email'});
+    }
+    if (row) {
+      return res.status(200).json({exists: true, message: 'Email already registered'});
+    }
+    res.status(200).json({exists: false, message: 'Email is available'});
+  });
+});
+
 // Endpoint to insert a new user
 app.post('/user/insert', (req, res) => {
   console.log(req.body);
@@ -702,25 +723,20 @@ app.get('/api/movies/:movieName/showtimes', (req, res) => {
     });
   });
 });
-app.post('/promocode/check', (req, res) => {
-  const { movie_title, promoCode } = req.body;
-  // Check if promoCode is provided
-  if (!promoCode) {
-    return res.status(400).json({ error: 'Promo code is required' });
-  }
 
-  // SQL query to check for the promo code in the database
-  const query = `
-  SELECT p.* FROM Promo p INNER JOIN Movies m ON p.movie_id = m.movie_id WHERE m.movie_title = ? AND p.code = ?;`;
-  // Query the database
-  db.get(query, [movie_title, promoCode], (err, row) => {
+app.post('/activate-account', (req,res) => {
+  let { email } = req.body;
+  if (!email) {
+    return res.status(400).send('Email is required');
+  }
+  // activate account given email
+  let sql = 'UPDATE Users SET status = \'Active\' where email=?';
+  db.run(sql, [email], (err) => {
     if (err) {
-      return res.status(500).json({ error: 'Database error' });
+      console.error(err.message);
+      res.status(500).send('Error activating user');
+    } else {
+      res.status(201).send('User Activated Successfully!');
     }
-    // If the promo code does not exist
-    if (!row) {
-      return res.status(404).json({ error: 'Invalid promo code' });
-    }
-    return res.json(row);
   });
 });

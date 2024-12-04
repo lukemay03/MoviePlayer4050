@@ -11,7 +11,9 @@ function RegistrationConfirm() {
     const sendConfirmationEmail = async () => {
         try {
             const htmlMessage = "<h2>Thank you for registering!</h2>" +
-                "<p>Your registration is confirmed. Welcome to Movie Player Co!</p>" +
+                "<p>Follow the link to activate your account! " +
+                "<a href=\"http://localhost:3000/activate-account?token=" + token + "\">Activate Account</a>" +
+                " <br>Welcome to Movie Player Co!</p>" +
                 "<p>Best regards,</p>" +
                 "Movie Player Co.";
             const subject = "Registration Confirmation";

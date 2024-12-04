@@ -18,9 +18,6 @@ function AdminMain() {
         <Link to="/">
             <button>User Home</button>
         </Link>
-        <Link to="/add-admin">
-            <button>Add New Admin</button>
-        </Link>
         </div>
     );
 }
