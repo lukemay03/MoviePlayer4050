@@ -31,7 +31,8 @@ import EditPaymentCard from './EditPaymentCard';
 import AddPromo from './AddPromo';
 import EditPromo from './EditPromo';
 import ScheduleMovie from './ScheduleMovie';
-
+import UserErrorPage from './components/UserErrorPage';
+import AddAdmin from './AddAdmin';
 function App() {
   return (
 
@@ -67,6 +68,9 @@ function App() {
           <Route path="/editpaymentcard" element={<EditPaymentCard/>} />
           <Route path="/editpromo" element={<EditPromo/>} />
           <Route path="/schedule-movie" element={<ScheduleMovie/>} />
+          <Route path="/user-error-page" element={<UserErrorPage/>} />
+          <Route path="/add-admin" element={<AddAdmin/>} />
+
         </Routes>
       </div>
     </Router>

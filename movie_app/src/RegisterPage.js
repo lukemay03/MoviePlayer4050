@@ -6,7 +6,7 @@ import { useState } from 'react';
 function RegisterPage() {
   const [inputs, setInputs] = useState({
     role:'user',
-    status:'Active'
+    status:'Inactive'
   })
 
   const [promotions, setPromotion] = useState(false);

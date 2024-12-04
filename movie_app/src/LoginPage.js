@@ -6,6 +6,7 @@ function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
+  const [status, setStatus] = useState('');
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
   const fetchUserProfile = async () => {
@@ -22,6 +23,7 @@ function LoginPage() {
         //console.log('user data is ' + userdata);
         setRole(userdata.role);
         //console.log(role)
+        setStatus(userdata.status);
         return userdata;
       } else {
         setErrorMessage(userdata.message);
@@ -57,8 +59,10 @@ function LoginPage() {
         //console.log(localStorage.getItem('role'));
         //console.log(userdata['role'] === 'admin');
         //console.log('role is' + role);
-        if (userdata.role === 'user') {
+        if (userdata.role === 'user' && userdata.status === 'Active') {
           navigate('/');
+        } else if (userdata.role === 'user' && userdata.status === 'Inactive') {
+          navigate('/user-error-page')
         } else if (userdata.role === 'admin') {
           navigate('/admin-main');
         }
