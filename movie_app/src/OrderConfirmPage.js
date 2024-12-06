@@ -8,8 +8,9 @@ function RegistrationConfirm() {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  //destructure the order details from location.state
+  // Destructure the order details from location.state
   const {
+    promoID = 0,
     name = 'Unknown Movie',
     selectedShowtime = 'No Showtime Selected',
     selectedSeats = [],
@@ -20,7 +21,48 @@ function RegistrationConfirm() {
   } = location.state || {};
 
   useEffect(() => {
-    //send token and get user's email
+    const insertOrderData = async () => {
+      console.log('insert order data');
+      if (!email) {
+        console.error('No email available.');
+        return;
+      }
+
+      const orderData = {
+        promoID,
+        email,
+        name,
+        selectedShowtime,
+        selectedSeats,
+        adultCount,
+        kidCount,
+        auditorium,
+        total,
+      };
+      console.log(orderData);
+      try {
+        // Send request to insert the order into the database
+        const insertResponse = await fetch('http://localhost:3001/insert-order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(orderData), // Send order data
+        });
+
+        const insertData = await insertResponse.json();
+        if (insertResponse.ok) {
+          console.log('Order successfully inserted:', insertData.message);
+        } else {
+          setErrorMessage(`Failed to insert order into database: ${insertData.message}`);
+        }
+      } catch (error) {
+        console.error('Error inserting order:', error.message);
+        setErrorMessage('Error processing your order');
+      }
+    };
+
+    // Send token and get user's email
     const fetchUserProfile = async () => {
       try {
         const response = await fetch('http://localhost:3001/user/profile', {
@@ -29,12 +71,13 @@ function RegistrationConfirm() {
           },
         });
 
-        //clear cart data after confirming order
+        // Clear cart data after confirming order
         localStorage.removeItem('cartData'); 
-        //parse data
+        // Parse data
         const data = await response.json();
         if (response.ok) {
           setEmail(data.email);
+          insertOrderData(); // Ensure order is inserted once email is set
         } else {
           setErrorMessage(data.message);
         }
@@ -45,9 +88,9 @@ function RegistrationConfirm() {
     };
 
     fetchUserProfile();
-  }, []);
+  }, [email]); // Ensure it re-runs only when email is updated
 
-   // This function sends a request to the backend to send the email
+  // This function sends a request to the backend to send the email
   const sendConfirmationEmail = async () => {
     if (!email) {
       console.error('No email available.');
@@ -90,12 +133,12 @@ function RegistrationConfirm() {
     }
   };
 
-  // Trigger email sending when the component loads
+  // Trigger email sending once email is available and order has been inserted
   useEffect(() => {
-    if (email) {
+    if (email && successMessage) {
       sendConfirmationEmail();
     }
-  }, [email]);
+  }, [email, successMessage]); // Only trigger when both email and successMessage are available
 
   return (
     <div className="register-container">
@@ -112,13 +155,12 @@ function RegistrationConfirm() {
             <p><strong>Selected Seats:</strong> {selectedSeats.join(', ')}</p>
             <p><strong>Adult Tickets:</strong> {adultCount}</p>
             <p><strong>Kid Tickets:</strong> {kidCount}</p>
-            <h3><strong>Total:</strong> ${total}.00</h3>
+            <h3><strong>Total:</strong> ${total}</h3>
           </>
         )}
       </div>
     </div>
   );
-  
 }
 
 export default RegistrationConfirm;

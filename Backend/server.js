@@ -740,3 +740,141 @@ app.post('/activate-account', (req,res) => {
     }
   });
 });
+app.post('/promocode/check', (req, res) => {
+  const { movie_title, promoCode } = req.body;
+  // Check if promoCode is provided
+  if (!promoCode) {
+    return res.status(400).json({ error: 'Promo code is required' });
+  }
+
+  // SQL query to check for the promo code in the database
+  const query = `
+  SELECT p.* FROM Promo p INNER JOIN Movies m ON p.movie_id = m.movie_id WHERE m.movie_title = ? AND p.code = ?;`;
+  // Query the database
+  db.get(query, [movie_title, promoCode], (err, row) => {
+    if (err) {
+      return res.status(500).json({ error: 'Database error' });
+    }
+    // If the promo code does not exist
+    if (!row) {
+      return res.status(404).json({ error: 'Invalid promo code' });
+    }
+    return res.json(row);
+  });
+});
+app.post('/insert-order', (req, res) => {
+  const { promoID, email, name, selectedShowtime, selectedSeats, adultCount, kidCount, auditorium, total } = req.body;
+
+  // Ensure required data is present
+  if (!email || !selectedShowtime || !selectedSeats || selectedSeats.length === 0 || total === undefined) {
+    return res.status(400).json({ message: 'Missing required data' });
+  }
+
+  // Fetch user_id based on email
+  db.get('SELECT user_id FROM Users WHERE email = ?', [email], (err, userRow) => {
+    if (err) {
+      return res.status(500).json({ message: 'Database error fetching user data' });
+    }
+
+    if (!userRow) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const userId = userRow.user_id;
+  // Fetch user_id based on email
+  db.get('SELECT aud_id FROM Auditorium WHERE audname = ?', [auditorium], (err, userRow) => {
+    if (err) {
+      return res.status(500).json({ message: 'Database error fetching user data' });
+    }
+
+    if (!userRow) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const audId = userRow.aud_id;
+
+    // Fetch showtime_id based on selectedShowtime
+    db.get('SELECT showtimes_id FROM showtimes WHERE TimeStamp = ?', [selectedShowtime], (err, showtimeRow) => {
+      if (err) {
+        return res.status(500).json({ message: 'Database error fetching showtime data' });
+      }
+
+      if (!showtimeRow) {
+        return res.status(404).json({ message: 'Showtime not found' });
+      }
+
+      const showtimeId = showtimeRow.showtimes_id;
+
+      const paymentCardId = 100;
+
+      // Insert data into the Booking table
+      const insertBookingQuery = `
+        INSERT INTO Booking (user_id, showtime_id, paymentcard_id, nooftickets, totalprice, Promo_id)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `;
+      const noOfTickets = adultCount + kidCount;
+      db.run(insertBookingQuery, [userId, showtimeId, paymentCardId, noOfTickets, total, promoID || null], function (err) {
+        if (err) {
+          return res.status(500).json({ message: 'Error inserting booking data' });
+        }
+
+        const bookingId = this.lastID;
+
+        // Fetch seat IDs based on the descriptions of selected seats
+        const seatDescriptions = selectedSeats;
+        const seatQueries = seatDescriptions.map((description) => {
+          return new Promise((resolve, reject) => {
+            db.get('SELECT seatid FROM Seat WHERE description = ? AND aud_id = ?', [description, audId], (err, seatRow) => {
+              if (err) {
+                reject(err);
+              } else if (!seatRow) {
+                reject(`Seat ${description} not found`);
+              } else {
+                resolve(seatRow.seatid);
+              }
+            });
+          });
+        });
+
+        // Once all seat IDs are fetched, insert data into the Tickets table
+        Promise.all(seatQueries)
+          .then((seatIds) => {
+            const insertTicketQuery = `
+              INSERT INTO Tickets (seat_id, booking_id, tickettype_id)
+              VALUES (?, ?, ?)
+            `;
+            let adult = adultCount;
+            let kid = kidCount;
+            let tickettype_id = 3;
+            seatIds.forEach((seatId) => {
+            if (adult > 0) {
+              tickettype_id = 3;  // Adult ticket type ID
+              adult--;
+            }
+            else if (kid > 0) {
+              tickettype_id = 1;  // Kid ticket type ID
+              kid--;  // Decrease kid ticket count
+            } 
+            else {
+              tickettype_id = 2;  // Default ticket type ID
+            }
+
+              db.run(insertTicketQuery, [seatId, bookingId, tickettype_id], function (err) {
+                if (err) {
+                  console.error('Error inserting ticket:', err.message);
+                }
+              });
+            });
+
+            // Return a success message
+            res.status(200).json({ message: 'Order successfully inserted', bookingId });
+          })
+          .catch((err) => {
+            console.error('Error fetching seat IDs:', err);
+            res.status(500).json({ message: 'Error processing seat IDs' });
+          });
+      });
+    });
+  });
+});
+});

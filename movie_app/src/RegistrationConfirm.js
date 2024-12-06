@@ -6,7 +6,7 @@ function RegistrationConfirm() {
     const location = useLocation();
     const { email } = location.state || {}; // Retrieve email from state
     console.log("Retrieved email:", email);
-
+    const token = localStorage.getItem('token')
     // This function sends a request to the backend to send the email
     const sendConfirmationEmail = async () => {
         try {
