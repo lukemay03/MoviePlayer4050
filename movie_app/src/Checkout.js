@@ -42,6 +42,43 @@ function Checkout() {
    setTotal(baseTotal); // Set the total when relevant values change
  }, [adultCount, kidCount]); // Re-run only when adultCount or kidCount changes
 
+  const mypayment = ["name", "card number", "expiration date", "cvv"];
+  function updatingvaribles(card) {
+    const { cardnumber, expiration_date, name, cvv, user_id, payment_card_id } = card;
+    mypayment[0] = name;
+    mypayment[1] = cardnumber;
+    mypayment[2] = expiration_date;
+    mypayment[3] = cvv;
+    return;
+  }
+
+const [cards, setCards] = useState([]);
+  const [userId, setUserId] = useState(null); // State to store userId
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        setUserId(localStorage.getItem('id'));
+        const response = await fetch('http://localhost:3001/paymentcard/get', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch cards');
+        }
+        const data = await response.json();
+        setCards(data);
+        console.log('id is ' + localStorage.getItem('id'));
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    
+    fetchCards();
+}, []);
+
+cards.map(updatingvaribles);
+
   const role = localStorage.getItem('role');
   if (role == null) {
     return (
@@ -145,28 +182,29 @@ function Checkout() {
         <form>
           <div className="input-group">
             <label htmlFor="cardholderName">Cardholder Name:</label>
-            <input type="text" id="cardholderName" placeholder="John Doe" />
+            <input type="text" id="cardholderName" placeholder={mypayment[0]} />
           </div>
 
           <div className="input-group">
             <label htmlFor="cardNumber">Card Number:</label>
-            <input type="text" id="cardNumber" placeholder="1234 5678 9123 4567" />
+            <input type="text" id="cardNumber" placeholder={mypayment[1]} />
           </div>
 
           <div className="input-group">
             <label htmlFor="expiryDate">Expiry Date:</label>
-            <input type="text" id="expiryDate" placeholder="MM/YY" />
+            <input type="text" id="expiryDate" placeholder={mypayment[2]} />
           </div>
 
           <div className="input-group">
             <label htmlFor="cvv">CVV:</label>
-            <input type="text" id="cvv" placeholder="123" />
+            <input type="text" id="cvv" placeholder={mypayment[3]} />
           </div>
 
           <div className="input-group">
             <label htmlFor="billingAddress">Billing Address:</label>
             <input type="text" id="billingAddress" placeholder="123 Main St, City, State" />
           </div>
+
 
           {/*navigate to order confirmation page with state variables*/}
           <Link 
