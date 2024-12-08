@@ -6,10 +6,27 @@ function RegistrationConfirm() {
     const location = useLocation();
     const { email } = location.state || {}; // Retrieve email from state
     console.log("Retrieved email:", email);
-    const token = localStorage.getItem('token')
+    // const token = localStorage.getItem('token')
     // This function sends a request to the backend to send the email
     const sendConfirmationEmail = async () => {
         try {
+            var token;
+
+            const responseToken = await fetch('http://localhost:3001/generate-token', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({email}),
+            });
+
+            //parse the response
+            const dataToken = await responseToken.json();
+            //if authenticated, store token for future requests and load home page
+            if (responseToken.ok) {
+                token = dataToken.token;
+            } else {
+                console.log('Invalid email');
+            }
+
             const htmlMessage = "<h2>Thank you for registering!</h2>" +
                 "<p>Follow the link to activate your account! " +
                 "<a href=\"http://localhost:3000/activate-account?token=" + token + "\">Activate Account</a>" +
