@@ -764,7 +764,7 @@ app.post('/promocode/check', (req, res) => {
 });
 app.post('/insert-order', (req, res) => {
   const { promoID, email, name, selectedShowtime, selectedSeats, adultCount, kidCount, auditorium, total } = req.body;
-
+  console.log(selectedShowtime);
   // Ensure required data is present
   if (!email || !selectedShowtime || !selectedSeats || selectedSeats.length === 0 || total === undefined) {
     return res.status(400).json({ message: 'Missing required data' });
@@ -878,3 +878,124 @@ app.post('/insert-order', (req, res) => {
   });
 });
 });
+app.get('/booking/get', (req, res) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1]; // Extract the token from the authorization header
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  jwt.verify(token, 'secretKey', (err, user) => { // Verify the token with the secretKey
+    if (err) {
+      return res.status(403).json({ message: 'Invalid token' });
+    }
+
+    // Query to get all bookings for the user
+    const bookingSql = `
+      SELECT * FROM Booking WHERE user_id = ?;`;
+
+    db.all(bookingSql, [user.userId], (err, bookings) => {
+      if (err) {
+        return res.status(500).json({ message: 'Database error fetching bookings' });
+      }
+
+      if (!bookings || bookings.length === 0) {
+        return res.status(404).json({ message: 'No bookings found for this user' });
+      }
+
+      res.json({ bookings });
+    });
+  });
+});
+app.get('/booking/:bookingId/seats', (req, res) => {
+  const { bookingId } = req.params;  // Extract bookingId from the URL parameter
+
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  jwt.verify(token, 'secretKey', (err, user) => {
+    if (err) {
+      return res.status(403).json({ message: 'Invalid token' });
+    }
+
+    // Query to get seat details for a booking
+    const seatDetailsSql = `
+      SELECT DISTINCT
+    s.TimeStamp AS showtime,
+    t.ticket_id,
+    t.seat_id,
+    st.description AS seat_description
+  FROM
+    Tickets t
+  JOIN
+    Seat st ON t.seat_id = st.seatid
+  JOIN
+    Booking b ON t.booking_id = b.booking_id
+  JOIN
+    showtimes s ON b.showtime_id = s.showtimes_id
+  JOIN
+    MovieShow ms ON ms.showtimes_id = s.showtimes_id
+  JOIN
+   Movies m ON m.movie_id = ms.movie_id
+  WHERE
+    t.booking_id = ?;
+    `;
+
+    db.all(seatDetailsSql, [bookingId], (err, seatDetails) => {
+      if (err) {
+        return res.status(500).json({ message: 'Error fetching seat details' });
+      }
+
+      res.json({ seatDetails });
+    });
+  });
+});
+app.get('/booking/:bookingId/movie', (req, res) => {
+  const { bookingId } = req.params;  // Extract bookingId from the URL parameter
+
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  jwt.verify(token, 'secretKey', (err, user) => {
+    if (err) {
+      return res.status(403).json({ message: 'Invalid token' });
+    }
+
+    // Query to get movie title for the showtime
+    const movieTitleSql = `
+      SELECT
+        m.movie_title
+      FROM
+        showtimes s
+      JOIN
+        MovieShow ms ON ms.showtimes_id = s.showtimes_id
+      JOIN
+        Movies m ON m.movie_id = ms.movie_id
+      WHERE
+        s.showtimes_id = (SELECT showtime_id FROM Booking WHERE booking_id = ?);
+    `;
+
+    db.get(movieTitleSql, [bookingId], (err, movieTitle) => {
+      if (err) {
+        return res.status(500).json({ message: 'Error fetching movie title' });
+      }
+
+      if (!movieTitle) {
+        return res.status(404).json({ message: 'No movie title found for this booking' });
+      }
+
+      res.json({ movieTitle: movieTitle.movie_title });
+    });
+  });
+});
+
+

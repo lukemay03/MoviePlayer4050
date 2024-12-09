@@ -33,6 +33,7 @@ import EditPromo from './EditPromo';
 import ScheduleMovie from './ScheduleMovie';
 import ActivateAccount from './ActivateAccount';
 import AddAdmin from './AddAdmin';
+import OrderHistory from './OrderHistory';
 
 function App() {
   return (
@@ -71,6 +72,7 @@ function App() {
           <Route path="/schedule-movie" element={<ScheduleMovie/>} />
           <Route path="/activate-account" element={<ActivateAccount/>} />
           <Route path="/add-admin" element={<AddAdmin/>} />
+          <Route path="/orderhistory" element={<OrderHistory/>} />
         </Routes>
       </div>
     </Router>

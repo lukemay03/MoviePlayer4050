@@ -146,6 +146,7 @@ function EditProfile() {
         {successMessage && <p className="success-message">{successMessage}</p>}
 
         <Link to="/edit-payments"><button>Edit Payment Cards</button></Link>
+        <Link to="/orderhistory"><button>Order History</button></Link>
         <button type="submit" className="save-button">Save Changes</button>
       </form>
     </div>
